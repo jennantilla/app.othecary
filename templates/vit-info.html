@@ -5,9 +5,39 @@
 {% block content %}
     <h1>{{ title }}</h1>
     <div>
-        <h2>Add to routine</h2>
+        <h2>Find your supplement!</h2>
         <form action="/vitamin-search" method="POST">
-            <input type="submit" name="vitamin" value={{ vitamin }}>
+            <div class="form group">
+                <label>Brand</label>
+                <input type="text" name="brand" class="form-control"></input>
+            </div>
+
+            <div class="form group">
+                <label>Supplement type</label>
+                <select class="form-control">
+                    <option name="type" value="Softgel Capsule">Softgels</option>
+                    <option name ="type" value="Gummy)">Gummies</option>
+                    <option name="type" value="Powder">Powder</option>
+                    <option name="type" value="Lozenge">Lozenge</option>
+                    <option name="type" value="Liquid">Liquid</option>
+                    <option name="type" value="Capsule">Capsule</option>
+                    <option name="type" value="Bar">Bar</option>
+                    <option name="type" value="Tablet">Tablet</option>
+                </select>
+            </div>
+
+            <div class="form group">
+                <label>Target group</label>
+                <select class="form-control">
+                    <option name="group" value="[PO250]">4+ years</option>
+                    <option name="group" value="[PO253]">Pregnant/nursing</option>
+                    <option name="group" value="[P0192]">Children 1-4 years</option>
+                    <option name="group" value="[P0266]">Infants/children less than 1 year</option>
+                </select>
+            
+            <div>
+            <input class="form-control" type="submit" name="vitamin" value= {{ vitamin }}>
+            </div>
         </form>
     </div>
 <br>
