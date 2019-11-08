@@ -50,8 +50,14 @@ def update_labels_directions():
         r = requests.get('http://dsld.nlm.nih.gov/dsld/api/label/' + vit_id)
         vitamin = r.json()
 
-        directions = vitamin['Suggested_Use']
+        try:
 
+            directions = vitamin['Suggested_Use']
+
+        except KeyError:
+            print(vitamin)
+            import pdb; pdb.set_trace()
+            
         if directions: 
             product.use = directions
 

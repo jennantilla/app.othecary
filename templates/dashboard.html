@@ -7,10 +7,33 @@
 
 <!-- add date to top -->
 
+<h3 id="date"></h3>
+{% if routine %}
+    {% for row in routine %}
+        {% if row.user_id == user %}
+            <div>
+                <h4>{{ row.vitamin.product_name }}</h4>
+                    <p>Brand: {{ row.vitamin.brand_name }}
+                    <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{  row.vitamin.serving_size_unit }}</p>
+                    <p>{{ row.vitamin.use }}</p>
+                    <p>Container amount: {{ row.vitamin.net_contents }} {{ row.vitamin.net_content_unit }}</p>
+                    <p> Started on: {{ row.start_date }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 
 
 <h4>You have no supplements in your routine</h4>
 <a href=/supplements>Start your research</a>
 
+<script>
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate()
+    document.getElementById("date").innerHTML = 
+    "Routine for: " + month + "/" + day + "/" + year;
+</script>
 
 {% endblock %}

@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
 app.jinja_env.auto_reload = True
 
-# app.secret_key = 
+app.secret_key = 'ABC'
 
 @app.route('/')
 def homepage():
@@ -44,29 +44,18 @@ def log_in():
 
 
 @app.route('/dashboard/<int:user_id>')
-def show_dashboard():
-    #user_id in parameter
+def show_dashboard(user_id):
     """Display user dashboard and vitamin info"""
-
-
 
     #find all vitamins belonging to a user
     #look at the ratings lab again, how did they find all the ratings belonging to a user?
     
-    # routine = User_Vitamin.query.options(db.joinedload('user')).get(uv_id)
+    user = session.get("user_id")
+    routine = User_Vitamin.query.all()
 
-
-    return render_template('dashboard.html')
-                            # name=name
-                            # routine=routine,
-                            # name=name,
-                            # label_id=label_id,
-                            # product_name=product_name,
-                            # serving_size_quantity=serving_size_quantity,
-                            # serving_size_unit=serving_size_unit,
-                            # net_contents=net_contents,
-                            # net_content_unit=net_content_unit,
-                            # use=use)
+    return render_template('dashboard.html',
+                            user=user,
+                            routine=routine)
 
 
 @app.route('/register', methods=['POST'])
@@ -93,9 +82,9 @@ def new_user_questions():
     db.session.add(new_user)
     db.session.commit()
 
-    session["user_id"] = user.user_id
+    session["user_id"] = new_user.user_id
 
-    return redirect("/dashboard")
+    return redirect("/dashboard/<int:user_id>")
 
 
 @app.route('/supplements')
@@ -136,10 +125,21 @@ def search_vitamins():
     
     vitamin = request.form.get("vitamin")
 
-    search = Vitamin.query.filter(Vitamin.product_name.like("%vitamin%")).all()
+    search = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).all()
+
+    brand = request.form.get("brand")
+    supplement_type = request.form.get("supplement_type")
+    age_group = request.form.get("group")
+
+    #ajax request?
+    #chain queries
+
+    # brand_search = Vitamin.query.filter(Vitamin.brand_name == brand).all()
+
 
 
     return render_template('add-vitamin.html',
+                            vitamin=vitamin,
                             search=search)
 
 
@@ -159,7 +159,6 @@ def add_routine():
     db.session.commit()
 
     return render_template('/dashboard.html')
-
 
 
 @app.route('/logout')
