@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ vitamin }}{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <div>
+        <h2>Add to routine</h2>
+        <form action="/vitamin-search" method="POST">
+            <input type="submit" name="vitamin" value={{ vitamin }}>
+        </form>
+    </div>
+<br>
+<div>
+    {{ body|safe }}
+</div>
+
+{% endblock %}
