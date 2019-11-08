@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Supplements{% endblock %}
+
+{% block content %}
+<h3> Choose a Supplement</h3>
+<form action="/lookup" method="POST">
+        {% for vitamin in vitamins %}
+        <button type="image" name='vitamin' value= {{ vitamin }}>
+            <img src="/static/tincture.png">
+            <h4>{{ vitamin }}</h4>
+        </button>
+        {% endfor %}
+</form>
+
+{% endblock %}
