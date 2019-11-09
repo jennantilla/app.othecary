@@ -47,9 +47,6 @@ def log_in():
 def show_dashboard(user_id):
     """Display user dashboard and vitamin info"""
 
-    #find all vitamins belonging to a user
-    #look at the ratings lab again, how did they find all the ratings belonging to a user?
-    
     user = session.get("user_id")
     routine = User_Vitamin.query.all()
 
@@ -124,23 +121,18 @@ def search_vitamins():
     """Provides a list of similar vitamins"""
     
     vitamin = request.form.get("vitamin")
-
-    search = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).all()
+    
+    search_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).all()
 
     brand = request.form.get("brand")
-    supplement_type = request.form.get("supplement_type")
-    age_group = request.form.get("group")
-
-    #ajax request?
-    #chain queries
-
-    # brand_search = Vitamin.query.filter(Vitamin.brand_name == brand).all()
-
+    # supplement_type = request.form.get("type")
+    # age_group = request.form.get("group")
 
 
     return render_template('add-vitamin.html',
                             vitamin=vitamin,
-                            search=search)
+                            search_result=search_result,
+                            brand=brand)
 
 
 @app.route('/add-routine', methods=['POST'])
@@ -148,9 +140,6 @@ def add_routine():
     """Adds a chosen vitamin to the user's routine"""
 
     label_id = request.form.get("vitamin")
-
-    #update active to True
-
     user_id = session.get("user_id")
 
     new = User_Vitamin(label_id=label_id, user_id=user_id, active=True)
@@ -168,7 +157,6 @@ def logout():
     del session["user_id"]
     flash("Logged Out.")
     return redirect("/")
-
 
 
 if __name__ == "__main__":
