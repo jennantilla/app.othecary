@@ -52,10 +52,12 @@ def log_in():
 @app.route('/dashboard')
 # /<int:user_id>'
 def show_dashboard():
-    """Display user dashboard and vitamin info"""
+    """Displays user dashboard and vitamin info"""
 
     user = session.get("user_id")
     routine = User_Vitamin.query.all()
+
+    # use ajax to update streak depending on what user selects
 
     return render_template('dashboard.html',
                             user=user,
@@ -71,7 +73,7 @@ def registration_form():
 
 @app.route('/intake', methods=['POST'])
 def new_user_questions():
-    """intake questions for new user"""
+    """Handles intake questions for new user"""
 
     name = request.form['name']
     email = request.form['email']
@@ -94,6 +96,7 @@ def new_user_questions():
 @app.route('/supplements')
 def select_supplement():
     """Shows vitamin choices"""
+
     vitamins = ['Biotin', 'Calcium', 'Choline', 'Copper', 'Folate', 'Iodine', 
     'Iron', 'Magnesium', 'Molybdenum', 'MVMS', 'Niacin', 'Omega3FattyAcids',
     'PantothenicAcid', 'Potassium', 'Probiotics', 'Riboflavin', 'Selenium',
@@ -157,9 +160,20 @@ def add_routine():
     return redirect('/dashboard')
 
 
+@app.route('/update-streak', methods=['POST'])
+def update_streak():
+    """Updates user.streak_days based on user input"""
+
+    # Use AJAX and React!
+
+    # streak_days = request.form.get("streak")
+
+
+
+
 @app.route('/logout')
 def logout():
-    """Logs current user out"""
+    """Logs out current user"""
 
     del session["user_id"]
     flash("Logged Out")

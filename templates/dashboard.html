@@ -5,9 +5,17 @@
 {% block content %}
 <h2>Welcome back!</h2>
 
-<!-- add date to top -->
-
 <h3 id="date"></h3>
+<div>
+    <h4>Did you take your vitamins today?</h4>
+    <form action="/update-streak" name="streak" id="streak">
+        <input type="radio" value="yes">Yes
+        <input type="radio" value="no">No
+        <input type="submit" value="Update streak">
+    <h4>You're on a ____ day streak!</h4>
+</div>
+
+
 {% if routine %}
     {% for row in routine %}
         {% if row.user_id == user %}
@@ -23,17 +31,18 @@
     {% endfor %}
 {% endif %}
 
-
 <h4>You have no supplements in your routine</h4>
+
 <a href=/supplements>Start your research</a>
 
 <script>
     const date = new Date();
     const year = date.getFullYear();
-    const month = date.getMonth();
-    const day = date.getDate()
-    document.getElementById("date").innerHTML = 
-    "Routine for: " + month + "/" + day + "/" + year;
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    document.getElementById('date').innerHTML = 
+    'Routine for: ' + month + '/' + day + '/' + year;
+
 </script>
 
 {% endblock %}
