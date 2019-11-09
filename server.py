@@ -2,7 +2,7 @@ import requests
 import xmltodict
 import json
 
-from flask import Flask, redirect, request, render_template, session
+from flask import Flask, redirect, request, render_template, session, flash
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 
@@ -20,8 +20,14 @@ def homepage():
 
     return render_template("home.html")
 
+@app.route('/login')
+def sign_in():
+    """Sign in flow for return user"""
 
-@app.route('/login', methods=['POST'])
+    return render_template("login.html")
+
+
+@app.route('/validate', methods=["POST"])
 def log_in():
     """Logs in an existing member"""
 
@@ -36,15 +42,16 @@ def log_in():
 
     if user.password != password:
         flash("Your password is incorrect. Please try again")
-        return redierct("/")
+        return redirect("/")
 
     session["user_id"] = user.user_id
 
-    return redirect(f"/dashboard/{user.user_id}")
+    return redirect("/dashboard")
 
 
-@app.route('/dashboard/<int:user_id>')
-def show_dashboard(user_id):
+@app.route('/dashboard')
+# /<int:user_id>'
+def show_dashboard():
     """Display user dashboard and vitamin info"""
 
     user = session.get("user_id")
@@ -55,7 +62,7 @@ def show_dashboard(user_id):
                             routine=routine)
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/register')
 def registration_form():
     """Displays user registration page"""
 
@@ -81,7 +88,7 @@ def new_user_questions():
 
     session["user_id"] = new_user.user_id
 
-    return redirect("/dashboard/<int:user_id>")
+    return redirect("/dashboard")
 
 
 @app.route('/supplements')
@@ -90,7 +97,7 @@ def select_supplement():
     vitamins = ['Biotin', 'Calcium', 'Choline', 'Copper', 'Folate', 'Iodine', 
     'Iron', 'Magnesium', 'Molybdenum', 'MVMS', 'Niacin', 'Omega3FattyAcids',
     'PantothenicAcid', 'Potassium', 'Probiotics', 'Riboflavin', 'Selenium',
-    'Thiamin', 'Valerian', 'VitaminA', 'VitaminB12', 'VitaminB6', 'VitaminC',
+    'Thiamin', 'VitaminA', 'VitaminB12', 'VitaminB6', 'VitaminC',
     'VitaminD', 'VitaminE', 'VitaminK', 'WeightLoss', 'Zinc']
     
     return render_template('supplements.html',
@@ -147,7 +154,7 @@ def add_routine():
     db.session.add(new)
     db.session.commit()
 
-    return render_template('/dashboard.html')
+    return redirect('/dashboard')
 
 
 @app.route('/logout')
@@ -155,7 +162,7 @@ def logout():
     """Logs current user out"""
 
     del session["user_id"]
-    flash("Logged Out.")
+    flash("Logged Out")
     return redirect("/")
 
 
