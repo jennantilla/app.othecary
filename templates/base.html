@@ -4,7 +4,19 @@
     <title>{% block title %}TITLE{% endblock %}</title>
 </head>
 <body>
-    {% block content %}BODY CONTENT{% endblock %}
-    <footer><em>For informational purposes only. Please consult your doctor before starting any supplement routine.</em></footer>
+    <div class="navbar-header">
+        <a href = "/"><img src="/static/mortar.png">app.othecary</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/supplements">Research</a>
+
+        <span class="navbar">
+            <a href="/login">Log in</a>
+            <a href="/register">Sign up</a>
+        </span>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+    <footer><em>app.othecary is for informational purposes only; please consult your doctor before starting any supplement routine.</em></footer>
 </body>
 </html>
