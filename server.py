@@ -20,7 +20,7 @@ def homepage():
 
     return render_template("home.html")
 
-@app.route('/login')
+@app.route('/login', methods=["GET"])
 def sign_in():
     """Sign in flow for return user"""
 
@@ -46,12 +46,11 @@ def log_in():
 
     session["user_id"] = user.user_id
 
-    return redirect("/dashboard")
+    return redirect(f"/dashboard/{user.user_id}")
 
 
-@app.route('/dashboard')
-# /<int:user_id>'
-def show_dashboard():
+@app.route('/dashboard/<int:user_id>')
+def show_dashboard(user_id):
     """Displays user dashboard and vitamin info"""
 
     user = session.get("user_id")
@@ -88,9 +87,7 @@ def new_user_questions():
     db.session.add(new_user)
     db.session.commit()
 
-    session["user_id"] = new_user.user_id
-
-    return redirect("/dashboard")
+    return redirect(f"/dashboard/{new_user.user_id}")
 
 
 @app.route('/supplements')
@@ -137,7 +134,6 @@ def search_vitamins():
     brand = request.form.get("brand")
     # supplement_type = request.form.get("type")
     # age_group = request.form.get("group")
-
 
     return render_template('add-vitamin.html',
                             vitamin=vitamin,

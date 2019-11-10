@@ -22,7 +22,7 @@ class User(db.Model):
     birth_date = db.Column(db.DateTime)
     sex = db.Column(db.String(25))
     diet = db.Column(db.String(25))
-    streak_days = db.Column(db.Integer, nullable=True, default=0)
+    # streak_days = db.Column(db.Integer, nullable=True, default=0)
 
 
 class User_Vitamin(db.Model):

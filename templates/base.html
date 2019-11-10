@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>{% block title %}TITLE{% endblock %}</title>
+    <link href="/static/css/site.css" rel="stylesheet">
 </head>
 <body>
     <div class="navbar-header">
@@ -10,13 +11,14 @@
         <a href="/supplements">Research</a>
 
         <span class="navbar">
-            <a href="/login">Log in</a>
             <a href="/register">Sign up</a>
+            <a href="/login">Log in</a>
+            <a href="/logout">Log out</a>
         </span>
     </div>
 
     {% block content %}
     {% endblock %}
-    <footer><em>app.othecary is for informational purposes only; please consult your doctor before starting any supplement routine.</em></footer>
+    <footer class="footer"><em>app.othecary is for informational purposes only; please consult your doctor before starting any supplement routine.</em></footer>
 </body>
 </html>
