@@ -1,0 +1,12 @@
+.logged-out li{
+    display: inline;
+}
+
+.logged-in li{
+    display: inline;
+}
+
+#performance {
+    display: inline;
+    float: right;
+}

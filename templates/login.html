@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}app.othecary{% endblock %}
+
+{% block content %}
+    <h6>--WELCOME BACK--</h6>
+        <form action="/validate" method="POST">
+            <div class="login-field">
+                <label>Email:
+                    <input type="email" name="email" required class="login-control">
+                </label>
+            </div>
+
+            <div class="login-field">
+                <label>Password:
+                    <input type="password" name="password" required class="login-control">
+                </label>
+            </div>
+        <form action="/login" method="POST">
+            <div class="login-field">
+                <input type="submit" value="Log In">
+            </div>
+        </form>
+</div>
+
+
+{% endblock %}
