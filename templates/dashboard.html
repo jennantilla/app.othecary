@@ -3,37 +3,58 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2>Welcome back!</h2>
+<h2>Welcome back, {{ user.name }}!</h2>
 
 <h3 id="date"></h3>
 <div id="performance">
     <h4>Did you take your vitamins today?</h4>
-    <form action="/update-streak" name="streak" id="streak">
+    <form action="/update-streak" id="streak" method="POST">
         <input type="radio" value="yes">Yes
         <input type="radio" value="no">No
         <input type="submit" value="Update streak">
-    <h4>You're on a ____ day streak!</h4>
+    </form>
+    <div id="streak-info"></div>
 </div>
-
 
 {% if routine %}
     {% for row in routine %}
-        {% if row.user_id == user %}
+        {% if row.active == True %}
             <div id="routine">
                 <h4>{{ row.vitamin.product_name }}</h4>
-                    <p>Brand: {{ row.vitamin.brand_name }}
+                <form action="/remove-routine" method="POST">
+                    <button type="submit" name="remove" value={{ row.label_id }}>Discontinue</button>
+                </form>
                     <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{  row.vitamin.serving_size_unit }}</p>
                     <p>{{ row.vitamin.use }}</p>
                     <p>Container amount: {{ row.vitamin.net_contents }} {{ row.vitamin.net_content_unit }}</p>
-                    <p> Started on: {{ row.start_date }}</p>
+                    <p> Started on: {{ row.start_date }}
+                    </p>
+            </div>
         {% endif %}
     {% endfor %}
+
+{% else %}
+    <div>
+        <h4>You have no supplements in your routine</h4>
+
+        <a href=/supplements>Start your research</a>
+    </div>
 {% endif %}
 
-    <h4>You have no supplements in your routine</h4>
+<div id="history">
+    <h4>{{ user.name }}'s Inactive Supplements</h4>
+    {% for row in routine %}
+        {% if row.active == False %}
+            <p>{{ row.vitamin.product_name }}</p>
+            <form action="/restore" method="POST">
+                        <button type="submit" name="restore" value={{ row.label_id }}>Restore</button>
+                    </form>
+        {% endif %}
+    {% endfor %}
+</div>
 
-    <a href=/supplements>Start your research</a>
-    </div>
+
+
 
 <script>
     const date = new Date();

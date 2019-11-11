@@ -40,7 +40,7 @@ def log_in():
         flash("We couldn't find you in our records!")
         return redirect("/")
 
-    if user.password != password:
+    if user.password_hash != password:
         flash("Your password is incorrect. Please try again")
         return redirect("/")
 
@@ -53,12 +53,13 @@ def log_in():
 def show_dashboard(user_id):
     """Displays user dashboard and vitamin info"""
 
-    user = session.get("user_id")
-    routine = User_Vitamin.query.all()
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
 
-    # use ajax to update streak depending on what user selects
+    routine = User_Vitamin.query.filter_by(user_id=user_id).all()
 
     return render_template('dashboard.html',
+                            user_id=user_id,
                             user=user,
                             routine=routine)
 
@@ -76,18 +77,18 @@ def new_user_questions():
 
     name = request.form['name']
     email = request.form['email']
-    password = request.form['password']
+    password_hash = request.form['password']
     birth_date = request.form['birthday']
     sex = request.form['sex']
     diet = request.form['diet']
 
-    new_user = User(name=name, email=email, password=password, 
+    user = User(name=name, email=email, password_hash=password_hash, 
                     birth_date=birth_date, sex=sex, diet=diet)
 
-    db.session.add(new_user)
+    db.session.add(user)
     db.session.commit()
 
-    return redirect(f"/dashboard/{new_user.user_id}")
+    return redirect(f"/dashboard/{user.user_id}")
 
 
 @app.route('/supplements')
@@ -147,24 +148,72 @@ def add_routine():
 
     label_id = request.form.get("vitamin")
     user_id = session.get("user_id")
+    
+    # prevent duplicates:
+    # routine = User_Vitamin.query.filter_by(user_id=user_id).all()
 
     new = User_Vitamin(label_id=label_id, user_id=user_id, active=True)
-
+    
     db.session.add(new)
     db.session.commit()
 
-    return redirect('/dashboard')
+    return redirect(f'/dashboard/{user_id}')
+
+
+@app.route('/remove-routine', methods=["POST"])
+def remove_routine():
+    """Allows user to deprecate a vitamin from their active routine"""
+
+    label_id = request.form.get("remove")
+    user_id = session.get("user_id")
+
+    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).all()
+
+    for item in routine:
+        item.active = False
+        flash("Removed from your routine")
+
+    db.session.commit()
+
+    return redirect(f'/dashboard/{user_id}')
+
+@app.route('/restore', methods=["POST"])
+def restore_routine():
+    """Allows user to restore a vitamin from their deactived routine"""
+
+    label_id = request.form.get("restore")
+    user_id = session.get("user_id")
+
+    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).all()
+
+    for item in routine:
+        item.active = True
+        flash("Re-added to your routine")
+
+    db.session.commit()
+
+    return redirect(f'/dashboard/{user_id}')
 
 
 @app.route('/update-streak', methods=['POST'])
 def update_streak():
     """Updates user.streak_days based on user input"""
 
-    # Use AJAX and React!
+    # Use AJAX
 
-    # streak_days = request.form.get("streak")
+    # user_id = session.get("user_id")
+    # streak = request.form.get("streak")
 
+    # user = User.query.filter_by(user_id=user_id).first()
+    
+    # if streak == "yes":
+    #     user.streak_days += 1
+    # else:
+    #     user.streak_days == 0
 
+    # db.session.commit()
+
+    # return redirect(f'/dashboard/{user_id}')
 
 
 @app.route('/logout')
@@ -182,5 +231,6 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
     connect_to_db(app)
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     app.run(host="0.0.0.0")
