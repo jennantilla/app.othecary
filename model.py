@@ -1,7 +1,8 @@
 """Models and database functions for App.othecary"""
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-# from sqlalchemy_utils import PhoneNumber
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -15,14 +16,20 @@ class User(db.Model):
     __tablename__= "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    # phone_number = db.Column(db.PhoneNumberType())
+    email = db.Column(db.String(120), nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    phone_number = db.Column(db.String(16), nullable=True)
     name = db.Column(db.String(50), nullable=False)
     birth_date = db.Column(db.DateTime)
     sex = db.Column(db.String(25))
     diet = db.Column(db.String(25))
-    # streak_days = db.Column(db.Integer, nullable=True, default=0)
+    streak_days = db.Column(db.Integer, default=0)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 class User_Vitamin(db.Model):

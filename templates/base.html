@@ -6,19 +6,34 @@
 </head>
 <body>
     <div class="navbar-header">
-        <a href = "/"><img src="/static/img/a.png">app.othecary</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/supplements">Research</a>
-
-        <span class="navbar">
-            <a href="/register">Sign up</a>
-            <a href="/login">Log in</a>
-            <a href="/logout">Log out</a>
-        </span>
+            {% if "user_id" not in session %}
+            <ul class="logged-out">
+                <li><a href = "/"><img src="/static/img/a.png">app.othecary</a></li>
+                <li><a href="/register">Sign up</a></li>
+                <li><a href="/login">Log in</a></li>
+            {% endif %}
+            </ul>
+            {% if "user_id" in session %}
+            <ul class="logged-in">
+                <li><a href = "/"><img src="/static/img/a.png">app.othecary</a></li>
+                <li><a href="/supplements">Research</a></li>
+                <li><a href= "/dashboard/{{ session['user_id'] }}">Dashboard</a></li>
+                <li><a href="/logout">Log out</a></li>
+            {% endif %}
+            </ul>
     </div>
 
     {% block content %}
     {% endblock %}
     <footer class="footer"><em>app.othecary is for informational purposes only; please consult your doctor before starting any supplement routine.</em></footer>
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    
+    <script crossorigin src="https://cdnjs.com/libraries/babel-standalone"></script>
+
+    <script src="dashboard.jsx" type="text/jsx"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" integrity="sha256-L/S5mZS8SPJVWoKym3Zwgf2f3/s3X3MaZ7QBA9HdnN8=" crossorigin="anonymous"></script>
 </body>
 </html>

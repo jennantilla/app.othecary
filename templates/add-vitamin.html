@@ -3,20 +3,19 @@
 {% block title %}app.othecary{% endblock %}
 
 {% block content %}
-
     {% for product in search_result %}
-        {% if brand %}
-            {% if product.brand_name == brand %}
+            {% if brand %}
+                {% if product.brand_name == brand %}
+                    <form action='/add-routine' method='POST'>
+                    <div>{{ product.product_name }}</div>
+                        <button type="submit" name="vitamin" value={{ product.label_id }}>Add to routine</button>
+                {% endif %}
+
+            {% else %}
                 <form action='/add-routine' method='POST'>
                 <div>{{ product.product_name }}</div>
                     <button type="submit" name="vitamin" value={{ product.label_id }}>Add to routine</button>
             {% endif %}
-
-        {% else %}
-            <form action='/add-routine' method='POST'>
-            <div>{{ product.product_name }}</div>
-                <button type="submit" name="vitamin" value={{ product.label_id }}>Add to routine</button>
-        {% endif %}
     {% endfor %}
 
 {% endblock %}
