@@ -5,7 +5,7 @@
 {% block content %}
 <h2>Welcome back, {{ user.name }}!</h2>
 
-<h3 id="date"></h3>
+<h3>{{ today.strftime("%B %d, %Y") }}</h3>
     <form id="performance" action="/update-streak.json" method='POST'>
             <h4>Did you take your vitamins today?</h4>
                 <input class="form-control" type="radio" name="streak" value="yes">Yes
@@ -23,15 +23,12 @@
                 <form action="/remove-routine" method="POST">
                     <button type="submit" name="remove" value={{ row.label_id }}>Discontinue</button>
                 </form>
-                    <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{  row.vitamin.serving_size_unit }}</p>
+                    <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{ row.vitamin.serving_size_unit }}</p>
                     <p>{{ row.vitamin.use }}</p>
                     <p>Container amount: {{ row.vitamin.net_contents }} {{ row.vitamin.net_content_unit }}</p>
-                    <p> Started on: {{ row.start_date }}
-                    </p>
-                    <p>This is how many you get per container: {{ row.vitamin.net_contents | int / row.vitamin.serving_size_quantity | int }}
-            </div>
+                    <p>Started on: {{ row.start_date.strftime("%B %d, %Y") }}</p>
+                    <p> You will run out on: {{ items_routine[row.label_id].strftime("%B %d, %Y") }}</p>
         {% endif %}
-
     {% endfor %}
 
 {% else %}
@@ -54,34 +51,21 @@
     {% endfor %}
 </div>
 
-<div>
-    <p>This is how many servings you get {{ supply }}</p>
-</div>
-
 <script>
 
 "use strict";
 
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    document.getElementById('date').innerHTML = 
-    'Routine for: ' + month + '/' + day + '/' + year;
+function replaceStreak(results) {
 
+    $("#streak-info").html(results['streak']);
+}
 
+$("#performance").on('submit', (evt) => {
+    evt.preventDefault();
 
-    function replaceStreak(results) {
-
-        $("#streak-info").html(results['streak']);
-    }
-
-    $("#performance").on('submit', (evt) => {
-        evt.preventDefault();
-
-        const formValues = $('#performance').serialize();
-        $.post('/update-streak.json', formValues, replaceStreak);
-        });
+    const formValues = $('#performance').serialize();
+    $.post('/update-streak.json', formValues, replaceStreak);
+    });
 
 </script>
 

@@ -60,16 +60,23 @@ def show_dashboard(user_id):
 
     # returns all the vitamins used by a user
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
-        
-    #     if item.active == True: 
-    #         run_out_date = item.start_date + timedelta(days=supply)
-    #         if datetime.date.today() == run_out_date:
-    #             refill = 
+
+    items_routine = {}
+
+    for row in history:
+        supply = (int(row.vitamin.net_contents) / 
+        int(row.vitamin.serving_size_quantity))
+
+        run_out_date = row.start_date + timedelta(days=supply)
+        items_routine[row.vitamin.label_id] = run_out_date
+
+    today = date.today()
 
     return render_template('dashboard.html',
-                            user_id=user_id,
                             user=user,
-                            history=history)
+                            history=history,
+                            today=today,
+                            items_routine=items_routine)
 
 
 @app.route('/register')
