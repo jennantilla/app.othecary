@@ -2,7 +2,7 @@ import requests
 import xmltodict
 import json
 
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 
 from flask import Flask, redirect, request, render_template, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
@@ -58,9 +58,7 @@ def show_dashboard(user_id):
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
-    # returns all the vitamins used by a user
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
-
     items_routine = {}
 
     for row in history:
@@ -212,7 +210,7 @@ def restore_routine():
 
 @app.route('/update-streak.json', methods=["POST"])
 def update_streak():
-    """Updates user.streak_days based on user input"""
+    """Updates consecutive success days"""
 
     user_id = session.get("user_id")
     streak = request.form.get("streak")
@@ -220,6 +218,7 @@ def update_streak():
 
     if streak == "yes":
         user.streak_days += 1
+        user.success_days += 1
 
     if streak == "no":
         user.streak_days = 0
@@ -229,12 +228,30 @@ def update_streak():
     return jsonify({'streak' : user.streak_days})
 
 
+@app.route('/update-success.json')
+def update_success():
+    """Calculates total success rate for user"""
+
+    user_id = session.get("user_id")
+
+    today = datetime.today()
+    account_age = today - user.signup_date
+    account_age = account_age.days
+
+    user = User.query.filter_by(user_id=user_id).first() 
+
+    success_percentage = user.success_days / account_age
+
+    return jsonify({'success' : success_percentage })
+
+
 @app.route('/logout')
 def logout():
     """Logs out current user"""
 
     del session["user_id"]
     flash("Logged Out")
+
     return redirect("/")
 
 
@@ -244,6 +261,5 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
     connect_to_db(app)
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     app.run(host="0.0.0.0")
