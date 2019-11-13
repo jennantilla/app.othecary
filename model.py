@@ -23,7 +23,8 @@ class User(db.Model):
     birth_date = db.Column(db.DateTime)
     sex = db.Column(db.String(25))
     diet = db.Column(db.String(25))
-    # signup_date = db.Column(db.DateTime, default=datetime.utcnow)
+    signup_date = db.Column(db.DateTime, default=datetime.now)
+    success_days = db.Column(db.Integer, default=0)
     streak_days = db.Column(db.Integer, default=0)
 
     def set_password(self, password):
@@ -41,7 +42,7 @@ class User_Vitamin(db.Model):
     uv_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     label_id = db.Column(db.String(75), db.ForeignKey('vitamins.label_id'), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
-    start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    start_date = db.Column(db.DateTime, default=datetime.now)
     active = db.Column(db.Boolean)
 
     # Define relationship to user
