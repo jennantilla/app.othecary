@@ -2,7 +2,7 @@ import requests
 import xmltodict
 import json
 
-from flask import Flask, redirect, request, render_template, session, flash
+from flask import Flask, redirect, request, render_template, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 
@@ -56,12 +56,12 @@ def show_dashboard(user_id):
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
-    routine = User_Vitamin.query.filter_by(user_id=user_id).all()
+    history = User_Vitamin.query.filter_by(user_id=user_id).all()
 
     return render_template('dashboard.html',
                             user_id=user_id,
                             user=user,
-                            routine=routine)
+                            history=history)
 
 
 @app.route('/register')
@@ -195,25 +195,25 @@ def restore_routine():
     return redirect(f'/dashboard/{user_id}')
 
 
-@app.route('/update-streak', methods=['POST'])
+@app.route('/update-streak.json', methods=["POST"])
 def update_streak():
     """Updates user.streak_days based on user input"""
 
-    # Use AJAX
+    user_id = session.get("user_id")
+    streak = request.form.get("streak")
+    user = User.query.filter_by(user_id=user_id).first() 
 
-    # user_id = session.get("user_id")
-    # streak = request.form.get("streak")
+    if streak == "yes":
+        user.streak_days += 1
 
-    # user = User.query.filter_by(user_id=user_id).first()
-    
-    # if streak == "yes":
-    #     user.streak_days += 1
-    # else:
-    #     user.streak_days == 0
+    if streak == "no":
+        user.streak_days = 0
 
-    # db.session.commit()
 
-    # return redirect(f'/dashboard/{user_id}')
+
+    db.session.commit()
+
+    return jsonify({'streak' : user.streak_days})
 
 
 @app.route('/logout')

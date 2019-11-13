@@ -8,5 +8,12 @@
 
 #performance {
     display: inline;
-    float: right;
+}
+
+#streak-sentence {
+    display: inline-block;
+}
+
+#streak-info {
+    display: inline;
 }

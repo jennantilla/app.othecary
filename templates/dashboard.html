@@ -6,18 +6,17 @@
 <h2>Welcome back, {{ user.name }}!</h2>
 
 <h3 id="date"></h3>
-<div id="performance">
-    <h4>Did you take your vitamins today?</h4>
-    <form action="/update-streak" id="streak" method="POST">
-        <input type="radio" value="yes">Yes
-        <input type="radio" value="no">No
-        <input type="submit" value="Update streak">
+    <form id="performance" action="/update-streak.json" method='POST'>
+            <h4>Did you take your vitamins today?</h4>
+                <input class="form-control" type="radio" name="streak" value="yes">Yes
+                <input class="form-control" type="radio" name="streak" value="no">No
+                <input type="submit" value="Update streak">
     </form>
-    <div id="streak-info"></div>
-</div>
+    <br>
+    <div id="streak-sentence">You're on a <div id="streak-info">{{ user.streak_days }}</div> day streak!</div>
 
-{% if routine %}
-    {% for row in routine %}
+{% if history %}
+    {% for row in history %}
         {% if row.active == True %}
             <div id="routine">
                 <h4>{{ row.vitamin.product_name }}</h4>
@@ -31,11 +30,12 @@
                     </p>
             </div>
         {% endif %}
+
     {% endfor %}
 
 {% else %}
     <div>
-        <h4>You have no supplements in your routine</h4>
+        <h4>You have no active supplements in your routine</h4>
 
         <a href=/supplements>Start your research</a>
     </div>
@@ -43,7 +43,7 @@
 
 <div id="history">
     <h4>{{ user.name }}'s Inactive Supplements</h4>
-    {% for row in routine %}
+    {% for row in history %}
         {% if row.active == False %}
             <p>{{ row.vitamin.product_name }}</p>
             <form action="/restore" method="POST">
@@ -54,9 +54,10 @@
 </div>
 
 
-
-
 <script>
+
+"use strict";
+
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -64,6 +65,23 @@
     document.getElementById('date').innerHTML = 
     'Routine for: ' + month + '/' + day + '/' + year;
 
+
+
+    function replaceStreak(results) {
+
+        $("#streak-info").html(results['streak']);
+    }
+
+    $("#performance").on('submit', (evt) => {
+        evt.preventDefault();
+
+        const formValues = $('#performance').serialize();
+        $.post('/update-streak.json', formValues, replaceStreak);
+        });
+
+    // $("#performance").on('submit', showStreak);
+
 </script>
+
 
 {% endblock %}
