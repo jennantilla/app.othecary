@@ -28,6 +28,7 @@
                     <p>Container amount: {{ row.vitamin.net_contents }} {{ row.vitamin.net_content_unit }}</p>
                     <p> Started on: {{ row.start_date }}
                     </p>
+                    <p>This is how many you get per container: {{ row.vitamin.net_contents | int / row.vitamin.serving_size_quantity | int }}
             </div>
         {% endif %}
 
@@ -53,6 +54,9 @@
     {% endfor %}
 </div>
 
+<div>
+    <p>This is how many servings you get {{ supply }}</p>
+</div>
 
 <script>
 
@@ -78,8 +82,6 @@
         const formValues = $('#performance').serialize();
         $.post('/update-streak.json', formValues, replaceStreak);
         });
-
-    // $("#performance").on('submit', showStreak);
 
 </script>
 

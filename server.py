@@ -2,6 +2,8 @@ import requests
 import xmltodict
 import json
 
+from datetime import timedelta, date
+
 from flask import Flask, redirect, request, render_template, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
@@ -29,7 +31,7 @@ def sign_in():
 
 @app.route('/validate', methods=["POST"])
 def log_in():
-    """Logs in an existing member"""
+    """Logs in an existing user"""
 
     email = request.form.get("email")
     password = request.form.get("password")
@@ -56,7 +58,13 @@ def show_dashboard(user_id):
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
+    # returns all the vitamins used by a user
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
+        
+    #     if item.active == True: 
+    #         run_out_date = item.start_date + timedelta(days=supply)
+    #         if datetime.date.today() == run_out_date:
+    #             refill = 
 
     return render_template('dashboard.html',
                             user_id=user_id,
@@ -208,8 +216,6 @@ def update_streak():
 
     if streak == "no":
         user.streak_days = 0
-
-
 
     db.session.commit()
 
