@@ -7,19 +7,21 @@
   src="https://code.jquery.com/jquery-3.4.1.js"
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
+  
 </head>
 <body>
     <div class="navbar-header">
             {% if "user_id" not in session %}
             <ul class="logged-out">
-                <li><a href = "/"><img src="/static/img/a.png">app.othecary</a></li>
+                <li><a href = "/"><img src="/static/images/a.png">app.othecary</a></li>
                 <li><a href="/register">Sign up</a></li>
                 <li><a href="/login">Log in</a></li>
             {% endif %}
             </ul>
             {% if "user_id" in session %}
             <ul class="logged-in">
-                <li><a href = "/"><img src="/static/img/a.png">app.othecary</a></li>
+                <li><a href = "/"><img src="/static/images/a.png">app.othecary</a></li>
                 <li><a href="/supplements">Research</a></li>
                 <li><a href= "/dashboard/{{ session['user_id'] }}">Dashboard</a></li>
                 <li><a href="/logout">Log out</a></li>

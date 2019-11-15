@@ -24,7 +24,8 @@ class User(db.Model):
     sex = db.Column(db.String(25))
     diet = db.Column(db.String(25))
     signup_date = db.Column(db.DateTime, default=datetime.now)
-    success_days = db.Column(db.Integer, default=0)
+    success_rate = db.Column(db.Integer, default=0)
+    # success_percentage = db.Column(db.Float)
     streak_days = db.Column(db.Integer, default=0)
 
     def set_password(self, password):
@@ -32,6 +33,19 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    # Define relationship to User_Log
+    log = db.relationship("User_Log", backref=db.backref("users")) 
+
+class User_Log(db.Model):
+    """Daily log of users' vitamin intake"""
+
+    __tablename__ = "user_log"
+
+    log_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
+    entry_date = db.Column(db.DateTime, default=datetime.now)
+    # take_vitamin = db.Column(db.Boolean)
 
 
 class User_Vitamin(db.Model):
@@ -43,12 +57,13 @@ class User_Vitamin(db.Model):
     label_id = db.Column(db.String(75), db.ForeignKey('vitamins.label_id'), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
     start_date = db.Column(db.DateTime, default=datetime.now)
+    discontinue_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
 
-    # Define relationship to user
+    # Define relationship to User
     user = db.relationship("User", backref=db.backref("user_vitamins"))
 
-    # Define relationship to vitamin
+    # Define relationship to Vitamin
     vitamin = db.relationship("Vitamin", backref=db.backref("user_vitamins"))
 
 
