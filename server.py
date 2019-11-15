@@ -262,8 +262,11 @@ def success_data():
     today = datetime.today()
     start_date = user.signup_date
 
-    log_results = (User_Log.query.filter(User_Log.entry_date >= start_date, 
-        User_Log.entry_date <= today)).all()
+    # all users, all-time
+    # log_results = (User_Log.query.filter(User_Log.entry_date >= start_date, 
+    #     User_Log.entry_date <= today)).all()
+
+    log_results = User_Log.query.filter_by(user_id=user_id).all()
 
     log_count = len(log_results)
 
@@ -284,6 +287,41 @@ def success_data():
                 
             }
     return jsonify(data_dict)
+
+
+@app.route("/product-type.json")
+def get_product_type():
+    """Shows product type for each active supplement in user's routine"""
+
+    user_id = session.get("user_id")
+    active_vitamins = User_Vitamin.query.filter_by(user_id=user_id, active=True).all()
+
+    product_types = []
+    product_count = []
+    
+    for vitamin_type in active_vitamins:
+        product_types.append(vitamin_type.vitamin.product_type)
+
+
+    vita_dict = {
+                "labels": [
+                    i for i in product_types
+                ],
+                "datasets": [
+                    {
+                        "data": [product_types.count(i) for i in product_types],
+                        "backgroundColor": [
+                            "#800080"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#320080"
+                        ]
+                    }]
+                
+            }
+
+    return jsonify(vita_dict)
+
 
 
 @app.route('/logout')
