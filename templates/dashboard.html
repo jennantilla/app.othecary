@@ -23,6 +23,11 @@
         <div id="successLegend" class="chart-legend"></div>
     </div>
 
+    <div class="product-type-chart" style="width:700px">
+        <canvas id="productTypeChart"></canvas>
+        <div id="typeLegend" class="chart-legend"></div>
+    </div>
+
 {% if history %}
     {% for row in history %}
         {% if row.active == True %}
@@ -36,6 +41,7 @@
                     <p>Container amount: {{ row.vitamin.net_contents }} {{ row.vitamin.net_content_unit }}</p>
                     <p>Started on: {{ row.start_date.strftime("%B %d, %Y") }}</p>
                     <p> You will run out on: {{ items_routine[row.label_id].strftime("%B %d, %Y") }}</p>
+            </div>
         {% endif %}
     {% endfor %}
 
