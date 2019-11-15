@@ -63,8 +63,8 @@ def show_dashboard(user_id):
     items_routine = {}
 
     for row in history:
-        supply = (int(row.vitamin.net_contents) / 
-        int(row.vitamin.serving_size_quantity))
+        supply = (float(row.vitamin.net_contents) / 
+        float(row.vitamin.serving_size_quantity))
 
         run_out_date = row.start_date + timedelta(days=supply)
         items_routine[row.vitamin.label_id] = run_out_date
@@ -297,21 +297,20 @@ def get_product_type():
     active_vitamins = User_Vitamin.query.filter_by(user_id=user_id, active=True).all()
 
     product_types = []
-    product_count = []
-    
+      
     for vitamin_type in active_vitamins:
-        product_types.append(vitamin_type.vitamin.product_type)
-
+            product_types.append(vitamin_type.vitamin.product_type)
 
     vita_dict = {
                 "labels": [
-                    i for i in product_types
+                    i for i in list(set(product_types))
                 ],
                 "datasets": [
                     {
-                        "data": [product_types.count(i) for i in product_types],
+                        "data": [product_types.count(i) for i in list(set(product_types))],
                         "backgroundColor": [
-                            "#800080"
+                            "#800080",
+                            "#320080",
                         ],
                         "hoverBackgroundColor": [
                             "#320080"
