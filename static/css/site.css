@@ -6,8 +6,16 @@
     display: inline;
 }
 
-#performance {
-    display: inline;
+#search-filter {
+    display: inline-block;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
 }
 
 #streak-sentence {
@@ -17,3 +25,4 @@
 #streak-info {
     display: inline;
 }
+

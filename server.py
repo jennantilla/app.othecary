@@ -3,12 +3,13 @@ import xmltodict
 import json
 
 from datetime import timedelta, date, datetime
+import calendar
 
 from flask import Flask, redirect, request, render_template, session, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 
-from model import connect_to_db, db, User, User_Vitamin, Vitamin
+from model import connect_to_db, db, User, User_Vitamin, Vitamin, User_Log
 
 app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
@@ -68,13 +69,18 @@ def show_dashboard(user_id):
         run_out_date = row.start_date + timedelta(days=supply)
         items_routine[row.vitamin.label_id] = run_out_date
 
-    today = date.today()
+    today = datetime.today()
+    account_age = today - user.signup_date
+    account_age = 22
+    #account_age.days
+
 
     return render_template('dashboard.html',
                             user=user,
                             history=history,
                             today=today,
-                            items_routine=items_routine)
+                            items_routine=items_routine, 
+                            account_age=account_age)
 
 
 @app.route('/register')
@@ -100,6 +106,8 @@ def new_user_questions():
 
     db.session.add(user)
     db.session.commit()
+
+    session["user_id"] = user.user_id
 
     return redirect(f"/dashboard/{user.user_id}")
 
@@ -142,17 +150,23 @@ def search_vitamins():
     """Provides a list of similar vitamins"""
     
     vitamin = request.form.get("vitamin")
-    
-    search_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).all()
+    filter_type = request.form.get("filter-type")
+    search_param = request.form.get("search-param")
 
-    brand = request.form.get("brand")
-    # supplement_type = request.form.get("type")
+    if filter_type == "brand":
+        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.brand_name == search_param).distinct(Vitamin.product_name).all()
+
+    elif filter_type == "type":
+        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.supplement_form.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
+
+    else:
+        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).distinct(Vitamin.product_name).all()
+
     # age_group = request.form.get("group")
 
     return render_template('add-vitamin.html',
                             vitamin=vitamin,
-                            search_result=search_result,
-                            brand=brand)
+                            filter_result=filter_result)
 
 
 @app.route('/add-routine', methods=['POST'])
@@ -163,32 +177,39 @@ def add_routine():
     user_id = session.get("user_id")
     
     # prevent duplicates:
-    # routine = User_Vitamin.query.filter_by(user_id=user_id).all()
+    routine = User_Vitamin.query.filter_by(user_id=user_id).all()
 
-    new = User_Vitamin(label_id=label_id, user_id=user_id, active=True)
-    
-    db.session.add(new)
-    db.session.commit()
+    ids_for_user = []
+
+    for row in routine:
+        ids_for_user.append(row.label_id)
+
+    if label_id not in ids_for_user:
+
+        new = User_Vitamin(label_id=label_id, user_id=user_id, active=True)
+        
+        db.session.add(new)
+        db.session.commit()
 
     return redirect(f'/dashboard/{user_id}')
 
 
-@app.route('/remove-routine', methods=["POST"])
+@app.route('/remove-routine.json', methods=["POST"])
 def remove_routine():
     """Allows user to deprecate a vitamin from their active routine"""
 
     label_id = request.form.get("remove")
     user_id = session.get("user_id")
 
-    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).all()
+    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
 
-    for item in routine:
-        item.active = False
-        flash("Removed from your routine")
+    routine.active = False
+    routine.discontinue_date = datetime.today()
 
     db.session.commit()
+    flash("Removed from your routine")
 
-    return redirect(f'/dashboard/{user_id}')
+    return jsonify({"active" : routine.active})
 
 @app.route('/restore', methods=["POST"])
 def restore_routine():
@@ -210,7 +231,7 @@ def restore_routine():
 
 @app.route('/update-streak.json', methods=["POST"])
 def update_streak():
-    """Updates consecutive success days"""
+    """Updates success days"""
 
     user_id = session.get("user_id")
     streak = request.form.get("streak")
@@ -218,31 +239,51 @@ def update_streak():
 
     if streak == "yes":
         user.streak_days += 1
-        user.success_days += 1
+        user.success_rate += 1
 
     if streak == "no":
         user.streak_days = 0
 
+    entry = User_Log(user_id=user_id)
+
+    db.session.add(entry)
     db.session.commit()
 
-    return jsonify({'streak' : user.streak_days})
+    return jsonify({'streak' : user.streak_days, 'success' : user.success_rate})  #change to user.success_percentage
 
 
-@app.route('/update-success.json')
-def update_success():
-    """Calculates total success rate for user"""
+@app.route('/success.json')
+def success_data():
+    """Return data about user success"""
 
     user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
 
     today = datetime.today()
-    account_age = today - user.signup_date
-    account_age = account_age.days
+    start_date = user.signup_date
 
-    user = User.query.filter_by(user_id=user_id).first() 
+    log_results = (User_Log.query.filter(User_Log.entry_date >= start_date, 
+        User_Log.entry_date <= today)).all()
 
-    success_percentage = user.success_days / account_age
+    log_count = len(log_results)
 
-    return jsonify({'success' : success_percentage })
+    data_dict = {
+                "labels": [
+                    "successful days"
+                ],
+                "datasets": [
+                    {
+                        "data": [log_count],
+                        "backgroundColor": [
+                            "#800080"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#320080"
+                        ]
+                    }]
+                
+            }
+    return jsonify(data_dict)
 
 
 @app.route('/logout')

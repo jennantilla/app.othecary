@@ -3,19 +3,10 @@
 {% block title %}app.othecary{% endblock %}
 
 {% block content %}
-    {% for product in search_result %}
-            {% if brand %}
-                {% if product.brand_name == brand %}
-                    <form action='/add-routine' method='POST'>
-                    <div>{{ product.product_name }}</div>
-                        <button type="submit" name="vitamin" value={{ product.label_id }}>Add to routine</button>
-                {% endif %}
-
-            {% else %}
-                <form action='/add-routine' method='POST'>
-                <div>{{ product.product_name }}</div>
-                    <button type="submit" name="vitamin" value={{ product.label_id }}>Add to routine</button>
-            {% endif %}
-    {% endfor %}
+<h4>Found {{ filter_result | length }} supplements:</h4>
+{% for product in filter_result %} 
+    <form action='/add-routine' method='POST'>
+    <p>{{ product.product_name }}, {{ product.net_contents }} {{ product.net_content_unit }}<button type="submit" name="vitamin" value={{ product.label_id }}>Add to routine</button></p>
+{% endfor %}
 
 {% endblock %}

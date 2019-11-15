@@ -4,19 +4,22 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <div style="display: flex; justify-content: flex-end">
-        <div>
+    <div id="search-filter">
         <h2>Find your supplement!</h2>
-        <p>Browse all {{ title.lower() }} supplements or filter by your favorite brand</p>
+        <p>Browse all {{ title }} supplements or filter by your favorite brand or supplement type.</p>
             <form action="/vitamin-search" method="POST">
                 <div class="form group">
-                    <label>Brand</label>
-                    <input type="text" name="brand" class="form-control"></input>
+                    <select class="form-control" name="filter-type">
+                        <option value="" selected>Select one</option>
+                        <option value="brand">Brand</option>
+                        <option value="type">Supplement type</option>
+                    </select>
+                    <input type="text" name="search-param">
+                    <input class="form-control" type="submit" name="vitamin" value= {{ title }}>
                 </div>
-                <input class="form-control" type="submit" name="vitamin" value= {{ title }}>
-                </div>
-            </form>
+            </form>       
     </div>
+<br>
 <br>
 <div>
     {{ body|safe }}
