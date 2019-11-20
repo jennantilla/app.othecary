@@ -154,7 +154,7 @@ def search_vitamins():
     search_param = request.form.get("search-param")
 
     if filter_type == "brand":
-        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.brand_name == search_param).distinct(Vitamin.product_name).all()
+        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.brand_name.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
 
     elif filter_type == "type":
         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.supplement_form.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
@@ -167,6 +167,7 @@ def search_vitamins():
     return render_template('add-vitamin.html',
                             vitamin=vitamin,
                             filter_result=filter_result)
+
 
 
 @app.route('/add-routine', methods=['POST'])
@@ -202,7 +203,7 @@ def remove_routine():
     user_id = session.get("user_id")
 
     routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
-
+    print(routine)
     routine.active = False
     routine.discontinue_date = datetime.today()
 
@@ -210,6 +211,7 @@ def remove_routine():
     flash("Removed from your routine")
 
     return jsonify({"active" : routine.active})
+
 
 @app.route('/restore', methods=["POST"])
 def restore_routine():
@@ -284,11 +286,9 @@ def success_data():
                     {
                         "data": [missed, achieved],
                         "backgroundColor": [
-                            "#800080"
-                        ],
-                        "hoverBackgroundColor": [
+                            "#800080",
                             "#320080"
-                        ]
+                        ],
                     }]
                 
             }
@@ -318,9 +318,6 @@ def get_product_type():
                             "#800080",
                             "#320080",
                         ],
-                        "hoverBackgroundColor": [
-                            "#320080"
-                        ]
                     }]
                 
             }

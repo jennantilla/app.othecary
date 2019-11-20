@@ -3,6 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
+
 <h2>Welcome back, {{ user.name }}!</h2>
 
 <h3>Routine for {{ today.strftime("%B %d, %Y") }}</h3>
@@ -34,7 +35,7 @@
             <div id="routine_item">
                 <h4>{{ row.vitamin.product_name }}</h4>
                 <form id="deactivate" action="/remove-routine.json" method="POST">
-                    <input type="submit" id="remove" name="remove" value={{ row.label_id }}></input>
+                    <input type="submit" name="remove" value={{ row.label_id }}></input>
                 </form>
                     <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{ row.vitamin.serving_size_unit }}</p>
                     <p>{{ row.vitamin.use }}</p>
@@ -67,5 +68,7 @@
 </div>
 
 <script src="/static/js/dashboard.js"></script>
+<script src="/static/js/dashboard-charts.js"></script>
+<script src="/static/js/dashboard-functionality.js"></script>
 
 {% endblock %}
