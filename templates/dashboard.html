@@ -6,35 +6,35 @@
 <h2>Welcome back, {{ user.name }}!</h2>
 
 <h3>Routine for {{ today.strftime("%B %d, %Y") }}</h3>
-    <form id="performance" action="/update-streak.json" method='POST'>
-            <h4>Did you take your vitamins today?</h4>
-                <input class="form-control" type="radio" name="streak" value="yes">Yes
-                <input class="form-control" type="radio" name="streak" value="no">No
-                <input type="submit" id="streak-button" value="Update streak">
-    </form>
+    <div id="question">
+        <form id="performance" action="/update-streak.json" method='POST'>
+                <h4>Did you take your vitamins today?</h4>
+                    <input class="form-control" type="radio" name="streak" value="yes">Yes
+                    <input class="form-control" type="radio" name="streak" value="no">No
+                    <input type="submit" id="streak-button" value="Update streak">
+        </form>
+    </div>
     <br>
 
-    <div id="streak-sentence">You're on a <div id="streak-info">{{ user.streak_days }}</div> day streak!</div>
 
-    <div id="success-info">You have a {{ "{:.0%}".format(user.success_rate / account_age) }} success rate!</div>
+ <div id="streak-sentence">You're on a <div id="streak-info">{{ user.streak_days }}</div> day streak</div>
+
+    <div id="success-info">You have a {{ "{:.0%}".format(user.success_rate / account_age) }} success rate</div>
 
     <div class="success-chart" style="width:700px">
         <canvas id="successChart"></canvas>
-        <div id="successLegend" class="chart-legend"></div>
     </div>
 
     <div class="product-type-chart" style="width:700px">
         <canvas id="productTypeChart"></canvas>
-        <div id="typeLegend" class="chart-legend"></div>
     </div>
-
 {% if history %}
     {% for row in history %}
         {% if row.active == True %}
             <div id="routine_item">
                 <h4>{{ row.vitamin.product_name }}</h4>
-                <form action="/remove-routine.json" method="POST">
-                    <button type="submit" id="remove" name="remove" value={{ row.label_id }}>Discontinue</button>
+                <form id="deactivate" action="/remove-routine.json" method="POST">
+                    <input type="submit" id="remove" name="remove" value={{ row.label_id }}></input>
                 </form>
                     <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{ row.vitamin.serving_size_unit }}</p>
                     <p>{{ row.vitamin.use }}</p>
@@ -53,11 +53,11 @@
     </div>
 {% endif %}
 
-<div id="history">
-    <h4>{{ user.name }}'s Inactive Supplements</h4>
+<div id="inactive">
+    <h2>{{ user.name }}'s Inactive Supplements</h2>
     {% for row in history %}
         {% if row.active == False %}
-            <p>{{ row.vitamin.product_name }}
+            <h4>{{ row.vitamin.product_name }}</h4>
                 <form action="/restore" method="POST">
                     <button type="submit" name="restore" value={{ row.label_id }}>Restore</button>
                 </form>

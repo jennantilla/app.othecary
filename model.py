@@ -25,7 +25,7 @@ class User(db.Model):
     diet = db.Column(db.String(25))
     signup_date = db.Column(db.DateTime, default=datetime.now)
     success_rate = db.Column(db.Integer, default=0)
-    # success_percentage = db.Column(db.Float)
+    success_percentage = db.Column(db.Float, default=0)
     streak_days = db.Column(db.Integer, default=0)
 
     def set_password(self, password):
@@ -45,7 +45,7 @@ class User_Log(db.Model):
     log_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
     entry_date = db.Column(db.DateTime, default=datetime.now)
-    # take_vitamin = db.Column(db.Boolean)
+    take_vitamin = db.Column(db.Boolean)
 
 
 class User_Vitamin(db.Model):

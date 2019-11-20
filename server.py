@@ -235,16 +235,23 @@ def update_streak():
 
     user_id = session.get("user_id")
     streak = request.form.get("streak")
-    user = User.query.filter_by(user_id=user_id).first() 
+    user = User.query.filter_by(user_id=user_id).first()
+    
+    # today = datetime.today()
+
+    # account_age = user.signup_date.date() - today.date() 
 
     if streak == "yes":
         user.streak_days += 1
         user.success_rate += 1
+        entry = User_Log(user_id=user_id, take_vitamin=True, entry_date=datetime.now().date())
 
-    if streak == "no":
+    elif streak == "no":
         user.streak_days = 0
-
-    entry = User_Log(user_id=user_id)
+        entry = User_Log(user_id=user_id, take_vitamin=False, entry_date=datetime.now().date())
+    
+    #check on this
+    # user.success_percentage = user.success_rate / int(account_age.days)
 
     db.session.add(entry)
     db.session.commit()
@@ -262,21 +269,20 @@ def success_data():
     today = datetime.today()
     start_date = user.signup_date
 
-    # all users, all-time
-    # log_results = (User_Log.query.filter(User_Log.entry_date >= start_date, 
-    #     User_Log.entry_date <= today)).all()
+    success_results = User_Log.query.filter_by(user_id=user_id, take_vitamin=True).all()
+    fail_results = User_Log.query.filter_by(user_id=user_id, take_vitamin=False).all()
 
-    log_results = User_Log.query.filter_by(user_id=user_id).all()
-
-    log_count = len(log_results)
+    achieved = len(success_results)
+    missed = len(fail_results)
 
     data_dict = {
                 "labels": [
-                    "successful days"
+                    "missed",
+                    "achieved"
                 ],
                 "datasets": [
                     {
-                        "data": [log_count],
+                        "data": [missed, achieved],
                         "backgroundColor": [
                             "#800080"
                         ],
@@ -321,6 +327,20 @@ def get_product_type():
 
     return jsonify(vita_dict)
 
+@app.route('/check-logged.json')
+def check_log():
+    """Checks db to see if a user has logged their vitamin intake"""
+
+    user_id = session.get("user_id")
+    today = datetime.today().date()
+    log = User_Log.query.filter_by(user_id=user_id, entry_date=today).first()
+    
+    if log:
+        entered = True
+    else:
+        entered = False
+
+    return jsonify({"logged" : entered})
 
 
 @app.route('/logout')
