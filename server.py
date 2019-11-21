@@ -52,12 +52,21 @@ def log_in():
     return redirect(f"/dashboard/{user.user_id}")
 
 
-@app.route('/dashboard/<int:user_id>')
+@app.route('/dashboard/<int:user_id>', methods=["GET", "POST"])
 def show_dashboard(user_id):
     """Displays user dashboard and vitamin info"""
 
+    label_id = request.form.get("remove")
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
+
+    if label_id:
+        routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
+        routine.active = False
+        routine.discontinue_date = datetime.today()
+
+        db.session.commit()
+        flash("Removed from your routine")
 
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
     items_routine = {}
@@ -71,8 +80,8 @@ def show_dashboard(user_id):
 
     today = datetime.today()
     account_age = today - user.signup_date
-    account_age = 22
-    #account_age.days
+    account_age = 2
+    # account_age.days
 
 
     return render_template('dashboard.html',
@@ -195,22 +204,22 @@ def add_routine():
     return redirect(f'/dashboard/{user_id}')
 
 
-@app.route('/remove-routine.json', methods=["POST"])
-def remove_routine():
-    """Allows user to deprecate a vitamin from their active routine"""
+# @app.route('/remove-routine.json', methods=["POST"])
+# def remove_routine():
+#     """Allows user to deprecate a vitamin from their active routine"""
 
-    label_id = request.form.get("remove")
-    user_id = session.get("user_id")
+#     label_id = request.form.get("remove")
+#     user_id = session.get("user_id")
 
-    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
-    print(routine)
-    routine.active = False
-    routine.discontinue_date = datetime.today()
+#     routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
+#     print(routine)
+#     routine.active = False
+#     routine.discontinue_date = datetime.today()
 
-    db.session.commit()
-    flash("Removed from your routine")
+#     db.session.commit()
+#     flash("Removed from your routine")
 
-    return jsonify({"active" : routine.active})
+#     return jsonify({"active" : routine.active})
 
 
 @app.route('/restore', methods=["POST"])
@@ -258,7 +267,7 @@ def update_streak():
     db.session.add(entry)
     db.session.commit()
 
-    return jsonify({'streak' : user.streak_days, 'success' : user.success_rate})  #change to user.success_percentage
+    return jsonify({'streak' : user.streak_days})  #change to user.success_percentage
 
 
 @app.route('/success.json')
@@ -279,17 +288,16 @@ def success_data():
 
     data_dict = {
                 "labels": [
-                    "missed",
-                    "achieved"
+                    "achieved",
+                    "missed"
                 ],
                 "datasets": [
                     {
-                        "data": [missed, achieved],
+                        "data": [achieved, missed],
                         "backgroundColor": [
-                            "#800080",
-                            "#320080"
+                            "#800080"
                         ],
-                    }]
+                    }],
                 
             }
     return jsonify(data_dict)
@@ -323,6 +331,7 @@ def get_product_type():
             }
 
     return jsonify(vita_dict)
+
 
 @app.route('/check-logged.json')
 def check_log():
