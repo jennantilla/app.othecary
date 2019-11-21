@@ -20,11 +20,12 @@
 
  <div id="streak-sentence">You're on a <div id="streak-info">{{ user.streak_days }}</div> day streak</div>
 
-    <div id="success-info">You have a {{ "{:.0%}".format(user.success_rate / account_age) }} success rate</div>
-
-    <div class="success-chart" style="width:700px">
+    <div class="success-chart" style="width:450px">
         <canvas id="successChart"></canvas>
     </div>
+    <br>
+    <br>
+    <br>
 
     <div class="product-type-chart" style="width:700px">
         <canvas id="productTypeChart"></canvas>
@@ -32,10 +33,10 @@
 {% if history %}
     {% for row in history %}
         {% if row.active == True %}
-            <div id="routine_item">
+            <div id="routine-item">
                 <h4>{{ row.vitamin.product_name }}</h4>
-                <form id="deactivate" action="/remove-routine.json" method="POST">
-                    <input type="submit" name="remove" value={{ row.label_id }}></input>
+                <form id="deactivate" action="/dashboard/{{ user.user_id }}" method="POST">
+                    <input type="submit" id="remove" name="remove" value={{ row.label_id }}></input>
                 </form>
                     <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{ row.vitamin.serving_size_unit }}</p>
                     <p>{{ row.vitamin.use }}</p>
@@ -67,8 +68,9 @@
     {% endfor %}
 </div>
 
-<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/success-dial-chart.js"></script>
 <script src="/static/js/dashboard-charts.js"></script>
+<script src="/static/js/dashboard.js"></script>
 <script src="/static/js/dashboard-functionality.js"></script>
 
 {% endblock %}

@@ -3,7 +3,6 @@
 function replaceStreak(results) {
 
     $("#streak-info").html(results['streak']);
-    $("#success-number").html(results['success']);
 }
 
 $("#performance").on('submit', (evt) => {
@@ -20,7 +19,17 @@ $("#deactivate").on("submit", (evt) => {
     evt.preventDefault();
 
     const formAnswer = $('#remove').serialize();
-    $.post('/remove-routine.json', formAnswer);
+    $.post('/dashboard/1', formAnswer);
 
     $("#routine-item").appendTo('#inactive');
+    // find the list of active stuff
+
+    // find the elemtn we want to remove in that list
+
+    // find the list of inactive stuff
+    // add the elemebnt to the list of inactive 
+    // remove the element from the list of active
+
+
+
     });
