@@ -5,7 +5,7 @@ import json
 from datetime import timedelta, date, datetime
 import calendar
 
-from flask import Flask, redirect, request, render_template, session, flash, jsonify
+from flask import Flask, redirect, request, render_template, session, flash, jsonify, request_finished
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 
@@ -347,6 +347,33 @@ def check_log():
         entered = False
 
     return jsonify({"logged" : entered})
+
+
+@app.route('/user-vitamin-list.json')
+def find_supplements():
+    """returns a dictionary of active vitamins and its details"""
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+    all_user_vitamins = User_Vitamin.query.filter_by(user_id=user_id).all()
+
+    actives_list = []
+
+    for item in all_user_vitamins: 
+        item_info = {}
+        item_info["uv_id"] = item.uv_id
+        item_info["id"] = item.vitamin.label_id
+        item_info["name"] = item.vitamin.product_name
+        item_info["serving_size"] = item.vitamin.serving_size_quantity
+        item_info["serving_unit"] = item.vitamin.serving_size_unit
+        item_info["use"] = item.vitamin.use
+        item_info["start_date"] = item.start_date
+        item_info["container_amount"] = item.vitamin.net_contents
+        item_info["container_unit"] = item.vitamin.net_content_unit
+        item_info["active"] = item.active
+        actives_list.append(item_info)
+
+    return jsonify(actives_list)
 
 
 @app.route('/logout')
