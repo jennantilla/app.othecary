@@ -15,13 +15,19 @@ $("#performance").on('submit', (evt) => {
 
     });
 
-$("#deactivate").on("submit", (evt) => {
-    evt.preventDefault();
 
-    const formAnswer = $('#remove').serialize();
-    $.post('/dashboard/1', formAnswer);
 
-    $("#routine-item").appendTo('#inactive');
+
+
+// $("#deactivate").on("submit", (evt) => {
+//     evt.preventDefault();
+
+//     const formAnswer = $('#remove').serialize();
+//     $.post('/dashboard/1', formAnswer);
+
+//     $("#routine-item").appendTo('#inactive');
+
+
     // find the list of active stuff
 
     // find the elemtn we want to remove in that list
@@ -32,4 +38,4 @@ $("#deactivate").on("submit", (evt) => {
 
 
 
-    });
+    // });

@@ -23,6 +23,7 @@
     <div class="success-chart" style="width:450px">
         <canvas id="successChart"></canvas>
     </div>
+
     <br>
     <br>
     <br>
@@ -30,22 +31,17 @@
     <div class="product-type-chart" style="width:700px">
         <canvas id="productTypeChart"></canvas>
     </div>
+
+    <br>
+    <br>
+    <br>
+
+
 {% if history %}
-    {% for row in history %}
-        {% if row.active == True %}
-            <div id="routine-item">
-                <h4>{{ row.vitamin.product_name }}</h4>
-                <form id="deactivate" action="/dashboard/{{ user.user_id }}" method="POST">
-                    <input type="submit" id="remove" name="remove" value={{ row.label_id }}></input>
-                </form>
-                    <p>Serving size: {{ row.vitamin.serving_size_quantity }} {{ row.vitamin.serving_size_unit }}</p>
-                    <p>{{ row.vitamin.use }}</p>
-                    <p>Container amount: {{ row.vitamin.net_contents }} {{ row.vitamin.net_content_unit }}</p>
-                    <p>Started on: {{ row.start_date.strftime("%B %d, %Y") }}</p>
-                    <p> You will run out on: {{ items_routine[row.label_id].strftime("%B %d, %Y") }}</p>
-            </div>
-        {% endif %}
-    {% endfor %}
+
+
+<div id="wrapper"></div>
+
 
 {% else %}
     <div>
@@ -72,5 +68,6 @@
 <script src="/static/js/dashboard-charts.js"></script>
 <script src="/static/js/dashboard.js"></script>
 <script src="/static/js/dashboard-functionality.js"></script>
+<script src="/static/js/dynamic-divs.js"></script>
 
 {% endblock %}

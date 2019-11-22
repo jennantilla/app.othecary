@@ -18,6 +18,10 @@
     display: block;
 }
 
+/*#question {
+    display: inline-block;
+}*/
+
 #streak-sentence {
     display: inline-block;
 }
@@ -25,4 +29,3 @@
 #streak-info {
     display: inline;
 }
-
