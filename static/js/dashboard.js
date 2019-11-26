@@ -11,6 +11,7 @@ $("#performance").on('submit', (evt) => {
     const formValues = $('#performance').serialize();
     $.post('/update-streak.json', formValues, replaceStreak);
 
-    $("#question").addClass('hide');    
+    $("#question").addClass('hide'); 
 
     });
+

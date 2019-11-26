@@ -12,10 +12,10 @@ $.get("/user-vitamin-list.json", (res) => {
         };
 
         createHeader(res[item]["name"], lst.id);
-        createDetails(res[item]["serving_size"] + " " + res[item]["serving_unit"], lst.id);
+        createDetails("Serving Size: " + res[item]["serving_size"] + " " + res[item]["serving_unit"], lst.id);
         createDetails(res[item]["use"], lst.id);
-        createDetails(res[item]["start_date"].slice(0,16), lst.id);
-        createDetails(res[item]["run_out"].slice(0,16), lst.id);
+        createDetails("Start date: " + res[item]["start_date"].slice(0,16), lst.id);
+        createDetails("You will run out on: " + res[item]["run_out"].slice(0,16), lst.id);
         createButton(res[item]["id"], lst.id)
     };
 };
@@ -41,7 +41,6 @@ function createButton(key, parentId) {
     deactivateButton.id = "btn-" + key;
     deactivateButton.name = "clicked-btn";
     deactivateButton.value = key;
-    deactivateButton.action = "/remove-routine.json";
 
     if (res[item]["active"] === true) {
         var buttonLabel = document.createTextNode("Deactivate");
@@ -55,23 +54,49 @@ function createButton(key, parentId) {
     };
 }
 
+function makeCollapsible() {
+    var collapse = document.getElementsByClassName("collapsible");
+    var i;
 
-createVitamins();
-
-var buttons = document.querySelectorAll('button');
-for (var i=0; i<buttons.length; ++i) {
-  buttons[i].addEventListener('click', clickFunc);
+    for (i = 0; i < collapse.length; i++) {
+      collapse[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
 }
 
-function clickFunc() {
-    let formValues = this.value;
+function moveDiv() {
+    var buttons = document.querySelectorAll('button');
+    for (var i=0; i<buttons.length; ++i) {
+      buttons[i].addEventListener('click', clickFunc);
+    }
 
-    $.post('/remove-routine.json', formValues);
+    function clickFunc() {
+        let formValues = this.value;
 
-    $(`#${formValues}`).appendTo('#inactive');
-    let btnId = document.getElementById("btn-" + formValues);
-    btnId.innerText = btnId.textContent = "Reactivate";     
+        $.post('/remove-routine.json', formValues);
+        for (item in res) {
+            if (res[item]["active"] === true) {
+                $(`#${formValues}`).appendTo('#inactive');
+                let btnId = document.getElementById("btn-" + formValues);
+                btnId.innerText = btnId.textContent = "Reactivate";
+            } else {
+                $(`#${formValues}`).appendTo('#wrapper');
+                let btnId = document.getElementById("btn-" + formValues);
+                btnId.innerText = btnId.textContent = "Deactivate";
+            }; 
+            }    
+        };
+}
 
-    };
+createVitamins();
+makeCollapsible();
+moveDiv();
 
 });

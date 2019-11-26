@@ -58,39 +58,32 @@ def log_in():
 def show_dashboard(user_id):
     """Displays user dashboard and vitamin info"""
 
-    label_id = request.form.get("remove")
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
-    if label_id:
-        routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
-        routine.active = False
-        routine.discontinue_date = datetime.today()
-
-        db.session.commit()
-        flash("Removed from your routine")
-
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
-    items_routine = {}
+    # items_routine = {}
 
-    for row in history:
-        supply = (float(row.vitamin.net_contents) / 
-        float(row.vitamin.serving_size_quantity))
+    # for row in history:
+    #     supply = (float(row.vitamin.net_contents) / 
+    #     float(row.vitamin.serving_size_quantity))
 
-        run_out_date = row.start_date + timedelta(days=supply)
-        items_routine[row.vitamin.label_id] = run_out_date
+    #     run_out_date = row.start_date + timedelta(days=supply)
+    #     items_routine[row.vitamin.label_id] = run_out_date
 
     today = datetime.today()
     account_age = today - user.signup_date
-    account_age = 2
-    # account_age.days
 
+    account_age = account_age.days
+
+    if account_age < 1:
+        account_age = 1
 
     return render_template('dashboard.html',
                             user=user,
                             history=history,
                             today=today,
-                            items_routine=items_routine, 
+                            # items_routine=items_routine, 
                             account_age=account_age)
 
 
@@ -155,29 +148,43 @@ def look_up_fact_sheet():
                             body=body,
                             vitamin=vitamin)
 
-
-@app.route('/vitamin-search', methods=['POST'])
+@app.route('/vitamin-search.json')
 def search_vitamins():
     """Provides a list of similar vitamins"""
+    product = Vitamin.query.filter(Vitamin.product_name.like("%Biotin%")).distinct(Vitamin.product_name).all()
     
-    vitamin = request.form.get("vitamin")
-    filter_type = request.form.get("filter-type")
-    search_param = request.form.get("search-param")
+    results = []
 
-    if filter_type == "brand":
-        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.brand_name.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
+    for item in product:
+        info = {}
+        info["id"] = item.label_id
+        info["text"] = item.product_name
+        results.append(info)
 
-    elif filter_type == "type":
-        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.supplement_form.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
+    return jsonify({"results" : results})
 
-    else:
-        filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).distinct(Vitamin.product_name).all()
+# @app.route('/vitamin-search', methods=['POST'])
+# def search_vitamins():
+#     """Provides a list of similar vitamins"""
+    
+#     vitamin = request.form.get("vitamin")
+#     filter_type = request.form.get("filter-type")
+#     search_param = request.form.get("search-param")
 
-    # age_group = request.form.get("group")
+#     if filter_type == "brand":
+#         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.brand_name.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
 
-    return render_template('add-vitamin.html',
-                            vitamin=vitamin,
-                            filter_result=filter_result)
+#     elif filter_type == "type":
+#         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.supplement_form.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
+
+#     else:
+#         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).distinct(Vitamin.product_name).all()
+
+#     # age_group = request.form.get("group")
+
+#     return render_template('add-vitamin.html',
+#                             vitamin=vitamin,
+#                             filter_result=filter_result)
 
 
 
@@ -206,25 +213,6 @@ def add_routine():
     return redirect(f'/dashboard/{user_id}')
 
 
-# @app.route('/add-cart', methods=["POST"])
-# def add_to_cart(cart_id):
-#     """adds an item to the customer cart"""
-
-#     {
-#     "affId": "",
-#     "apiKey": "",
-#     "clientId": "YOUR GENERATED CLIENT ID",
-#     "clientCartId": "YOUR GENERATED CART ID",
-#     "products": [
-#         {
-#             "skuId": "CUSTOMER SELECTED SKU ID",
-#             "qty": "CUSTOMER SELECTED QUANTITY",
-#             "type": "SKU PRODUCT TYPE"
-#         },
-#     ]
-# }
-
-
 @app.route('/remove-routine.json', methods=["POST"])
 def remove_routine():
     """Allows user to deativate a vitamin from their active routine"""
@@ -246,7 +234,6 @@ def remove_routine():
         routine.active = True
 
     db.session.commit()
-    flash("Removed from your routine")
 
     return redirect(f'/dashboard/{user_id}')
 
@@ -327,8 +314,15 @@ def get_product_type():
                     {
                         "data": [product_types.count(i) for i in list(set(product_types))],
                         "backgroundColor": [
-                            "#800080",
+                            "#200052",
+                            "#280066",
                             "#320080",
+                            "#520052",
+                            "#660066",
+                            "#800080",
+                            "#993399",
+                            "#AD5CAD",
+                            "#BD7DBD",
                         ],
                     }]
                 

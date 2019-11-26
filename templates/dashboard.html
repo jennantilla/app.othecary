@@ -39,6 +39,7 @@
 
 {% if history %}
 <div id="wrapper"></div>
+<br>
 
 {% else %}
     <div>
@@ -47,10 +48,8 @@
     </div>
 {% endif %}
 
-<div class="dropdown" id="inactive">
-    <h2>{{ user.name }}'s Inactive Supplements</h2>
-<!--     <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-    <div id="myDropdown" class="dropdown-content"> -->
+<button type="button" class="collapsible">{{ user.name }}'s Inactive Supplements</button>
+<div class="content" id="inactive">
 </div>
 
 <script src="/static/js/dashboard-charts.js"></script>
