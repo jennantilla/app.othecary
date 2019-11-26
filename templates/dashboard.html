@@ -38,33 +38,21 @@
 
 
 {% if history %}
-
-
 <div id="wrapper"></div>
-
 
 {% else %}
     <div>
         <h4>You have no active supplements in your routine</h4>
-
         <a href=/supplements>Start your research</a>
     </div>
 {% endif %}
 
-<div id="inactive">
+<div class="dropdown" id="inactive">
     <h2>{{ user.name }}'s Inactive Supplements</h2>
-    {% for row in history %}
-        {% if row.active == False %}
-            <h4>{{ row.vitamin.product_name }}</h4>
-                <form action="/restore" method="POST">
-                    <button type="submit" name="restore" value={{ row.label_id }}>Restore</button>
-                </form>
-            </p>
-        {% endif %}
-    {% endfor %}
+<!--     <button onclick="myFunction()" class="dropbtn">Dropdown</button>
+    <div id="myDropdown" class="dropdown-content"> -->
 </div>
 
-<script src="/static/js/success-dial-chart.js"></script>
 <script src="/static/js/dashboard-charts.js"></script>
 <script src="/static/js/dashboard.js"></script>
 <script src="/static/js/dashboard-functionality.js"></script>
