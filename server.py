@@ -17,7 +17,7 @@ app.jinja_env.auto_reload = True
 
 app.secret_key = 'ABC'
 
-# client_id = "x3H7dgFyTjgCL8GeoMxwgmau0iZPXfnm"+":"+
+
 
 @app.route('/')
 def homepage():
@@ -212,7 +212,7 @@ def add_routine():
 
 #     {
 #     "affId": "",
-#     "apiKey": "x3H7dgFyTjgCL8GeoMxwgmau0iZPXfnm",
+#     "apiKey": "",
 #     "clientId": "YOUR GENERATED CLIENT ID",
 #     "clientCartId": "YOUR GENERATED CART ID",
 #     "products": [
@@ -227,46 +227,28 @@ def add_routine():
 
 @app.route('/remove-routine.json', methods=["POST"])
 def remove_routine():
-    """Allows user to deprecate a vitamin from their active routine"""
-    # print("\n\n\n\n\n\n", request.form)
-    # label_id = request.form.get("clicked-btn")
+    """Allows user to deativate a vitamin from their active routine"""
 
     label_id = request.form
 
     for key in label_id:
         my_value = key
 
-
     user_id = session.get("user_id")
 
     routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=my_value).first()
-    routine.active = False
-    routine.discontinue_date = datetime.today()
+    
+    if routine.active == True:
+        routine.active = False
+        routine.discontinue_date = datetime.today()
+
+    else:
+        routine.active = True
 
     db.session.commit()
     flash("Removed from your routine")
 
     return redirect(f'/dashboard/{user_id}')
-
-    # return jsonify({"active" : routine.active})
-
-
-# @app.route('/restore', methods=["POST"])
-# def restore_routine():
-#     """Allows user to restore a vitamin from their deactived routine"""
-
-#     label_id = request.form.get("restore")
-#     user_id = session.get("user_id")
-
-#     routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).all()
-
-#     for item in routine:
-#         item.active = True
-#         flash("Re-added to your routine")
-
-#     db.session.commit()
-
-#     return redirect(f'/dashboard/{user_id}')
 
 
 @app.route('/update-streak.json', methods=["POST"])
@@ -380,8 +362,6 @@ def find_supplements():
     all_user_vitamins = User_Vitamin.query.filter_by(user_id=user_id).all()
 
     actives_list = []
-
-
    
     for item in all_user_vitamins: 
         supply = (float(item.vitamin.net_contents) / 
