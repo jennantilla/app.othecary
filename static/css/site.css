@@ -18,14 +18,33 @@
     display: block;
 }
 
-/*#question {
-    display: inline-block;
-}*/
-
 #streak-sentence {
     display: inline-block;
 }
 
 #streak-info {
     display: inline;
+}
+
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+.content {
+  padding: 10px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
 }

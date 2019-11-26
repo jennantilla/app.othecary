@@ -7,22 +7,27 @@
     <div id="search-filter">
         <h2>Find your supplement!</h2>
         <p>Browse all {{ title }} supplements or filter by your favorite brand or supplement type.</p>
-            <form action="/vitamin-search" method="POST">
-                <div class="form group">
-                    <select class="form-control" name="filter-type">
-                        <option value="" selected>Select one</option>
-                        <option value="brand">Brand</option>
-                        <option value="type">Supplement type</option>
-                    </select>
-                    <input type="text" name="search-param" placeholder="Enter your search">
-                    <input class="form-control" type="submit" name="vitamin" value= {{ title }}>
-                </div>
-            </form>       
+        <select class="search-filter" name="vitamin" style="width: 100%"></select>
     </div>
 <br>
 <br>
 <div>
     {{ body|safe }}
 </div>
+<script>
+
+$(document).ready(function(){
+    $(".search-filter").select2({
+        ajax: { 
+            url: "/vitamin-search.json",
+            dataType: 'json',
+            placeholder: "Narrow your search",
+            width: "resolve"
+        },
+    });
+});
+
+
+</script>    
 
 {% endblock %}

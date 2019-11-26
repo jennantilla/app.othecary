@@ -25,7 +25,6 @@ class User(db.Model):
     diet = db.Column(db.String(25))
     signup_date = db.Column(db.DateTime, default=datetime.now)
     success_rate = db.Column(db.Integer, default=0)
-    success_percentage = db.Column(db.Float, default=0)
     streak_days = db.Column(db.Integer, default=0)
 
     def set_password(self, password):
