@@ -17,6 +17,8 @@ app.jinja_env.auto_reload = True
 
 app.secret_key = 'ABC'
 
+# client_id = "x3H7dgFyTjgCL8GeoMxwgmau0iZPXfnm"+":"+
+
 @app.route('/')
 def homepage():
     """Displays homepage and sign-in/login info"""
@@ -204,40 +206,67 @@ def add_routine():
     return redirect(f'/dashboard/{user_id}')
 
 
-# @app.route('/remove-routine.json', methods=["POST"])
-# def remove_routine():
-#     """Allows user to deprecate a vitamin from their active routine"""
+# @app.route('/add-cart', methods=["POST"])
+# def add_to_cart(cart_id):
+#     """adds an item to the customer cart"""
 
-#     label_id = request.form.get("remove")
-#     user_id = session.get("user_id")
+#     {
+#     "affId": "",
+#     "apiKey": "x3H7dgFyTjgCL8GeoMxwgmau0iZPXfnm",
+#     "clientId": "YOUR GENERATED CLIENT ID",
+#     "clientCartId": "YOUR GENERATED CART ID",
+#     "products": [
+#         {
+#             "skuId": "CUSTOMER SELECTED SKU ID",
+#             "qty": "CUSTOMER SELECTED QUANTITY",
+#             "type": "SKU PRODUCT TYPE"
+#         },
+#     ]
+# }
 
-#     routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
-#     print(routine)
-#     routine.active = False
-#     routine.discontinue_date = datetime.today()
 
-#     db.session.commit()
-#     flash("Removed from your routine")
+@app.route('/remove-routine.json', methods=["POST"])
+def remove_routine():
+    """Allows user to deprecate a vitamin from their active routine"""
+    # print("\n\n\n\n\n\n", request.form)
+    # label_id = request.form.get("clicked-btn")
 
-#     return jsonify({"active" : routine.active})
+    label_id = request.form
+
+    for key in label_id:
+        my_value = key
 
 
-@app.route('/restore', methods=["POST"])
-def restore_routine():
-    """Allows user to restore a vitamin from their deactived routine"""
-
-    label_id = request.form.get("restore")
     user_id = session.get("user_id")
 
-    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).all()
-
-    for item in routine:
-        item.active = True
-        flash("Re-added to your routine")
+    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=my_value).first()
+    routine.active = False
+    routine.discontinue_date = datetime.today()
 
     db.session.commit()
+    flash("Removed from your routine")
 
     return redirect(f'/dashboard/{user_id}')
+
+    # return jsonify({"active" : routine.active})
+
+
+# @app.route('/restore', methods=["POST"])
+# def restore_routine():
+#     """Allows user to restore a vitamin from their deactived routine"""
+
+#     label_id = request.form.get("restore")
+#     user_id = session.get("user_id")
+
+#     routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).all()
+
+#     for item in routine:
+#         item.active = True
+#         flash("Re-added to your routine")
+
+#     db.session.commit()
+
+#     return redirect(f'/dashboard/{user_id}')
 
 
 @app.route('/update-streak.json', methods=["POST"])
@@ -247,10 +276,6 @@ def update_streak():
     user_id = session.get("user_id")
     streak = request.form.get("streak")
     user = User.query.filter_by(user_id=user_id).first()
-    
-    # today = datetime.today()
-
-    # account_age = user.signup_date.date() - today.date() 
 
     if streak == "yes":
         user.streak_days += 1
@@ -260,14 +285,11 @@ def update_streak():
     elif streak == "no":
         user.streak_days = 0
         entry = User_Log(user_id=user_id, take_vitamin=False, entry_date=datetime.now().date())
-    
-    #check on this
-    # user.success_percentage = user.success_rate / int(account_age.days)
 
     db.session.add(entry)
     db.session.commit()
 
-    return jsonify({'streak' : user.streak_days})  #change to user.success_percentage
+    return jsonify({'streak' : user.streak_days})
 
 
 @app.route('/success.json')
@@ -359,7 +381,12 @@ def find_supplements():
 
     actives_list = []
 
+
+   
     for item in all_user_vitamins: 
+        supply = (float(item.vitamin.net_contents) / 
+        float(item.vitamin.serving_size_quantity))
+
         item_info = {}
         item_info["uv_id"] = item.uv_id
         item_info["id"] = item.vitamin.label_id
@@ -371,6 +398,7 @@ def find_supplements():
         item_info["container_amount"] = item.vitamin.net_contents
         item_info["container_unit"] = item.vitamin.net_content_unit
         item_info["active"] = item.active
+        item_info["run_out"] = (item.start_date + timedelta(days=supply))
         actives_list.append(item_info)
 
     return jsonify(actives_list)
