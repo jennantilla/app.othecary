@@ -54,7 +54,7 @@ def log_in():
     return redirect(f"/dashboard/{user.user_id}")
 
 
-@app.route('/dashboard/<int:user_id>', methods=["GET", "POST"])
+@app.route('/dashboard/<int:user_id>')
 def show_dashboard(user_id):
     """Displays user dashboard and vitamin info"""
 
@@ -62,14 +62,6 @@ def show_dashboard(user_id):
     user = User.query.filter_by(user_id=user_id).first()
 
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
-    # items_routine = {}
-
-    # for row in history:
-    #     supply = (float(row.vitamin.net_contents) / 
-    #     float(row.vitamin.serving_size_quantity))
-
-    #     run_out_date = row.start_date + timedelta(days=supply)
-    #     items_routine[row.vitamin.label_id] = run_out_date
 
     today = datetime.today()
     account_age = today - user.signup_date
@@ -82,8 +74,7 @@ def show_dashboard(user_id):
     return render_template('dashboard.html',
                             user=user,
                             history=history,
-                            today=today,
-                            # items_routine=items_routine, 
+                            today=today, 
                             account_age=account_age)
 
 
@@ -127,7 +118,7 @@ def select_supplement():
     'VitaminD', 'VitaminE', 'VitaminK', 'WeightLoss', 'Zinc']
     
     return render_template('supplements.html',
-        vitamins=vitamins)
+                            vitamins=vitamins)
 
 
 @app.route('/lookup', methods=['POST'])
@@ -148,56 +139,33 @@ def look_up_fact_sheet():
                             body=body,
                             vitamin=vitamin)
 
-@app.route('/vitamin-search.json')
-def search_vitamins():
-    """Provides a list of similar vitamins"""
-    product = Vitamin.query.filter(Vitamin.product_name.like("%Biotin%")).distinct(Vitamin.product_name).all()
+
+@app.route('/vitamin-search.json', methods=["GET"])
+def vitamin_search():
+    """Provides a list of filtered vitamins"""
     
-    results = []
+    search = request.args.get("search_terms")
+    vitamin = "Calcium"
 
-    for item in product:
-        info = {}
-        info["id"] = item.label_id
-        info["text"] = item.product_name
-        results.append(info)
+    product = (Vitamin.query.filter(Vitamin.product_name.ilike(f"%{vitamin}%"), 
+                                    Vitamin.product_name.ilike(f"%{search}%"))
+                                        .distinct(Vitamin.product_name).all())
 
-    return jsonify({"results" : results})
+    product_results = ({"results": [{"id": item.label_id, 
+        "text": item.product_name} for item in product]})
 
-# @app.route('/vitamin-search', methods=['POST'])
-# def search_vitamins():
-#     """Provides a list of similar vitamins"""
-    
-#     vitamin = request.form.get("vitamin")
-#     filter_type = request.form.get("filter-type")
-#     search_param = request.form.get("search-param")
-
-#     if filter_type == "brand":
-#         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.brand_name.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
-
-#     elif filter_type == "type":
-#         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%"), Vitamin.supplement_form.like(f"%{search_param}%")).distinct(Vitamin.product_name).all()
-
-#     else:
-#         filter_result = Vitamin.query.filter(Vitamin.product_name.like(f"%{vitamin}%")).distinct(Vitamin.product_name).all()
-
-#     # age_group = request.form.get("group")
-
-#     return render_template('add-vitamin.html',
-#                             vitamin=vitamin,
-#                             filter_result=filter_result)
-
+    return jsonify(product_results)
 
 
 @app.route('/add-routine', methods=['POST'])
 def add_routine():
     """Adds a chosen vitamin to the user's routine"""
 
-    label_id = request.form.get("vitamin")
+    label_id = request.form.get("selected-item")
     user_id = session.get("user_id")
     
     # prevent duplicates:
     routine = User_Vitamin.query.filter_by(user_id=user_id).all()
-
     ids_for_user = []
 
     for row in routine:
@@ -209,6 +177,8 @@ def add_routine():
         
         db.session.add(new)
         db.session.commit()
+
+    flash("Added to your routine!")
 
     return redirect(f'/dashboard/{user_id}')
 
@@ -224,7 +194,8 @@ def remove_routine():
 
     user_id = session.get("user_id")
 
-    routine = User_Vitamin.query.filter_by(user_id=user_id, label_id=my_value).first()
+    routine = (User_Vitamin.query.filter_by(user_id=user_id, 
+                                label_id=my_value).first())
     
     if routine.active == True:
         routine.active = False
@@ -249,11 +220,13 @@ def update_streak():
     if streak == "yes":
         user.streak_days += 1
         user.success_rate += 1
-        entry = User_Log(user_id=user_id, take_vitamin=True, entry_date=datetime.now().date())
+        entry = (User_Log(user_id=user_id, take_vitamin=True, 
+                            entry_date=datetime.now().date()))
 
     elif streak == "no":
         user.streak_days = 0
-        entry = User_Log(user_id=user_id, take_vitamin=False, entry_date=datetime.now().date())
+        entry = (User_Log(user_id=user_id, take_vitamin=False, 
+                            entry_date=datetime.now().date()))
 
     db.session.add(entry)
     db.session.commit()
@@ -271,8 +244,10 @@ def success_data():
     today = datetime.today()
     start_date = user.signup_date
 
-    success_results = User_Log.query.filter_by(user_id=user_id, take_vitamin=True).all()
-    fail_results = User_Log.query.filter_by(user_id=user_id, take_vitamin=False).all()
+    success_results = (User_Log.query.filter_by(user_id=user_id, 
+                                    take_vitamin=True).all())
+    fail_results = (User_Log.query.filter_by(user_id=user_id, 
+                                    take_vitamin=False).all())
 
     achieved = len(success_results)
     missed = len(fail_results)
