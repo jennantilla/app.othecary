@@ -5,29 +5,18 @@
 {% block content %}
     <h1>{{ title }}</h1>
     <div id="search-filter">
-        <h2>Find your supplement!</h2>
-        <p>Browse all {{ title }} supplements or filter by your favorite brand or supplement type.</p>
-        <select class="search-filter" name="vitamin" style="width: 100%"></select>
+        <h1>Find your supplement!</h1>
+        <p>Browse all {{ title }} supplements or filter by your favorite brand.</p>
     </div>
+    <form class="add-form" action="/add-routine" method="POST">
+        <select class="search-filter" name="selected-item" style="width: 30%"></select>
+        <input type="submit" class="add-vitamin" id="search-submit">
+    </form>
 <br>
 <br>
 <div>
     {{ body|safe }}
 </div>
-<script>
-
-$(document).ready(function(){
-    $(".search-filter").select2({
-        ajax: { 
-            url: "/vitamin-search.json",
-            dataType: 'json',
-            placeholder: "Narrow your search",
-            width: "resolve"
-        },
-    });
-});
-
-
-</script>    
+<script src="/static/js/vit-info.js"></script>   
 
 {% endblock %}

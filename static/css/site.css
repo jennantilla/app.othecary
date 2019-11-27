@@ -18,6 +18,10 @@
     display: block;
 }
 
+#search-submit {
+  display: inline-block;
+}
+
 #streak-sentence {
     display: inline-block;
 }

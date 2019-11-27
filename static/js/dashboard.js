@@ -1,5 +1,5 @@
 "use strict";
-
+// Updates streak stats
 function replaceStreak(results) {
 
     $("#streak-info").html(results['streak']);
@@ -14,4 +14,3 @@ $("#performance").on('submit', (evt) => {
     $("#question").addClass('hide'); 
 
     });
-
