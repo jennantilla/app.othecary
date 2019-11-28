@@ -27,12 +27,15 @@
                 <li><a href = "/"><img src="/static/images/a.png">app.othecary</a></li>
                 <li><a href="/register">Sign up</a></li>
                 <li><a href="/login">Log in</a></li>
+                <li><a href="/supplements">Information</a></li>
+                <li><a href="/search-page">Search</a></li>
             {% endif %}
             </ul>
             {% if "user_id" in session %}
             <ul class="logged-in">
                 <li><a href = "/"><img src="/static/images/a.png">app.othecary</a></li>
-                <li><a href="/supplements">Research</a></li>
+                <li><a href="/supplements">Information</a></li>
+                <li><a href="/search-page">Search</a></li>
                 <li><a href= "/dashboard/{{ session['user_id'] }}">Dashboard</a></li>
                 <li><a href="/logout">Log out</a></li>
             {% endif %}

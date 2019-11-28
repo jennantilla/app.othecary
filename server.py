@@ -172,21 +172,48 @@ def look_up_fact_sheet():
                             vitamin=vitamin)
 
 
+@app.route('/search-page')
+def display_search():
+    """Display search bar"""
+
+    return render_template('search-add.html')
+
+
 @app.route('/vitamin-search.json', methods=["GET"])
 def vitamin_search():
-    """Provides a list of filtered vitamins"""
+    """Provide a list of filtered vitamins"""
     
     search = request.args.get("search_terms")
-    vitamin = "Vitamin E"
 
-    product = (Vitamin.query.filter(Vitamin.product_name.ilike(f"%{vitamin}%"), 
-                                    Vitamin.product_name.ilike(f"%{search}%"))
+    product = (Vitamin.query.filter(Vitamin.product_name.ilike(f"%{search}%"))
                                         .distinct(Vitamin.product_name).all())
 
     product_results = ({"results": [{"id": item.label_id, 
         "text": item.product_name} for item in product]})
 
     return jsonify(product_results)
+
+
+@app.route('/see-info.json', methods=["POST"])
+def vitamin_info():
+    """Displays info for selected vitamin"""
+
+    chosen_item = request.form.get("selected-item")
+
+    info = Vitamin.query.filter_by(label_id=chosen_item).first()
+
+    selected_product_details = {}
+
+    selected_product_details['brand'] = info.brand_name
+    selected_product_details['name'] = info.product_name
+    selected_product_details['contents'] = info.net_contents + " " + info.net_content_unit
+    selected_product_details['use'] = info.use
+    selected_product_details['serving'] = info.serving_size_quantity + " " + info.serving_size_unit
+    selected_product_details['product_type'] = info.product_type
+    selected_product_details['supplement_form'] = info.supplement_form
+    selected_product_details['group'] = info.target_groups
+
+    return jsonify(selected_product_details)
 
 
 @app.route('/add-routine', methods=['POST'])

@@ -67,15 +67,15 @@
         </div>
         
         {% elif user.sex == "male" %}
-        <ul>
-            <li></li>
-        </ul>
+        <button type="button" class="collapsible">Supplements for men</button>
+        <div class="content" id="#calcium">
+
         {% endif %}
     </div>
 
 
     {% if user.diet == "vegetarian" or user.diet == "vegan" %}
-    <h4>As a {{ user.diet }}, you may need to supplement your diet with some essential nutrient supplements</h4>
+    <h4>As a {{ user.diet }}, you may need to supplement your diet with some essential nutritional supplements:</h4>
     <button type="button" class="collapsible">Plant-based diet nutrition</button>
     <div class="content" id="#calcium">
         <p>Keep in mind that the more restrictive your diet is, the more challenging it can be to get all the nutrients you need. A vegan diet, for example, eliminates natural food sources of vitamin B-12, as well as milk products, which are good sources of calcium.</p>

@@ -4,19 +4,15 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <div id="search-filter">
-        <h1>Find your supplement!</h1>
-        <p>Browse all {{ title }} supplements or filter by your favorite brand.</p>
-    </div>
-    <form class="add-form" action="/add-routine" method="POST">
-        <select class="search-filter" name="selected-item" style="width: 30%"></select>
-        <input type="submit" class="add-vitamin" id="search-submit" value="Add to routine">
-    </form>
-<br>
-<br>
+    <h3>Information is power! Understand a supplement's purpose and potential side effects before adding to your nutrition plan.</h3>
+    <h4>Check out the informaton provided below. When you feel you've adequately researched, head over to the <a href="/search-page">search</a> page</h4>
 <div>
     {{ body|safe }}
 </div>
-<script src="/static/js/vit-info.js"></script>   
+
+<script>
+// Formatting of body
+$(".externallink").remove();
+</script>
 
 {% endblock %}
