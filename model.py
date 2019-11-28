@@ -18,7 +18,6 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(120), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    phone_number = db.Column(db.String(16), nullable=True)
     name = db.Column(db.String(50), nullable=False)
     birth_date = db.Column(db.DateTime)
     sex = db.Column(db.String(25))
@@ -45,6 +44,7 @@ class User_Log(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
     entry_date = db.Column(db.DateTime, default=datetime.now)
     take_vitamin = db.Column(db.Boolean)
+    user_notes = db.Column(db.String(500)) 
 
 
 class User_Vitamin(db.Model):
@@ -84,7 +84,7 @@ class Vitamin(db.Model):
     target_groups= db.Column(db.String(250))
     database= db.Column(db.String(75))
     tracking_history= db.Column(db.String(250))
-    use = db.Column(db.String(5000), nullable=True)
+    use = db.Column(db.String(5000), default="No directions on record for this supplement. Check your label for usage instructions.")
 
 
 ##############################################################################

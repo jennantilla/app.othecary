@@ -71,7 +71,7 @@ function makeCollapsible() {
     }
 }
 
-function moveDiv() {
+function moveDiv(chart) {
     var buttons = document.querySelectorAll('button');
     for (var i=0; i<buttons.length; ++i) {
       buttons[i].addEventListener('click', clickFunc);
@@ -79,7 +79,7 @@ function moveDiv() {
 
     function clickFunc() {
         let formValues = this.value;
-
+//add a callback in the callback, update chart
         $.post('/remove-routine.json', formValues);
         for (item in res) {
             if (res[item]["active"] === true) {
@@ -94,6 +94,7 @@ function moveDiv() {
             }    
         };
 }
+
 
 createVitamins();
 makeCollapsible();

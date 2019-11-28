@@ -41,11 +41,23 @@ def update_labels_directions():
     """Add directions field to Vitamin db"""
 
     labels = Vitamin.query.all()
-    # label_1 = labels[:1000:5000]
-    label_2 = labels[5000:10000]
-    label_3 = labels[10000:20000]
+    label_1 = labels[:1000]
+    label_2 = labels[1000:5000]
+    label_3 = labels[5000:10000]
+    label_4 = labels[10000:15000]
+    label_5 = labels[15000:20000]
+    label_6 = labels[20000:25000]
+    label_7 = labels[25000:30000]
+    label_8 = labels[30000:35000]
+    label_9 = labels[35000:45000]
+    label_10 = labels[45000:55000]
+    label_11 = labels[55000:65000]
+    label_12 = labels[65000:75000]
+    label_13 = labels[75000:85000]
+    label_14 = labels[85000:]
+
     
-    for product in label_3:
+    for product in label_14:
         vit_id = product.label_id
         r = requests.get('http://dsld.nlm.nih.gov/dsld/api/label/' + vit_id)
         vitamin = r.json()
@@ -68,5 +80,5 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
-    load_labels()
-    # update_labels_directions()
+    # load_labels()
+    update_labels_directions()

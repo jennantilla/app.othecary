@@ -3,6 +3,7 @@ import xmltodict
 import json
 
 from datetime import timedelta, date, datetime
+from dateutil.relativedelta import relativedelta
 import calendar
 
 from flask import Flask, redirect, request, render_template, session, flash, jsonify, request_finished
@@ -62,10 +63,14 @@ def show_dashboard(user_id):
     user = User.query.filter_by(user_id=user_id).first()
 
     history = User_Vitamin.query.filter_by(user_id=user_id).all()
+    log = User_Log.query.filter_by(user_id=user_id).all()
 
     today = datetime.today()
-    account_age = today - user.signup_date
 
+    user_age = relativedelta(today, user.birth_date)
+    user_age = user_age.years
+
+    account_age = today - user.signup_date
     account_age = account_age.days
 
     if account_age < 1:
@@ -73,7 +78,9 @@ def show_dashboard(user_id):
 
     return render_template('dashboard.html',
                             user=user,
+                            user_age=user_age,
                             history=history,
+                            log=log,
                             today=today, 
                             account_age=account_age)
 
@@ -105,6 +112,31 @@ def new_user_questions():
     session["user_id"] = user.user_id
 
     return redirect(f"/dashboard/{user.user_id}")
+
+
+@app.route('/update-streak', methods=["POST"])
+def update_streak():
+    """Updates success days"""
+
+    user_id = session.get("user_id")
+    streak = request.form.get("streak")
+    user = User.query.filter_by(user_id=user_id).first()
+
+    if streak == "yes":
+        user.streak_days += 1
+        user.success_rate += 1
+        entry = (User_Log(user_id=user_id, take_vitamin=True, 
+                            entry_date=datetime.now().date()))
+
+    elif streak == "no":
+        user.streak_days = 0
+        entry = (User_Log(user_id=user_id, take_vitamin=False, 
+                            entry_date=datetime.now().date()))
+
+    db.session.add(entry)
+    db.session.commit()
+
+    return redirect(f'/dashboard/{user_id}')
 
 
 @app.route('/supplements')
@@ -145,7 +177,7 @@ def vitamin_search():
     """Provides a list of filtered vitamins"""
     
     search = request.args.get("search_terms")
-    vitamin = "Calcium"
+    vitamin = "Vitamin E"
 
     product = (Vitamin.query.filter(Vitamin.product_name.ilike(f"%{vitamin}%"), 
                                     Vitamin.product_name.ilike(f"%{search}%"))
@@ -178,7 +210,7 @@ def add_routine():
         db.session.add(new)
         db.session.commit()
 
-    flash("Added to your routine!")
+    flash(f"{new.vitamin.product_name} was added to your routine!")
 
     return redirect(f'/dashboard/{user_id}')
 
@@ -207,31 +239,6 @@ def remove_routine():
     db.session.commit()
 
     return redirect(f'/dashboard/{user_id}')
-
-
-@app.route('/update-streak.json', methods=["POST"])
-def update_streak():
-    """Updates success days"""
-
-    user_id = session.get("user_id")
-    streak = request.form.get("streak")
-    user = User.query.filter_by(user_id=user_id).first()
-
-    if streak == "yes":
-        user.streak_days += 1
-        user.success_rate += 1
-        entry = (User_Log(user_id=user_id, take_vitamin=True, 
-                            entry_date=datetime.now().date()))
-
-    elif streak == "no":
-        user.streak_days = 0
-        entry = (User_Log(user_id=user_id, take_vitamin=False, 
-                            entry_date=datetime.now().date()))
-
-    db.session.add(entry)
-    db.session.commit()
-
-    return jsonify({'streak' : user.streak_days})
 
 
 @app.route('/success.json')
@@ -267,43 +274,6 @@ def success_data():
                 
             }
     return jsonify(data_dict)
-
-
-@app.route("/product-type.json")
-def get_product_type():
-    """Shows product type for each active supplement in user's routine"""
-
-    user_id = session.get("user_id")
-    active_vitamins = User_Vitamin.query.filter_by(user_id=user_id, active=True).all()
-
-    product_types = []
-      
-    for vitamin_type in active_vitamins:
-            product_types.append(vitamin_type.vitamin.product_type)
-
-    vita_dict = {
-                "labels": [
-                    i for i in list(set(product_types))
-                ],
-                "datasets": [
-                    {
-                        "data": [product_types.count(i) for i in list(set(product_types))],
-                        "backgroundColor": [
-                            "#200052",
-                            "#280066",
-                            "#320080",
-                            "#520052",
-                            "#660066",
-                            "#800080",
-                            "#993399",
-                            "#AD5CAD",
-                            "#BD7DBD",
-                        ],
-                    }]
-                
-            }
-
-    return jsonify(vita_dict)
 
 
 @app.route('/check-logged.json')
