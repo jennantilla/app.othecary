@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<h1>Apothecary shelf</h1>
+    <p>Browse all supplements or filter by category or brand.</p>
+<div>
+    <form class="add-form" action="/see-info.json" method="POST">
+            <select class="search-filter" name="selected-item" style="width: 30%"></select>
+            <input type="submit" class="add-vitamin" id="search-submit" value="See supplement details">
+    </form>
+</div>
+
+<h3><div id="prod-name"></div></h3>
+<div id="brand-name"></div>
+<div id="prod-cont"></div>
+<div id="prod-dir"></div>
+<div id="prod-serv"></div>
+<div id="prod-type"></div>
+<div id="supp-form"></div>
+<div id="targ-grp"></div>
+<br>
+<br>
+
+<form class="add-form" action="/add-routine" name="target-vit" method="POST">
+        <input type="submit" class="hide" id="search-submit" value="Add to routine">
+</form>
+
+<script>
+    $(document).ready(function() {
+    $('.search-filter').select2({
+        ajax: {
+            url: '/vitamin-search.json',
+            dataType: 'json',
+            method: 'GET',
+            data: (params) => { 
+                return {'search_terms': params.term}   
+            }
+        },
+        placeholder: "Narrow your search"
+        });
+});
+
+function seeInfo(results) {
+
+    $("#prod-name").html(results['name']);
+    $("#brand-name").html("Brand name: " + results['brand']);
+    $("#prod-cont").html("Contents: " + results['contents']);
+    $("#prod-dir").html(results['use']);
+    $("#prod-serv").html("Serving size: " + results['serving']);
+    $("#prod-type").html("Product type: " + results['product_type']);
+    $("#supp-form").html("Supplement form: " + results['supplement_form']);
+    $("#targ-grp").html("Target group: " + results['group']);
+}
+
+$(".add-form").on('submit', (evt) => {
+    evt.preventDefault();
+
+    const formValues = $('.search-filter').serialize();
+    $.post('/see-info.json', formValues, seeInfo);
+
+    });
+
+</script>
+
+
+{% endblock %}
