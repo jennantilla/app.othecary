@@ -212,6 +212,7 @@ def vitamin_info():
     selected_product_details['product_type'] = info.product_type
     selected_product_details['supplement_form'] = info.supplement_form
     selected_product_details['group'] = info.target_groups
+    selected_product_details['id'] = info.label_id
 
     return jsonify(selected_product_details)
 
@@ -220,7 +221,7 @@ def vitamin_info():
 def add_routine():
     """Adds a chosen vitamin to the user's routine"""
 
-    label_id = request.form.get("selected-item")
+    label_id = request.form.get('target-vit')
     user_id = session.get("user_id")
     
     # prevent duplicates:
