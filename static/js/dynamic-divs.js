@@ -104,6 +104,7 @@ moveDiv();
 });
 
 
+
 // define today
 // const today = new Date();
 // check value in div
