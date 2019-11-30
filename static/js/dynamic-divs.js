@@ -102,14 +102,3 @@ makeCollapsible();
 moveDiv();
 
 });
-
-
-
-// define today
-// const today = new Date();
-// check value in div
-// $(".routine-items").css("background-color", "purple");
-
-// if value is within 7 days of today
-// change color 
-

@@ -73,6 +73,34 @@ def show_dashboard(user_id):
     account_age = today - user.signup_date
     account_age = account_age.days
 
+    gen_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=dietary%supplements&retmax=1")
+    gen_result = xmltodict.parse(gen_req.content)
+    gen_info = gen_result['nlmSearchResult']['list']['document']['content'][3]['#text']
+
+    lbl_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=foodlabeling&retmax=1")
+    lbl_result= xmltodict.parse(lbl_req.content)
+    lbl_info = lbl_result['nlmSearchResult']['list']['document']['content'][3]['#text'][166:1200]
+
+    herb_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=herbal%medicine&retmax=1")
+    herb_result= xmltodict.parse(herb_req.content)
+    herb_info = herb_result['nlmSearchResult']['list']['document']['content'][7]['#text']
+
+    min_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=minerals&retmax=1")
+    min_result= xmltodict.parse(min_req.content)
+    min_info = min_result['nlmSearchResult']['list']['document']['content'][8]['#text']
+
+    preg_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=pregnancy%and%nutrition&retmax=1")
+    preg_result= xmltodict.parse(preg_req.content)
+    preg_info = preg_result['nlmSearchResult']['list']['document']['content'][3]['#text'][992:2501]
+
+    veg_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=vegetariandiet&retmax=1")
+    veg_result= xmltodict.parse(veg_req.content)
+    veg_info = veg_result['nlmSearchResult']['list']['document']['content'][4]['#text'][500:]
+
+    frd_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=health%fraud&retmax=1")
+    frd_result= xmltodict.parse(frd_req.content)
+    frd_info = frd_result['nlmSearchResult']['list']['document']['content'][4]['#text']
+
     if account_age < 1:
         account_age = 1
 
@@ -82,7 +110,14 @@ def show_dashboard(user_id):
                             history=history,
                             log=log,
                             today=today, 
-                            account_age=account_age)
+                            account_age=account_age,
+                            gen_info=gen_info,
+                            lbl_info=lbl_info,
+                            herb_info=herb_info,
+                            min_info=min_info,
+                            preg_info=preg_info,
+                            veg_info=veg_info,
+                            frd_info=frd_info)
 
 
 @app.route('/register')
@@ -153,10 +188,9 @@ def select_supplement():
                             vitamins=vitamins)
 
 
-@app.route('/lookup', methods=['POST'])
-def look_up_fact_sheet():
+@app.route('/lookup/<vitamin>', methods=['POST'])
+def look_up_fact_sheet(vitamin):
     """Looks up the fact sheet for chosen supplement"""
-    
     vitamin = request.form.get("vitamin")
 
     r = requests.get("https://ods.od.nih.gov/api/?resourcename=" + vitamin + 
@@ -166,7 +200,7 @@ def look_up_fact_sheet():
     title = doc['Factsheet']['Title']
     body = doc['Factsheet']['Content']
     
-    return render_template('vit-info.html',
+    return render_template(f'vit-info.html',
                             title=title,
                             body=body,
                             vitamin=vitamin)
@@ -230,7 +264,6 @@ def calculate_run_out():
 
     start_obj = datetime.strptime(start, '%Y-%m-%d')
 
-    # if form is a unit
     content = content.split(" ")
     content_amt = float(content[0])
 

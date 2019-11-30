@@ -7,53 +7,40 @@
 <h1>Welcome back, {{ user.name }}!</h1>
 
 <div id="user-profile">
-    <h3>Supplement Suggestions</h3>
+    <h3>Resources</h3>
     <h4>As a {{ user_age }} year old {{ user.sex }}, you may be interested in the following topics:</h4>
+
+    <div id="all-ages">
+        <button type="button" class="collapsible">General Information: Dietary Supplements</button>
+        <div class="content" id="gen-info">{{ gen_info | safe }}</div>
+
+        <button type="button" class="collapsible">Reading Food & Supplement Labels</button>
+        <div class="content" id="lbl-info">{{ lbl_info | safe }}</div>
+
+        <button type="button" class="collapsible">Mineral Supplements</button>
+        <div class="content" id="mineral">{{ min_info | safe }}</div>
+
+        <button type="button" class="collapsible">Herbal Supplements</button>
+        <div class="content" id="herbs">{{ herb_info | safe }}</div>
+
+        <button type="button" class="collapsible">Health Fraud</button>
+        <div class="content" id="fraud">{{ frd_info | safe }}</div>
+    </div>
 
     <div id="female">
         {% if user.sex == "female" %}
 
-        <button type="button" class="collapsible">Prenatal nutrition</button>
-        <div class="content" id="#calcium">
-            <p>You need more folic acid, iron, calcium, and vitamin D than you did before pregnancy:</p>
-
-        <ul>
-            <li>Folic acid is a B vitamin that may help prevent certain birth defects. Before pregnancy, you need 400 mcg (micrograms) per day. During pregnancy and when breastfeeding, you need 600 mcg per day from foods or vitamins. It is hard to get this amount from foods alone, so you need to take a supplement that contains folic acid.</li>
-            <li>Iron is important for your baby's growth and brain development. During pregnancy, the amount of blood in your body increases, so you need more iron for yourself and your growing baby. You should get 27 mg (milligrams) of iron a day.</li>
-            <li>Calcium during pregnancy can reduce your risk of preeclampsia, a serious medical condition that causes a sudden increase in blood pressure. Calcium also builds up your baby's bones and teeth. Pregnant adults should get 1,000 mg (milligrams) of calcium a day.</li>
-            <li>Vitamin D helps the calcium to build up the baby's bones and teeth. All women, pregnant or not, should be getting 600 IU (international units) of vitamin D per day.</li>
-        </ul>
-            <p>Keep in mind that taking too much of a supplement can be harmful. For example, very high levels of vitamin A can cause birth defects. Only take vitamins and mineral supplements that your health care provider recommends.</p>
-        </div>
-    </div>
-        
-    <div id="male">
-        {% elif user.sex == "male" %}
-        <button type="button" class="collapsible">Supplements for men</button>
+        <button type="button" class="collapsible">Prenatal Supplements</button>
+        <div class="content" id="#preg">{{ preg_info | safe }}</div>
         {% endif %}
     </div>
-
+    
     <div id="diet">
     {% if user.diet == "vegetarian" or user.diet == "vegan" %}
     <h4>As a {{ user.diet }}, you may need to supplement your diet with some essential nutritional supplements:</h4>
-    <button type="button" class="collapsible">Plant-based diet nutrition</button>
-    <div class="content" id="#veg">
-        <p>Keep in mind that the more restrictive your diet is, the more challenging it can be to get all the nutrients you need. A vegan diet, for example, eliminates natural food sources of vitamin B-12, as well as milk products, which are good sources of calcium.</p>
-
-        <p>To be sure that your diet includes everything your body needs, pay special attention to the following nutrients:</p>
-
-    <ul>
-        <li>Calcium and Vitamin D play an important role in bone health. Be sure to check food labels. If you don't eat enough fortified foods and have limited sun exposure, you may need a vitamin D supplement (one derived from plants).</li>
-        <li>Vitamin B-12 is necessary to produce red blood cells and prevent anemia. This vitamin is found almost exclusively in animal products, so it can be difficult to get enough B-12 on a vegan diet. Vitamin B-12 deficiency may go undetected in people who eat a vegan diet. This is because the vegan diet is rich in a vitamin called folate, which may mask deficiency in vitamin B-12 until severe problems occur. For this reason, it's important for vegans to consider vitamin supplements, vitamin-enriched cereals and fortified soy products.</li>
-
-        <li>Omega-3 fatty acids are important for heart health. Diets that do not include fish and eggs are generally low in active forms of omega-3 fatty acids. Canola oil, soy oil, walnuts, ground flaxseed and soybeans are good sources of essential fatty acids. However, because conversion of plant-based omega-3 to the types used by humans is inefficient, you may want to consider fortified products or supplements or both.</li>
-
-        <li>Iron is a crucial component of red blood cells. Because iron isn't as easily absorbed from plant sources, the recommended intake of iron for vegetarians is almost double that recommended for nonvegetarians. To help your body absorb iron, eat foods rich in vitamin C, such as strawberries, citrus fruits, tomatoes, cabbage and broccoli, at the same time as you're eating iron-containing foods.</li>
-
-        <li>Iodine is a component in thyroid hormones, which help regulate metabolism, growth and function of key organs. Vegans may not get enough iodine and may be at risk of deficiency and possibly even a goiter. In addition, foods such as soybeans, cruciferous vegetables and sweet potatoes may promote a goiter. However, just 1/4 teaspoon of iodized salt a day provides a significant amount of iodine.</li>
-        </ul>
+    <button type="button" class="collapsible">Plant-Based Diet Supplements</button>
+    <div class="content" id="#veg">{{ veg_info | safe }}</div>    
     {% endif %}
-    </div>
 </div>
 </div>
 
