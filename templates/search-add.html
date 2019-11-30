@@ -6,6 +6,61 @@
 
 <h1>Apothecary Shelf</h1>
     <p>Browse all supplements or filter by category or brand</p>
+
+
+<div class="hide" id="calculator">
+    <h4>Calculate when you'll need to refill your store of this particular supplement!</h4>
+    <form id="calculator-inputs" action="/calculator.json" method="POST">
+    <div>
+        <label>ID:
+            <input id="label-id" name="label-id" readonly>
+        </label>
+    </div>
+    <div>
+        <label>Supplement:
+            <input type="text" id="supp-name" name="supp-name"readonly>
+        </label>
+    </div>
+    <div>
+        <label>Net contents:
+            <input id="supp-content" name="supp-content" readonly>
+        </label>
+    </div>
+    <div>
+        <label>Start date:
+            <input type="date" id="start" name="date">
+        </label>
+    </div>
+    <div>
+        <label>Preferred serving size:
+            <input type="number" id="cust-serv-amt" name="cust-serv-amt">
+        </label>
+    </div>
+    <div>
+       <!--  <label>Serving form -->
+        <div class="tooltip">Serving form
+            <span class="tooltiptext">Calculations are approximate. Less-definitive measuring types (e.g., "scoop", "drops") cannot be calculated.</span>
+        </div>
+            <select name="serv-form">
+                <option value="unit">unit</option>
+                <option value="gram">gram</option>
+                <option value="ounce">ounce</option>
+                <option value="tbsp">tbsp.</option>
+                <option value="tsp">tsp.</option>
+            </select>
+ <!--        </label> -->
+    </div>
+    <div>
+        <label>Preferred servings per day:
+            <input type="number" id="cust-serv-freq" name="cust-serv-freq">
+        </label>
+    </div>
+    <input type="submit" id="calc-submit" value="calculate!">
+    </form>
+    <br>
+    <div class="hide" id="run-out-dsply">You will run out on <span id="run-out-rslt"></span></div>
+</div>
+
 <div>
     <form class="add-form" action="/see-info.json" method="POST">
             <select class="search-filter" name="selected-item" style="width: 30%"></select>
@@ -23,23 +78,23 @@
     <div id="targ-grp"></div>
     <div id="test-div"></div>
 </div>
-<div class="hide">
-  <button id="prev">Previous</button>
-  <button id="next">Next</button>
-  &nbsp; &nbsp;
-  <span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
-</div>
+
 <br>
+
 <canvas class="hide" id="the-canvas"></canvas>
+
 <br>
 <br>
+
 <div id="add-routine-btn">
     <form class="hide" id="add-form" action="/add-routine" method="POST">
             <input class ="hide" id="selected" name="target-vit">
+            <input class="hide" id="run-out-db" name="run-out">
             <input type="submit" id="search-submit" value="Add to routine">
     </form>
 </div>
 
 <script src="/static/js/search-add.js"></script>
+<script src="/static/js/calculator.js"></script>
 
 {% endblock %}

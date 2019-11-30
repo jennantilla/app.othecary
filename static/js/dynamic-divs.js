@@ -3,6 +3,7 @@ $.get("/user-vitamin-list.json", (res) => {
     for (item in res) {
         var lst = document.createElement("DIV");
         lst.id = res[item]["id"];
+        lst.className = "routine-items";
 
         if (res[item]["active"] === true) {
             document.getElementById("wrapper").appendChild(lst);
@@ -101,3 +102,13 @@ makeCollapsible();
 moveDiv();
 
 });
+
+
+// define today
+// const today = new Date();
+// check value in div
+// $(".routine-items").css("background-color", "purple");
+
+// if value is within 7 days of today
+// change color 
+

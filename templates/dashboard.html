@@ -6,47 +6,7 @@
 
 <h1>Welcome back, {{ user.name }}!</h1>
 
-{% if history %}
-
-<h3>Routine for {{ today.strftime("%B %d, %Y") }}</h3>
-    <div id="question">
-        <form id="performance" action="/update-streak" method='POST'>
-                <h4>Did you take your vitamins today?</h4>
-                    <input class="form-control" type="radio" name="streak" value="yes">Yes
-                    <input class="form-control" type="radio" name="streak" value="no">No
-                    <input type="submit" id="streak-button" value="Update streak">
-        </form>
-    </div>
-    <br>
-
-{% if log|length > 0 %}
- <div id="streak-sentence">You're on a <div id="streak-info">{{ user.streak_days }}</div> day streak</div>
-
-    <div class="success-chart" style="width:400px">
-        <canvas id="successChart"></canvas>
-    </div>
-
-    <br>
-    <br>
-    <br>
-
-{% endif %}
-
-<div id="wrapper"></div>
-<br>
-
-{% else %}
-    <div>
-        <h4>You have no active supplements in your routine</h4>
-        <a href=/supplements>Start your research</a>
-    </div>
-{% endif %}
-
-<button type="button" class="collapsible">{{ user.name }}'s Inactive Supplements</button>
-<div class="content" id="inactive">
-</div>
-
-<div>
+<div id="user-profile">
     <h3>Supplement Suggestions</h3>
     <h4>As a {{ user_age }} year old {{ user.sex }}, you may be interested in the following topics:</h4>
 
@@ -63,21 +23,21 @@
             <li>Calcium during pregnancy can reduce your risk of preeclampsia, a serious medical condition that causes a sudden increase in blood pressure. Calcium also builds up your baby's bones and teeth. Pregnant adults should get 1,000 mg (milligrams) of calcium a day.</li>
             <li>Vitamin D helps the calcium to build up the baby's bones and teeth. All women, pregnant or not, should be getting 600 IU (international units) of vitamin D per day.</li>
         </ul>
-        <p>Keep in mind that taking too much of a supplement can be harmful. For example, very high levels of vitamin A can cause birth defects. Only take vitamins and mineral supplements that your health care provider recommends.</p>
+            <p>Keep in mind that taking too much of a supplement can be harmful. For example, very high levels of vitamin A can cause birth defects. Only take vitamins and mineral supplements that your health care provider recommends.</p>
         </div>
+    </div>
         
+    <div id="male">
         {% elif user.sex == "male" %}
         <button type="button" class="collapsible">Supplements for men</button>
-        <div class="content" id="#calcium">
-
         {% endif %}
     </div>
 
-
+    <div id="diet">
     {% if user.diet == "vegetarian" or user.diet == "vegan" %}
     <h4>As a {{ user.diet }}, you may need to supplement your diet with some essential nutritional supplements:</h4>
     <button type="button" class="collapsible">Plant-based diet nutrition</button>
-    <div class="content" id="#calcium">
+    <div class="content" id="#veg">
         <p>Keep in mind that the more restrictive your diet is, the more challenging it can be to get all the nutrients you need. A vegan diet, for example, eliminates natural food sources of vitamin B-12, as well as milk products, which are good sources of calcium.</p>
 
         <p>To be sure that your diet includes everything your body needs, pay special attention to the following nutrients:</p>
@@ -91,14 +51,59 @@
         <li>Iron is a crucial component of red blood cells. Because iron isn't as easily absorbed from plant sources, the recommended intake of iron for vegetarians is almost double that recommended for nonvegetarians. To help your body absorb iron, eat foods rich in vitamin C, such as strawberries, citrus fruits, tomatoes, cabbage and broccoli, at the same time as you're eating iron-containing foods.</li>
 
         <li>Iodine is a component in thyroid hormones, which help regulate metabolism, growth and function of key organs. Vegans may not get enough iodine and may be at risk of deficiency and possibly even a goiter. In addition, foods such as soybeans, cruciferous vegetables and sweet potatoes may promote a goiter. However, just 1/4 teaspoon of iodized salt a day provides a significant amount of iodine.</li>
-
+        </ul>
+    {% endif %}
+    </div>
+</div>
 </div>
 
+<div id="streakq-chart">
+{% if history %}
+
+    <h3>Routine for {{ today.strftime("%B %d, %Y") }}</h3>
+    <div id="question">
+        <form id="performance" action="/update-streak" method='POST'>
+                <h4>Did you take your vitamins today?</h4>
+                    <input class="form-control" type="radio" name="streak" value="yes">Yes
+                    <input class="form-control" type="radio" name="streak" value="no">No
+                    <input type="submit" id="streak-button" value="Update streak">
+        </form>
+        <br>
+    </div>
+
+    {% if log|length > 0 %}
+    <div id="streak-sentence">You're on a <span id="streak-info">{{ user.streak_days }}</span> day streak</div>
+
+    <div class="success-chart" style="width:400px">
+    <canvas id="successChart"></canvas>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
     {% endif %}
-<div>
-    
+</div>
+
+<div id="wrapper"></div>
+<br>
+
+{% else %}
+    <div>
+        <h4>You have no active supplements in your routine</h4>
+        <a href=/supplements>Start your research</a>
+    </div>
+{% endif %}
+
+<div id="inactive-section">
+<button type="button" class="collapsible">{{ user.name }}'s Inactive Supplements</button>
+<div class="content" id="inactive">
+</div>
+</div>
+
 <script src="/static/js/dashboard-charts.js"></script>
 <script src="/static/js/dashboard-functionality.js"></script>
 <script src="/static/js/dynamic-divs.js"></script>
+
 
 {% endblock %}

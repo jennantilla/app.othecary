@@ -1,17 +1,31 @@
+#wrapper {
+  width: 50%;
+  height: 100%;
+}
+
+/*#wrapper p:last-of-type {
+  color: purple;
+}*/
+
 .logged-out li{
-    display: inline;
+  display: inline;
 }
 
 .logged-in li{
-    display: inline;
+  display: inline;
 }
 
 #search-filter {
-    display: inline-block;
+  display: inline-block;
 }
 
 .hide {
-    display: none;
+  display: none;
+}
+
+#inactive-section {
+  width: 50%;
+  height: 100%;
 }
 
 .show {
@@ -28,6 +42,11 @@
 
 #streak-info {
     display: inline;
+}
+
+#streakq-chart {
+  width:50%;
+  height: 100%;
 }
 
 .collapsible {
@@ -52,3 +71,68 @@
   overflow: hidden;
   background-color: #f1f1f1;
 }
+
+#user-profile {
+  width: 35%;
+  height: 100%;
+  display: inline-block;
+  float: right;
+}
+
+#calculator {
+  width: 30%;
+  height: 100%;
+  display: inline-block;
+  float: right;
+}
+
+#the-canvas {
+  width: 30%;
+  height: 100%;
+}
+
+#search-facts {
+  width: 50%;
+  height: 100%;
+}
+
+input[type=text] {
+   width: 200px;
+}
+
+input[type=number] {
+   width: 25px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; 
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 350px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  right: 105%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+

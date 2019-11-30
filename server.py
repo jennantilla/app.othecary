@@ -217,12 +217,49 @@ def vitamin_info():
     return jsonify(selected_product_details)
 
 
+@app.route('/calculator.json', methods=['POST'])
+def calculate_run_out():
+    """Calculate run-out date for vitamin"""
+
+    label_id = request.form['label-id']
+    content = request.form['supp-content']
+    serv_form = request.form['serv-form']
+    start = request.form['date']
+    amount = float(request.form['cust-serv-amt'])
+    servs_day = float(request.form['cust-serv-freq'])
+
+    start_obj = datetime.strptime(start, '%Y-%m-%d')
+
+    # if form is a unit
+    content = content.split(" ")
+    content_amt = float(content[0])
+
+    # calculations based on ounces
+    if serv_form == "tsp":
+        servings = (content_amt * 6) 
+
+    elif serv_form == "tbsp":
+        servings = (content_amt * 2) 
+
+    elif serv_form == "gram":
+        servings = (content_amt * 28.35) 
+
+    elif serv_form == "unit":
+        servings = content_amt
+
+    supply = servings / servs_day
+    run_out_date = start_obj + timedelta(days=supply)
+
+    return jsonify({"run-out": run_out_date})
+
+
 @app.route('/add-routine', methods=['POST'])
 def add_routine():
     """Adds a chosen vitamin to the user's routine"""
 
     label_id = request.form.get('target-vit')
     user_id = session.get("user_id")
+    run_out_date = request.form.get("run-out")
     
     # prevent duplicates:
     routine = User_Vitamin.query.filter_by(user_id=user_id).all()
@@ -233,7 +270,7 @@ def add_routine():
 
     if label_id not in ids_for_user:
 
-        new = User_Vitamin(label_id=label_id, user_id=user_id, active=True)
+        new = User_Vitamin(label_id=label_id, user_id=user_id, active=True, run_out_date=run_out_date)
         
         db.session.add(new)
         db.session.commit()
@@ -331,8 +368,6 @@ def find_supplements():
     actives_list = []
    
     for item in all_user_vitamins: 
-        supply = (float(item.vitamin.net_contents) / 
-        float(item.vitamin.serving_size_quantity))
 
         item_info = {}
         item_info["uv_id"] = item.uv_id
@@ -345,7 +380,7 @@ def find_supplements():
         item_info["container_amount"] = item.vitamin.net_contents
         item_info["container_unit"] = item.vitamin.net_content_unit
         item_info["active"] = item.active
-        item_info["run_out"] = (item.start_date + timedelta(days=supply))
+        item_info["run_out"] = (item.run_out_date)
         actives_list.append(item_info)
 
     return jsonify(actives_list)
