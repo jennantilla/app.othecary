@@ -4,8 +4,10 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <h3>Information is power! Understand a supplement's purpose and potential side effects before adding to your nutrition plan.</h3>
-    <h4>Check out the informaton provided below. When you feel you've adequately researched, head over to the <a href="/search-page">search</a> page</h4>
+<div class="messages" id="knowledge">
+    <h3>Information is power! Understand {{ title }}'s purpose and potential side effects before adding to your nutrition plan.</h3>
+    <h4>Check out the information provided below. When you feel you've adequately researched, head over to the <a href="/search-page">search</a> page</h4>
+</div>
 <div>
     {{ body|safe }}
 </div>

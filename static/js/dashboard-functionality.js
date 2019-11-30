@@ -1,5 +1,5 @@
 "use strict";
-// Hide/show streak question depending on whether user has logged
+// Hide/show streak question depending on whether user has logged that day
 function checkLogged(response) {
     if (response.logged === true) {
         $("#question").addClass('hide');
@@ -14,11 +14,11 @@ $.get("/check-logged.json", (response) => {
 });
 
 
-// Checks to see any of user's run out dates are within a week of today. If so, alert them
+
+// Checks to see any of user's run-out dates are within a week. If so, alert them
 function checkDate(response) {
 
     for (const vitamin in response) {
-
         const today = new Date();
         const runOut = response[vitamin]['run_out'];
         const emptyDate = new Date(runOut);
@@ -27,13 +27,13 @@ function checkDate(response) {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         if (diffDays < 7) {
-            alert(`You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`);
+            alert((`You are running low on ${response[vitamin]['name']}. 
+                        Refill soon so you don't break your streak!`));
 
         $(`#${response[vitamin]['id']}`).css("color", "purple");
         };   
     };  
 } 
-
 
 $.get("/user-vitamin-list.json", (response) => {
     checkDate(response);

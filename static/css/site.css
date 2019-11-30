@@ -136,3 +136,7 @@ input[type=number] {
   opacity: 1;
 }
 
+.messages {
+  background-color: purple;
+  color: white;
+}
