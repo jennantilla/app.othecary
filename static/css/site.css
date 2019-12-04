@@ -1,5 +1,24 @@
+/* Sticky Footer Classes */
+
+html,
 body {
+  height: 100%;
   font-family: 'Source Sans Pro', sans-serif;
+  z-index: 0;
+}
+
+#page-content {
+  flex: 1 0 auto;
+}
+
+#sticky-footer {
+  flex-shrink: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active{
+  background-color: #800080;
+  border-color: #800080;
+  outline-color: #800080; 
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:disabled, .btn-primary:visited, .btn-primary:focus, .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:active:focus {
@@ -75,5 +94,8 @@ i.fas.fa-star:hover {
 }
 
 #cosmas {
-  max-width:75%;
+  position:absolute;
+  margin-left: 900px;
+  z-index:1;
+  width:27%;
 }

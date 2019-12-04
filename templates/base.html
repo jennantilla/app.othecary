@@ -35,7 +35,7 @@
 
   </head>
   
-  <body>
+  <body class="d-flex flex-column">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="/"><img src="/static/images/app.a.png">app.othecary</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,6 @@
           <a class="nav-item nav-link" href="/search-page">Search</a>
           {% if "user_id" not in session %}
           <a class="nav-item nav-link" href="/login">Log in</a>
-          <a class="nav-item nav-link" href="/register">Sign up</a>
           {% else %}
           <a class="nav-item nav-link" href="/dashboard/{{ session['user_id'] }}">Dashboard</a>
           <a class="nav-item nav-link" href="/logout">Log out</a>
@@ -60,11 +59,13 @@
     <div class="alert alert-warning" role="alert" id="flash">{{ flash }}</div>
   {% endfor %}
 
+  <div id="page-content">
   {% block content %}
   {% endblock %}
+  </div>
 
   <div class="container">
-    <footer class="footer"><em>app.othecary is for informational purposes only; 
+    <footer class="footer" id="sticky-footer"><em>app.othecary is for informational purposes only; 
     please consult your doctor before starting any supplement routine.</em></footer>
   </div>
 

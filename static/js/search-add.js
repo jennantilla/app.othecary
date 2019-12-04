@@ -93,4 +93,9 @@ $(".add-form").on('submit', (evt) => {
     const formValues = $('.search-filter').serialize();
     $.post('/see-info.json', formValues, seeInfo);
 
+    $('#vit-modal').removeClass('hide');
+
+    $( "#vit-modal").click(function() {
+        $("#vit-modal").addClass('hide');
+        });
     });

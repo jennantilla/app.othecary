@@ -6,33 +6,69 @@
 
 <div class="container">
     <h1>Apothecary Shelf</h1>
-    <p>Browse all supplements or filter by category or brand</p>
-    <form class="add-form" action="/see-info.json" method="POST">
-            <select class="search-filter" name="selected-item" style="width: 30%"></select>
-            <input type="submit" class="m-1 btn btn-primary btn-sm" id="search-submit" value="See supplement details">
-    </form>
+</div>
+
+<div class="container">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="" alt="First slide">
+        <div class="carousel-caption d-none d-md-block">
+            <h6>Vitamin</h6>
+        </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
 </div>
 
 <div class="container">
     <div class="row justify-content-between">
-        <div class="col-6">
-            <div id="search-facts">
-                <h3><div id="prod-name"></div></h3>
-                <div id="brand-name"></div>
-                <div id="prod-cont"></div>
-                <div id="prod-dir"></div>
-                <div id="prod-serv"></div>
-                <div id="prod-type"></div>
-                <div id="supp-form"></div>
-                <div id="targ-grp"></div>
-                <div id="test-div"></div>
-                <br>
-                <canvas class="hide" id="label-pic" style="width:100%"></canvas>
-            </div>
+        <div class="col">
+            <h4>Browse all supplements or filter by category or brand</h4>
+            <form class="add-form" action="/see-info.json" method="POST">
+                    <select class="search-filter" name="selected-item" style="width: 80%"></select>
+                    <input type="submit" class="m-1 btn btn-primary btn-sm" id="search-submit" value="Select">
+            </form>
         </div>
-        <div class="col-4">
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-8">
+            <button type="button" class="btn btn-primary hide" id="vit-modal" data-toggle="modal" data-target=".bd-example-modal-lg">Expand details</button>
+
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div id="search-facts">
+                    <div class="p-5 row">
+                        <div class="col">
+                            <h3><div id="prod-name"></div></h3>
+                            <div id="brand-name"></div>
+                            <div id="prod-cont"></div>
+                            <div id="prod-dir"></div>
+                            <div id="prod-serv"></div>
+                            <div id="prod-type"></div>
+                            <div id="supp-form"></div>
+                            <div id="targ-grp"></div>
+                            <div id="test-div"></div>
+                            <br>
+                            <canvas class="hide" id="label-pic" style="width:100%"></canvas>
+                        </div>
+        <div class="col-3">
             <div class="text-right hide" id="calculator">
-            <h4>Calculate when you'll need to refill</h4>
+            <h4 class="mt-1">Supply</h4>
 
             <form id="calculator-inputs" action="/calculator.json" method="POST">
                 <label class="hide">ID:
@@ -47,7 +83,7 @@
                 <label>Start date:
                     <input type="date" id="start" name="date">
                 </label>
-                <label>Preferred serving size:
+                <label>Serving size:
                     <input type="number" id="cust-serv-amt" name="cust-serv-amt">
                 </label>
                 <label>Serving form:
@@ -61,25 +97,24 @@
                         <option value="tsp">tsp.</option>
                     </select>
          <!--        </label> -->
-                <label>Preferred servings per day:
+                <label>Servings per day:
                     <input type="number" id="cust-serv-freq" name="cust-serv-freq">
                 </label>
-                <input type="submit" class="btn btn-primary btn-sm" id="calc-submit" value="calculate!">
+                <input type="submit" class="mt-3 btn btn-primary btn-sm" id="calc-submit" value="calculate!">
             </form>
-            <div class="hide" id="run-out-dsply">You will run out on <span id="run-out-rslt"></span></div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row justify-content-between">
-        <div id="add-routine-btn">
+            <div class="mt-3 hide" id="run-out-dsply">You will run out on <span class="text-right" id="run-out-rslt"></span></div>
+            <div id="add-routine-btn">
             <form class="hide" id="add-form" action="/add-routine" method="POST">
                 <input class ="hide" id="selected" name="target-vit">
                 <input class="hide" id="run-out-db" name="run-out">
-                <button class="btn btn-primary" type="submit" value="Add to routine">Add to my routine</button>
+                <button class="mt-3 btn btn-primary" type="submit" value="Add to routine">Add to my routine</button>
             </form>
         </div>
-    </div>
+    </div>     
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
