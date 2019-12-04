@@ -1,28 +1,29 @@
 $.get("/user-vitamin-list.json", (res) => {
     function createVitamins() {
     for (item in res) {
-        var lst = document.createElement("DIV");
-        lst.id = res[item]["id"];
-        lst.className = "routine-items";
+        var suppDiv = document.createElement("DIV");
+        suppDiv.id = res[item]["id"];
+        suppDiv.className = "routine-items";
 
         if (res[item]["active"] === true) {
-            document.getElementById("active-section").appendChild(lst);
+            document.getElementById("active-section").appendChild(suppDiv);
         }
         else {
-            document.getElementById("inactive").appendChild(lst);
+            document.getElementById("inactive").appendChild(suppDiv);
         };
 
-        createHeader(res[item]["name"], lst.id);
-        makeRatingForm(res[item]["id"], res[item]["rating"], lst.id)
-        createDetails(res[item]["use"], lst.id);
-        createDetails("Start date: " + res[item]["start_date"].slice(0,16), lst.id);
-        createDetails("You will run out on: " + res[item]["run_out"].slice(0,16), lst.id);
-        createButton(res[item]["id"], lst.id)
+        createHeader(res[item]["name"], suppDiv.id);
+        makeRatingForm(res[item]["id"], res[item]["rating"], suppDiv.id)
+        createDetails(res[item]["use"], suppDiv.id);
+        createDetails("Start date: " + res[item]["start_date"].slice(0,16), suppDiv.id);
+        createDetails("You will run out on: " + res[item]["run_out"].slice(0,16), suppDiv.id);
+        createButton(res[item]["id"], suppDiv.id)
     };
     };
 
     function createHeader(key, parentId) {
         var h1 = document.createElement("H5");
+        h1.className = "p-2 supp-head"
         var name1 = document.createTextNode(key);
 
         h1.appendChild(name1);
@@ -30,17 +31,17 @@ $.get("/user-vitamin-list.json", (res) => {
     };
 
     function createDetails(key, parentId) {
-        var li1 = document.createElement("P");
+        var para = document.createElement("P");
         var name2 = document.createTextNode(key);
 
-        li1.appendChild(name2);
-        document.getElementById(parentId).appendChild(li1);
+        para.appendChild(name2);
+        document.getElementById(parentId).appendChild(para);
     };
 
     function createButton(key, parentId) {
         var deactivateButton = document.createElement("BUTTON");
         deactivateButton.type = "image";
-        deactivateButton.className = "m-1 btn btn-primary btn-sm"
+        deactivateButton.className = "mb-3 btn btn-primary btn-sm"
         deactivateButton.id = "btn-" + key;
         deactivateButton.name = "clicked-btn";
         deactivateButton.value = key;
@@ -73,14 +74,9 @@ $.get("/user-vitamin-list.json", (res) => {
         };
 
         function createRadio(num, rating, parentId) {
-            
-            var newLabel = document.createElement("Label");
-            newLabel.innerHTML = "<i class='fas fa-star'></i>";
-            ratingForm.appendChild(newLabel);
-
             var radio = document.createElement("INPUT");
             radio.type = "radio";
-            radio.className = "star-btn"
+            radio.className = "hide"
             radio.id = parentId + "-star-" + num;
             radio.name = "rating";
             radio.value = num;
@@ -88,10 +84,16 @@ $.get("/user-vitamin-list.json", (res) => {
             if (radio.value <= rating) {
                 radio.checked = "checked";
             };
+            ratingForm.appendChild(radio);
+
+            var newLabel = document.createElement("Label");
+            newLabel.className = "active"
+            newLabel.innerHTML = "<i class='fas fa-star'></i>";
+            ratingForm.appendChild(newLabel);
             
 
             newLabel.setAttribute("for", radio.id);
-            ratingForm.appendChild(radio);
+            
         }; 
 
         createIdInput(parentId);

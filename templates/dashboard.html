@@ -21,16 +21,16 @@
                     <form class="form-inline" id="performance" action="/update-streak" method='POST'>
                             <h3>Did you take your supplements today?</h3>
                             <div class="form-check form-check-inline">
-                                <label for="yes"><i class="far fa-check-circle fa-2x"></i></label>
-                                    <input class="form-check-input hide" type="radio" id="yes" name="streak" value="yes">
-                                <label for="no"><i class="far fa-times-circle fa-2x"></i></label>
-                                    <input class="form-check-input hide" type="radio" name="streak" value="no">
-                                <input class="form-control" type="text" name="notes" placeholder="How are you feeling?">
+                                <input class="form-check-input hide" type="radio" id="yes" name="streak" value="yes">
+                                <label for="yes" alt="no"><i class="far fa-check-circle fa-2x"></i></label>
+                                <input class="form-check-input hide" type="radio" id="no" name="streak" value="no">
+                                <label for="no" alt="no"><i class="far fa-times-circle fa-2x"></i></label>
+                                <input class="m-1 form-control" type="text" name="notes" style="width:270px" placeholder="How are you feeling?">
                                 <button class="m-1 btn btn-primary btn-sm" type="submit" id="streak-button" value="Update streak">Update streak</button>
                             </div>
                     </form>
                 </div>
-                <br>
+                
 
                 {% if log|length > 0 %}
                 <div id="streak-sentence"><h4>You're on a <span id="streak-info">{{ user.streak_days }}</span> day streak</h4></div>
@@ -39,28 +39,21 @@
                 <canvas id="successChart"></canvas>
                 </div> 
                 <br>
+                <br>
+                <br>
 
                 <h3 class="dash-head">{{ user.name }}'s Logs</h3>
                 <form id="log-form" action="/see-log.json" method="POST">
                     <div id="user-log"><select id="log-search" name="log-results[]" style="width:100%" multiple="multiple"></select></div>
                     <button class="m-1 btn btn-primary btn-sm" type="submit" id="log-btn">See log details</button>
                 </form>
+                <br>
                 <div id="log-report"></div>
                 <br>
                 <br>
-                <br>
-                <br>
 
-                <h3 class="dash-head">Resources</h3>
-                <h6>As a {{ user_age }} year old {{ user.sex }}, you may be interested in the following topics:</h6>
-
-                {% if user.diet == "vegetarian" or user.diet == "vegan" %}
-
-                <h6>As a {{ user.diet }}, you may need to supplement your diet with some essential nutritional supplements:</h6>
-                
-                {% endif %} 
+                {% endif %}
         </div>
-        {% endif %}
         <div class="col-5"><h3 class="dash-head">Routine for {{ today.strftime("%B %d, %Y") }}</h3>
             <div id="active-section"></div>
         </div>
@@ -79,15 +72,33 @@
 </div>      
         
 {% else %}
+<div class="container">
     <div class="row justify-content-between">
-        <div class="col-5">
+        <div class="col-6">
             <h3 class="dash-head">You have no active supplements in your routine.</h3>
             <p>Check out the sidebar for some targeted topics that may interest you or
             <a href=/supplements>start your research.</a></p>
         </div>
     </div>
+</div>
 
 {% endif %}
+
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-6">
+            <h3 class="dash-head">Resources</h3>
+            <h6>As a {{ user_age }} year old {{ user.sex }}, you may be interested in the following topics:</h6>
+
+            {% if user.diet == "vegetarian" or user.diet == "vegan" %}
+
+            <h6>As a {{ user.diet }}, you may need to supplement your diet with some essential nutritional supplements:</h6>
+
+            {% endif %}
+        </div>
+    </div>
+</div>
+
 
 <!-- <div id="container">
     <div class="row justify-content-between">
@@ -96,9 +107,10 @@
         </div>
     </div>    
 </div> -->
-<!-- <script type="text/javascript">
-    $('.star-btn').on('click', function() {
-        $(this).addClass('active');
+
+<!-- <script>
+    $('label').on('click', function() {
+        this.removeClass('active');
     })
 </script> -->
              

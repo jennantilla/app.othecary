@@ -22,9 +22,9 @@ function seeInfo(results) {
         document.getElementById("log-report").appendChild(logDiv);
         
         if (results[item]["take_vitamin"] === true) {
-            $(logDiv).html(`✔ ${results[item]['date']}: ${results[item]['notes']}`)
+            $(logDiv).html(`\n\n${'<i class="far fa-check-circle"></i>'} ${results[item]['date']}: ${results[item]['notes']}`)
         } else {
-            $(logDiv).html(`✖ ${results[item]['date']}: ${results[item]['notes']}`)
+            $(logDiv).html(`\n\n${'<i class="far fa-times-circle"></i>'} ${results[item]['date']}: ${results[item]['notes']}`)
         };
     };
     }; 

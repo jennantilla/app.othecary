@@ -4,10 +4,16 @@ body {
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:disabled, .btn-primary:visited, .btn-primary:focus, .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:active:focus {
   background-color: #800080;
-  border-color: #800080;}
+  border-color: #800080;
+  outline-color: #800080; 
+}
 
 .container {
   margin-top: 20px;
+}
+
+.supp-head {
+  background-color: lightgray;
 }
 
 .hide {
@@ -44,28 +50,28 @@ body {
 }
 
 .ratings{
-  color: gray;
+  color: lightgray;
   font-size: 25px !important;
 }
 
-/*.ratings input[type="radio"]:checked+label {
+input:checked + label {
   color: orange;
-}*/
+}
 
-.star-btn.active, .star-btn.secondary-active{
+input:checked + label:hover {
+  color: lightgray;
+}
+
+.far-fa-check-circle:hover {
+  color: orange;
+}
+
+.far-fa-times-circle:hover {
   color: orange;
 }
 
 i.fas.fa-star:hover {
   color: orange;
-}
-
-.far.fa-check-circle:hover {
-  color: green;
-}
-
-.far.fa-times-circle:hover {
-  color: red;
 }
 
 #cosmas {
