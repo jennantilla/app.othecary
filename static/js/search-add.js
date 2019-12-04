@@ -32,7 +32,7 @@ function seeInfo(results) {
     $("#prod-type").html("Product type: " + results['product_type']);
     $("#supp-form").html("Supplement form: " + results['supplement_form']);
     $("#targ-grp").html("Target group: " + results['group']);
-    $("#the-canvas").removeClass('hide');
+    $("#label-pic").removeClass('hide');
     $("#add-form").removeClass('hide');
     $("#calculator").removeClass('hide');
     $("#selected").val(results['id']);
@@ -64,7 +64,7 @@ function seeInfo(results) {
         var viewport = page.getViewport({scale: scale});
 
         // Prepare canvas using PDF page dimensions
-        var canvas = document.getElementById('the-canvas');
+        var canvas = document.getElementById('label-pic');
         var context = canvas.getContext('2d');
         canvas.height = viewport.height;
         canvas.width = viewport.width;

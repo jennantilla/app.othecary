@@ -1,57 +1,24 @@
-#wrapper {
-  width: 50%;
-  height: 100%;
+body {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
-/*#wrapper p:last-of-type {
-  color: purple;
-}*/
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:disabled, .btn-primary:visited, .btn-primary:focus, .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:active:focus {
+  background-color: #800080;
+  border-color: #800080;}
 
-.logged-out li{
-  display: inline;
-}
-
-.logged-in li{
-  display: inline;
-}
-
-#search-filter {
-  display: inline-block;
+.container {
+  margin-top: 20px;
 }
 
 .hide {
   display: none;
 }
 
-#inactive-section {
-  width: 50%;
-  height: 100%;
-}
-
 .show {
-    display: block;
-}
-
-#search-submit {
-  display: inline-block;
-}
-
-#streak-sentence {
-    display: inline-block;
-}
-
-#streak-info {
-    display: inline;
-}
-
-#streakq-chart {
-  width:50%;
-  height: 100%;
+  display: block;
 }
 
 .collapsible {
-  background-color: #eee;
-  color: #444;
   cursor: pointer;
   padding: 10px;
   width: 100%;
@@ -61,10 +28,6 @@
   font-size: 15px;
 }
 
-.active, .collapsible:hover {
-  background-color: #ccc;
-}
-
 .content {
   padding: 10px;
   display: none;
@@ -72,71 +35,19 @@
   background-color: #f1f1f1;
 }
 
-#user-profile {
-  width: 40%;
-  height: 100%;
-  display: inline-block;
-  float: right;
+#dash-head {
+  background-color: lightgray;
 }
 
-#calculator {
-  width: 30%;
-  height: 100%;
-  display: inline-block;
-  float: right;
+.ratings{
+  color: gray;
+  font-size: 25px !important;
 }
 
-#the-canvas {
-  width: 30%;
-  height: 100%;
+i.fas.fa-star:hover {
+  color: orange;
 }
 
-#search-facts {
-  width: 50%;
-  height: 100%;
-}
-
-input[type=text] {
-   width: 200px;
-}
-
-input[type=number] {
-   width: 25px;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black; 
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 350px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  right: 105%;
-  margin-left: -60px;
-
-  /* Fade in tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-.messages {
-  background-color: purple;
-  color: white;
+#cosmas {
+  max-width:75%;
 }

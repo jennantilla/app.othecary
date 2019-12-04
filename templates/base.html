@@ -1,59 +1,74 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- CSS -->
+    <link href="/static/css/site.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+    <!-- AJAX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.js"></script>
+    <!--  Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+    <!-- Charts.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+   <!--  pdf.js -->
+    <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+   <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/ce6ae49d12.js" crossorigin="anonymous"></script>
+   <!--  Google Fonts -->
+   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+<!--    <link href="https://fonts.googleapis.com/css?family=Barlow&display=swap" rel="stylesheet"> -->
+<!--     <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet"> -->
+
     <title>{% block title %}TITLE{% endblock %}</title>
-  <!-- Css -->
-  <link href="/static/css/site.css" rel="stylesheet">
-  <!-- jQuery -->
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
-  <!-- AJAX -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.js"></script>
-  <!--  Select2 -->
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
-  <!-- Charts.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
- <!--  pdf.js -->
-  <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
-  
-  
 
-</head>
-<body>
-    <div class="navbar-header">
-            {% if "user_id" not in session %}
-            <ul class="logged-out">
-                <li><a href = "/"><img src="/static/images/a.png">app.othecary</a></li>
-                <li><a href="/register">Sign up</a></li>
-                <li><a href="/login">Log in</a></li>
-                <li><a href="/supplements">Information</a></li>
-                <li><a href="/search-page">Search</a></li>
-            {% endif %}
-            </ul>
-            {% if "user_id" in session %}
-            <ul class="logged-in">
-                <li><a href = "/"><img src="/static/images/a.png">app.othecary</a></li>
-                <li><a href="/supplements">Information</a></li>
-                <li><a href="/search-page">Search</a></li>
-                <li><a href= "/dashboard/{{ session['user_id'] }}">Dashboard</a></li>
-                <li><a href="/logout">Log out</a></li>
-            {% endif %}
-            </ul>
-    </div>
-    <div id="flashes">
-    {% for flash in get_flashed_messages() %}
-      <div class="messages">{{ flash }}</div>
-    {% endfor %}
+  </head>
+  
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/"><img src="/static/images/app.a.png">app.othecary</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="/supplements">Discover</a>
+          <a class="nav-item nav-link" href="/search-page">Search</a>
+          {% if "user_id" not in session %}
+          <a class="nav-item nav-link" href="/login">Log in</a>
+          <a class="nav-item nav-link" href="/register">Sign up</a>
+          {% else %}
+          <a class="nav-item nav-link" href="/dashboard/{{ session['user_id'] }}">Dashboard</a>
+          <a class="nav-item nav-link" href="/logout">Log out</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
 
-    {% block content %}
-    {% endblock %}
+  {% for flash in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert" id="flash">{{ flash }}</div>
+  {% endfor %}
+
+  {% block content %}
+  {% endblock %}
+
+  <div class="container">
     <footer class="footer"><em>app.othecary is for informational purposes only; 
     please consult your doctor before starting any supplement routine.</em></footer>
+  </div>
 
-    
-</body>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
 </html>

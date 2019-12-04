@@ -3,22 +3,53 @@
 {% block title %}app.othecary{% endblock %}
 
 {% block content %}
-<div>
-    <h1>Great quality of life starts with great nutrition.</h1>
-    <h2>Sometimes, getting the nutrients we need from our daily meals isn't realistic.</h2>
-    <h3>Take control of your nutrition with app.othecary, the virtual supplement storehouse of the 21st Century.</h3>
-</div>
-<div class="container-name">
-    <div class="cosmas" style="display: flex; justify-content: flex-end">
-        <img src="/static/images/cosmas.png">
-    </div>
-    <div class="features">
-        <h3>With app.othecary, avoiding deficiencies is drop-dead easy:</h3>
-            <h4>Browse and research supplements directly from the app</h4>
-            <h4>Add specific products to your custom routine</h4>
-            <h4>Access and edit your routine and account history from your personalized dashboard</h4>
+
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-6">
+            <div class="jumbotron">
+              <h1 class="display-4">Great quality of life starts with great nutrition.</h1>
+              <p class="lead">In our busy lives, getting the nutrients we need from our daily meals isn't always realistic.</p>
+              <hr class="my-4">
+              <p>Take control of your health with app.othecary, the virtual supplement storehouse of the 21st Century.</p>
+              <p class="lead">
+                <a class="btn btn-primary btn-lg" href="/register" role="button">Sign up</a>
+              </p>
+            </div>
+        </div>
+        <div class="col-6"><img src="/static/images/cosmas.png" class="img-fluid" id="cosmas" alt="Responsive image"></div>
+        </div>
     </div>
 </div>
 
+
+
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-6"><h1>Great quality of life starts with great nutrition.</h1></div>
+    </div>
+    <div class="row py-3 justify-content-between">
+        <div class="col-6"><h2>In our busy lives, getting the nutrients we need from our daily meals isn't always realistic.</h2></div>
+        <div class="col-4"><img src="/static/images/cosmas.png" class="img-fluid" alt="Responsive image"></div>
+    </div>
+    <div class="row py-3">
+        <div class="col-6"><h3>Take control of your nutrition with app.othecary, the virtual supplement storehouse of the 21st Century.</h3></div>
+    </div>
+    
+</div> -->
+
+<div class="container">   
+    <div class="row">
+        <div class="col py-5"><h3>With app.othecary, avoiding deficiencies is drop-dead easy:</h3></div>
+    </div>
+    <div class="row justify-content-between">
+        <div class="col text-center"><h4>Browse and research supplements directly from the app</h4>
+        </div>
+        <div class="col text-center"><h4>Add specific products to your custom routine</h4>
+        </div>
+        <div class="col text-center"><h4>Access and edit your routine and account history from your personalized dashboard</h4>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

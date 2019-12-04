@@ -59,6 +59,7 @@ class User_Vitamin(db.Model):
     discontinue_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
     run_out_date = db.Column(db.Date)
+    user_rating = db.Column(db.Integer, default=0)
 
     # Define relationship to User
     user = db.relationship("User", backref=db.backref("user_vitamins"))

@@ -3,55 +3,78 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-    <div>
-        <h4>Create an Account</h4>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <h4>Create an Account</h4>
+        </div>
     </div>
-    <div>
-        <form action="/intake" method="POST">
-            <div class="form-group">
-                <label>Name:
-                    <input type="text" name="name" required class="form-control">
-                </label>
+    <form action="/intake" method="POST">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="name">Name:</label>
+                     <input type="text" name="name" required class="form-control">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Email:
-                    <input type="email" name="email" required class="form-control">
-                </label>
+        </div>
+    <form action="/intake" method="POST">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="email">Email:</label>
+                     <input type="email" name="email" required class="form-control" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">Your email is safe with us.</small>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Password:
-                    <input type="password" name="password" required class="form-control">
-                </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="password">Password:</label>
+                        <input type="password" name="password" required class="form-control">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Birthday:
-                    <input type="date" name="birthday" class="form-control">
-                </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="birthday">Birthday:</label>
+                        <input type="date" name="birthday" required class="form-control">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Sex:
-                    <select name="sex" class="form-control" plaeholder="choose one">Select
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="mtf">Transitioning; Male to Female</option>
-                        <option value="ftm">Transitioning; Female to Male</option>
-                    </select>
-                </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="sex">Sex:</label>
+                        <select name="sex" class="form-control" placeholder="Select one">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Diet:
-                    <select name="diet" class="form-control" placeholder="choose one">Diet
-                        <option value="omnivore">Omnivore</option>
-                        <option value="vegetarian">Vegetarian</option>
-                        <option value="vegan">Vegan</option>
-                        <option value="gluten_free">Gluten Free</option>
-                    </select>
-                </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="diet">Diet:</label>
+                        <select name="diet" class="form-control" placeholder="choose one">
+                            <option value="omnivore">Omnivore</option>
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                            <option value="gluten_free">Gluten Free</option>
+                        </select>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-                <input type="submit" value="Create account">
+        </div>
+        <div class="row">
+            <div class="col-6 offset-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
+
 {% endblock %}

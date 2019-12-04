@@ -27,9 +27,10 @@ function checkDate(response) {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         if (diffDays < 7) {
-            alert(`You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`);
+            $('#running-low').removeClass('hide')
+            $('#running-low').html(`You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`);
 
-        $(`#${response[vitamin]['id']}`).css("color", "purple");
+        // $(`#${response[vitamin]['id']}`).css("color", "purple");
         };   
     };  
 } 

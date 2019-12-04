@@ -3,24 +3,36 @@
 {% block title %}app.othecary{% endblock %}
 
 {% block content %}
-    <h4>Welcome Back</h4>
-        <form action="/validate" method="POST">
-            <div class="login-field">
-                <label>Email:
-                    <input type="email" name="email" required class="login-control">
-                </label>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <h4>Welcome Back</h4>
+        </div>
+    </div>
+    <form action="/validate" method="POST">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="email">Email:</label>
+                     <input type="email" name="email" required class="form-control" aria-describedby="emailHelp">
+                </div>
             </div>
-
-            <div class="login-field">
-                <label>Password:
-                    <input type="password" name="password" required class="login-control">
-                </label>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-6 offset-3">
+                    <label for="password">Password:</label>
+                        <input type="password" name="password" required class="form-control">
+                    </label>
+                </div>
             </div>
-        <form action="/login" method="POST">
-            <div class="login-field">
-                <input type="submit" value="Log In">
+        </div>
+        <div class="row">
+            <div class="col-6 offset-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-        </form>
+        </div>
+    </form>
 </div>
 
 

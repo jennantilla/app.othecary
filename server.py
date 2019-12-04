@@ -73,34 +73,6 @@ def show_dashboard(user_id):
     account_age = today - user.signup_date
     account_age = account_age.days
 
-    gen_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=dietary%supplements&retmax=1")
-    gen_result = xmltodict.parse(gen_req.content)
-    gen_info = gen_result['nlmSearchResult']['list']['document']['content'][3]['#text']
-
-    lbl_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=foodlabeling&retmax=1")
-    lbl_result= xmltodict.parse(lbl_req.content)
-    lbl_info = lbl_result['nlmSearchResult']['list']['document']['content'][3]['#text'][166:1200]
-
-    herb_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=herbal%medicine&retmax=1")
-    herb_result= xmltodict.parse(herb_req.content)
-    herb_info = herb_result['nlmSearchResult']['list']['document']['content'][7]['#text']
-
-    min_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=minerals&retmax=1")
-    min_result= xmltodict.parse(min_req.content)
-    min_info = min_result['nlmSearchResult']['list']['document']['content'][8]['#text']
-
-    preg_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=pregnancy%and%nutrition&retmax=1")
-    preg_result= xmltodict.parse(preg_req.content)
-    preg_info = preg_result['nlmSearchResult']['list']['document']['content'][3]['#text'][992:2501]
-
-    veg_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=vegetariandiet&retmax=1")
-    veg_result= xmltodict.parse(veg_req.content)
-    veg_info = veg_result['nlmSearchResult']['list']['document']['content'][4]['#text'][500:]
-
-    frd_req = requests.get("https://wsearch.nlm.nih.gov/ws/query?db=healthTopics&term=health%fraud&retmax=1")
-    frd_result= xmltodict.parse(frd_req.content)
-    frd_info = frd_result['nlmSearchResult']['list']['document']['content'][4]['#text']
-
     if account_age < 1:
         account_age = 1
 
@@ -110,14 +82,7 @@ def show_dashboard(user_id):
                             history=history,
                             log=log,
                             today=today, 
-                            account_age=account_age,
-                            gen_info=gen_info,
-                            lbl_info=lbl_info,
-                            herb_info=herb_info,
-                            min_info=min_info,
-                            preg_info=preg_info,
-                            veg_info=veg_info,
-                            frd_info=frd_info)
+                            account_age=account_age)
 
 
 @app.route('/register')
@@ -155,20 +120,72 @@ def update_streak():
 
     user_id = session.get("user_id")
     streak = request.form.get("streak")
+    notes = request.form.get("notes")
     user = User.query.filter_by(user_id=user_id).first()
 
     if streak == "yes":
         user.streak_days += 1
         user.success_rate += 1
         entry = (User_Log(user_id=user_id, take_vitamin=True, 
-                            entry_date=datetime.now().date()))
+                            entry_date=datetime.now().date(), user_notes=notes))
 
     elif streak == "no":
         user.streak_days = 0
         entry = (User_Log(user_id=user_id, take_vitamin=False, 
-                            entry_date=datetime.now().date()))
+                            entry_date=datetime.now().date(), user_notes=notes))
 
     db.session.add(entry)
+    db.session.commit()
+
+    return redirect(f'/dashboard/{user_id}')
+
+
+@app.route('/user_log.json', methods=["GET"])
+def get_user_log():
+    """Displays notes information from user log"""
+
+    search = request.args.get("search_terms")
+    user_id = session.get("user_id")
+    log = (User_Log.query.filter(User_Log.user_notes!=None, User_Log.user_id==user_id, User_Log.user_notes.
+                    ilike(f"%{search}%")).all())
+
+    log_results = ({"results": [{"id": item.log_id, "text": f"{item.entry_date.strftime('%B %d, %Y')}"} for item in log]})
+
+    return jsonify(log_results)
+
+
+@app.route('/see-log.json', methods=["POST"])
+def show_log_info():
+    """Displays info for selected vitamin"""
+
+    chosen_items = request.form.getlist("log-results[]")
+
+    log_list = []
+
+    for item in chosen_items:
+        selected_log_details = {}
+        info = User_Log.query.filter_by(log_id=item).first()
+        selected_log_details['id'] = info.log_id
+        selected_log_details['date'] = info.entry_date.strftime('%B %d, %Y')
+        selected_log_details['take_vitamin'] = info.take_vitamin
+        selected_log_details['notes'] = info.user_notes
+        log_list.append(selected_log_details)
+    
+    return jsonify(log_list)
+
+
+@app.route('/user_ratings.json', methods=["POST"])
+def update_ratings():
+    """Updates a rating for a supplement in the db"""
+
+    rating = request.form.get("rating")
+    label_id = request.form.get("id")
+
+    user_id = session.get("user_id")
+
+    user_record = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
+
+    user_record.user_rating = rating
     db.session.commit()
 
     return redirect(f'/dashboard/{user_id}')
@@ -215,7 +232,7 @@ def display_search():
 
 @app.route('/vitamin-search.json', methods=["GET"])
 def vitamin_search():
-    """Provide a list of filtered vitamins"""
+    """Provide result of filtered vitamins"""
     
     search = request.args.get("search_terms")
 
@@ -229,7 +246,7 @@ def vitamin_search():
 
 
 @app.route('/see-info.json', methods=["POST"])
-def vitamin_info():
+def see_vitamin_info():
     """Displays info for selected vitamin"""
 
     chosen_item = request.form.get("selected-item")
@@ -366,7 +383,7 @@ def success_data():
                     {
                         "data": [achieved, missed],
                         "backgroundColor": [
-                            "#800080"
+                            "#320080"
                         ],
                     }],
                 
