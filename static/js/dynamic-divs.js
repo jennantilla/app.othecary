@@ -13,7 +13,7 @@ $.get("/user-vitamin-list.json", (res) => {
         };
 
         createHeader(res[item]["name"], lst.id);
-        makeRatingForm(res[item]["id"], lst.id)
+        makeRatingForm(res[item]["id"], res[item]["rating"], lst.id)
         createDetails(res[item]["use"], lst.id);
         createDetails("Start date: " + res[item]["start_date"].slice(0,16), lst.id);
         createDetails("You will run out on: " + res[item]["run_out"].slice(0,16), lst.id);
@@ -57,7 +57,7 @@ $.get("/user-vitamin-list.json", (res) => {
         };
     };
 
-    function makeRatingForm(key, parentId) {
+        function makeRatingForm(key, rating, parentId) {
         var ratingForm = document.createElement("FORM");
         ratingForm.className = "ratings"
         ratingForm.id = "formRating-" + parentId;
@@ -72,7 +72,7 @@ $.get("/user-vitamin-list.json", (res) => {
             ratingForm.appendChild(labelId);
         };
 
-        function createRadio(num, parentId) {
+        function createRadio(num, rating, parentId) {
             
             var newLabel = document.createElement("Label");
             newLabel.innerHTML = "<i class='fas fa-star'></i>";
@@ -80,21 +80,26 @@ $.get("/user-vitamin-list.json", (res) => {
 
             var radio = document.createElement("INPUT");
             radio.type = "radio";
-            radio.className = "hide"
+            radio.className = "star-btn"
             radio.id = parentId + "-star-" + num;
             radio.name = "rating";
             radio.value = num;
+
+            if (radio.value <= rating) {
+                radio.checked = "checked";
+            };
+            
 
             newLabel.setAttribute("for", radio.id);
             ratingForm.appendChild(radio);
         }; 
 
         createIdInput(parentId);
-        createRadio(1, parentId);
-        createRadio(2, parentId);
-        createRadio(3, parentId);
-        createRadio(4, parentId);
-        createRadio(5, parentId);
+        createRadio(1, rating, parentId);
+        createRadio(2, rating, parentId);
+        createRadio(3, rating, parentId);
+        createRadio(4, rating, parentId);
+        createRadio(5, rating, parentId);
 
         var submitRating = document.createElement("INPUT");
         submitRating.type = "submit";
@@ -150,5 +155,4 @@ $.get("/user-vitamin-list.json", (res) => {
     createVitamins();
     makeCollapsible();
     moveDiv();
-
     });

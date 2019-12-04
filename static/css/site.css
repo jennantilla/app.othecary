@@ -35,6 +35,10 @@ body {
   background-color: #f1f1f1;
 }
 
+#column {
+  border: 1px solid #c9c9c9;
+}
+
 #dash-head {
   background-color: lightgray;
 }
@@ -44,8 +48,24 @@ body {
   font-size: 25px !important;
 }
 
+/*.ratings input[type="radio"]:checked+label {
+  color: orange;
+}*/
+
+.star-btn.active, .star-btn.secondary-active{
+  color: orange;
+}
+
 i.fas.fa-star:hover {
   color: orange;
+}
+
+.far.fa-check-circle:hover {
+  color: green;
+}
+
+.far.fa-times-circle:hover {
+  color: red;
 }
 
 #cosmas {

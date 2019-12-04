@@ -38,3 +38,6 @@ function checkDate(response) {
 $.get("/user-vitamin-list.json", (response) => {
     checkDate(response);
 });
+
+
+

@@ -430,7 +430,8 @@ def find_supplements():
         item_info["container_amount"] = item.vitamin.net_contents
         item_info["container_unit"] = item.vitamin.net_content_unit
         item_info["active"] = item.active
-        item_info["run_out"] = (item.run_out_date)
+        item_info["run_out"] = item.run_out_date
+        item_info["rating"] = item.user_rating
         actives_list.append(item_info)
 
     return jsonify(actives_list)
