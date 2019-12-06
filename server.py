@@ -1,3 +1,5 @@
+import random
+
 import requests
 import xmltodict
 import json
@@ -9,6 +11,8 @@ import calendar
 from flask import Flask, redirect, request, render_template, session, flash, jsonify, request_finished
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
+
+from sqlalchemy import func
 
 from model import connect_to_db, db, User, User_Vitamin, Vitamin, User_Log
 
@@ -225,7 +229,7 @@ def look_up_fact_sheet(vitamin):
 
 @app.route('/search-page')
 def display_search():
-    """Display search bar"""
+    """Display search page"""
 
     return render_template('search-add.html')
 
@@ -284,20 +288,20 @@ def calculate_run_out():
     content = content.split(" ")
     content_amt = float(content[0])
 
-    # calculations based on ounces
+    # calculations based on ounces (e.g., 2 tbsps per ounce)
     if serv_form == "tsp":
-        servings = (content_amt * 6) 
+        daily_serving = (6 * amount) * servs_day
 
     elif serv_form == "tbsp":
-        servings = (content_amt * 2) 
+        daily_serving = (2 * amount) * servs_day
 
     elif serv_form == "gram":
-        servings = (content_amt * 28.35) 
+        daily_serving = (28.35 * amount) * servs_day 
 
     elif serv_form == "unit":
-        servings = content_amt
+        daily_serving = amount * servs_day
 
-    supply = servings / servs_day
+    supply = content_amt / daily_serving
     run_out_date = start_obj + timedelta(days=supply)
 
     return jsonify({"run-out": run_out_date})
@@ -308,9 +312,9 @@ def add_routine():
     """Adds a chosen vitamin to the user's routine"""
 
     label_id = request.form.get('target-vit')
-    user_id = session.get("user_id")
     run_out_date = request.form.get("run-out")
-    
+    user_id = session.get("user_id")
+
     # prevent duplicates:
     routine = User_Vitamin.query.filter_by(user_id=user_id).all()
     ids_for_user = []
@@ -350,10 +354,12 @@ def remove_routine():
 
     else:
         routine.active = True
+        routine.start_date = datetime.today()
 
     db.session.commit()
 
     return redirect(f'/dashboard/{user_id}')
+    # return jsonify({"active" : routine.active})
 
 
 @app.route('/success.json')
@@ -409,7 +415,7 @@ def check_log():
 
 @app.route('/user-vitamin-list.json')
 def find_supplements():
-    """returns a dictionary of active vitamins and its details"""
+    """Returns a dictionary of active vitamins and its details"""
 
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
@@ -427,6 +433,7 @@ def find_supplements():
         item_info["serving_unit"] = item.vitamin.serving_size_unit
         item_info["use"] = item.vitamin.use
         item_info["start_date"] = item.start_date
+        item_info["discontinue_date"] = item.discontinue_date
         item_info["container_amount"] = item.vitamin.net_contents
         item_info["container_unit"] = item.vitamin.net_content_unit
         item_info["active"] = item.active
@@ -435,6 +442,45 @@ def find_supplements():
         actives_list.append(item_info)
 
     return jsonify(actives_list)
+
+
+@app.route("/suggestions.json", methods=["GET"])
+def create_suggestions():
+    """Curates supplements the user may be interested in based on user profile"""
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+
+    # existing_trends = User_Vitamin.query.filter_by(user_id=user_id, active="true").all()
+
+    # preferred_brands = set()
+
+    # for info in existing_trends:
+    #     preferred_brands.add(info.vitamin.brand_name)
+
+    if user.sex == "female":
+            # tuple of all custom keywords
+            important_vitamins = ("folate", "folic acid", "women", "female", user.diet)
+
+    if user.sex == "male":
+            important_vitamins = ("coq10", "omega-3", "saw palmetto", " men's", user.diet)
+
+    # print all the distinct products that have either thing in their product name
+    query = Vitamin.query.filter(Vitamin.product_name.ilike(f"%{important_vitamins[0]}%") | Vitamin.product_name.ilike(f"%{important_vitamins[1]}%") | Vitamin.product_name.ilike(f"%{important_vitamins[2]}%") | Vitamin.product_name.ilike(f"%{important_vitamins[3]}%")| Vitamin.product_name.ilike(f"%{important_vitamins[4]}%")).distinct(Vitamin.product_name).all()
+    
+    personalized_list = []
+    
+    for item in query:
+        product_suggestions = {}
+
+        product_suggestions['id'] = item.label_id
+        product_suggestions['name'] = item.product_name
+        product_suggestions['use'] = item.use
+        personalized_list.append(product_suggestions)
+
+    featured = random.choice(personalized_list)
+
+    return jsonify(featured)
 
 
 @app.route('/logout')

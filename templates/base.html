@@ -44,11 +44,11 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-item nav-link" href="/supplements">Discover</a>
-          <a class="nav-item nav-link" href="/search-page">Search</a>
           {% if "user_id" not in session %}
           <a class="nav-item nav-link" href="/login">Log in</a>
           {% else %}
           <a class="nav-item nav-link" href="/dashboard/{{ session['user_id'] }}">Dashboard</a>
+          <a class="nav-item nav-link" href="/search-page">Search</a>
           <a class="nav-item nav-link" href="/logout">Log out</a>
           {% endif %}
         </div>

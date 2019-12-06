@@ -9,7 +9,7 @@ $(document).ready(function() {
                 return {'search_terms': params.term}   
             }
         },
-        placeholder: "Narrow your search"
+        placeholder: "ex: calcium"
         });
 });
 
@@ -84,7 +84,6 @@ function seeInfo(results) {
       console.error(reason);
     });
   }
-
 
 // Event listener
 $(".add-form").on('submit', (evt) => {

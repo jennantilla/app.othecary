@@ -8,7 +8,6 @@ function checkLogged(response) {
     };
 }
 
-
 $.get("/check-logged.json", (response) => {
     checkLogged(response);
 });
@@ -26,11 +25,13 @@ function checkDate(response) {
         var timeDiff = Math.abs(today.getTime() - emptyDate.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        if (diffDays < 7) {
-            $('#running-low').removeClass('hide')
-            $('#running-low').html(`You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`);
-
-        // $(`#${response[vitamin]['id']}`).css("color", "purple");
+        if (diffDays > 0 && diffDays < 5) {
+            let lowAlert = document.createElement("DIV");
+            lowAlert.id = "running-low";
+            lowAlert.className = "alert alert-warning";
+            lowAlert.role = "alert";
+            lowAlert.innerHTML = `You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`;
+            document.getElementById("low-alert").appendChild(lowAlert);
         };   
     };  
 } 
@@ -39,5 +40,14 @@ $.get("/user-vitamin-list.json", (response) => {
     checkDate(response);
 });
 
+
+
+// Retrieves a suggested supplement to spotlight
+$.get("/suggestions.json", (res) => {
+    $("#spotlight").html(res.name);
+    $("#info").html(res.use);
+    $(".spot-id").attr("value", res.id);
+    $(".spot-run").attr("value", (new Date().toISOString().substr(0, 10)));
+});
 
 

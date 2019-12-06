@@ -10,6 +10,7 @@ $.get("/user-vitamin-list.json", (res) => {
         }
         else {
             document.getElementById("inactive").appendChild(suppDiv);
+            createDiscontinue("Discontinued on: " + res[item]["discontinue_date"].slice(0,16), suppDiv.id);
         };
 
         createHeader(res[item]["name"], suppDiv.id);
@@ -30,8 +31,19 @@ $.get("/user-vitamin-list.json", (res) => {
         document.getElementById(parentId).appendChild(h1);
     };
 
+    function createDiscontinue(key, parentId) {
+        var para = document.createElement("P");
+        para.id = key;
+        para.className = "discontinue-flag"
+        var name2 = document.createTextNode(key);
+
+        para.appendChild(name2);
+        document.getElementById(parentId).appendChild(para);
+    };
+
     function createDetails(key, parentId) {
         var para = document.createElement("P");
+        para.id = key;
         var name2 = document.createTextNode(key);
 
         para.appendChild(name2);
@@ -41,7 +53,7 @@ $.get("/user-vitamin-list.json", (res) => {
     function createButton(key, parentId) {
         var deactivateButton = document.createElement("BUTTON");
         deactivateButton.type = "image";
-        deactivateButton.className = "mb-3 btn btn-primary btn-sm"
+        deactivateButton.className = "mb-3 btn btn-primary btn-sm active-toggle"
         deactivateButton.id = "btn-" + key;
         deactivateButton.name = "clicked-btn";
         deactivateButton.value = key;
@@ -87,11 +99,9 @@ $.get("/user-vitamin-list.json", (res) => {
             ratingForm.appendChild(radio);
 
             var newLabel = document.createElement("Label");
-            newLabel.className = "active"
+            // newLabel.className = "active"
             newLabel.innerHTML = "<i class='fas fa-star'></i>";
             ratingForm.appendChild(newLabel);
-            
-
             newLabel.setAttribute("for", radio.id);
             
         }; 
@@ -131,7 +141,7 @@ $.get("/user-vitamin-list.json", (res) => {
     }
 
     function moveDiv(chart) {
-        var buttons = document.querySelectorAll('button');
+        var buttons = document.querySelectorAll('.active-toggle');
         for (var i=0; i<buttons.length; ++i) {
           buttons[i].addEventListener('click', clickFunc);
         }
@@ -139,18 +149,19 @@ $.get("/user-vitamin-list.json", (res) => {
         function clickFunc() {
             let formValues = this.value;
     //add a callback
-            $.post('/remove-routine.json', formValues);
+            $.post('/remove-routine.json', formValues)
             for (item in res) {
                 if (res[item]["active"] === true) {
                     $(`#${formValues}`).appendTo('#inactive');
                     let btnId = document.getElementById("btn-" + formValues);
                     btnId.innerText = btnId.textContent = "Reactivate";
+
                 } else {
                     $(`#${formValues}`).appendTo('#active-section');
                     let btnId = document.getElementById("btn-" + formValues);
-                    btnId.innerText = btnId.textContent = "Deactivate";
+                    btnId.innerText = btnId.textContent = "Deactivate"
                 }; 
-                }    
+                }   
             };
     }
 

@@ -7,6 +7,12 @@ body {
   z-index: 0;
 }
 
+/*body {
+  background-color: #8EC5FC;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+;
+}*/
+
 #page-content {
   flex: 1 0 auto;
 }
@@ -60,15 +66,37 @@ body {
   background-color: #f1f1f1;
 }
 
-#column {
+.collapsible:after {
+  content: "\2304";
+  font-size: 13px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "";
+  color: white;
+}
+
+/*#column {
   border: 1px solid #c9c9c9;
+}*/
+
+.discontinue-flag {
+  background-color: orange;
 }
 
 #dash-head {
   background-color: lightgray;
 }
 
+#streak-info {
+  font-size: 40px;
+}
+
 .ratings{
+  display: flex;
   color: lightgray;
   font-size: 25px !important;
 }
@@ -79,6 +107,10 @@ input:checked + label {
 
 input:checked + label:hover {
   color: lightgray;
+}
+
+input[type=number] {
+   width: 35px;
 }
 
 .far-fa-check-circle:hover {
@@ -95,7 +127,8 @@ i.fas.fa-star:hover {
 
 #cosmas {
   position:absolute;
-  margin-left: 900px;
+  margin-top: 100px;
+  margin-left: 925px;
   z-index:1;
-  width:27%;
+  width:19%;
 }
