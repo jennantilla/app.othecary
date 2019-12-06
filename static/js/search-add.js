@@ -111,13 +111,6 @@ $("#run-out-db").attr("value", (new Date().toISOString().substr(0, 10)));
 // Formatting of vit-info body
 $(".externallink").remove();
 
-// Assigning ids to paragraphs
-var id = 1;
-$('p').each(function(){
-    $(this).attr("id", "para" + id);
-    id++;
-});
-
 // Assigning ids to headers
 var id = 1;
 $('h2').each(function(){

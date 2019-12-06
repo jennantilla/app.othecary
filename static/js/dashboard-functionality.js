@@ -32,6 +32,9 @@ function checkDate(response) {
             lowAlert.role = "alert";
             lowAlert.innerHTML = `You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`;
             document.getElementById("low-alert").appendChild(lowAlert);
+            setTimeout(function() {
+            $('#low-alert').fadeOut('slow');
+        }, 30000);
         };   
     };  
 } 
@@ -93,3 +96,11 @@ $.get("/suggestions.json", (res) => {
 
 // page formatting //
 $(".externallink").remove();
+
+$("#running-low").on("click", () => {
+    $("#running-low").addClass("hide");
+});
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

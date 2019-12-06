@@ -242,7 +242,7 @@ def display_search():
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
-    user_suggestion_list = ["Iron", "Calcium"]
+    user_suggestion_list = ["Iron", "Calcium", "VitaminC"]
 
     if user.diet == "vegetarian":
         user_suggestion_list.extend(["VitaminB12"])
@@ -253,8 +253,19 @@ def display_search():
 
     personal_suggestions = random.sample(user_suggestion_list, k=3)
 
+    suggestion = []
+
+    for item in personal_suggestions:
+        r = requests.get("https://ods.od.nih.gov/api/?resourcename=" + item + 
+                                    "&readinglevel=Consumer&outputformat=XML")
+    
+        doc = xmltodict.parse(r.content)
+        body = doc['Factsheet']['Content'][:290]
+        pairs = tuple([item, body])
+        suggestion.append(pairs)
+
     return render_template('search-add.html',
-    personal_suggestions=personal_suggestions)
+                    suggestion=suggestion)
 
 
 @app.route('/vitamin-search.json', methods=["GET"])
