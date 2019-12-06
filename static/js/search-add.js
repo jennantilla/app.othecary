@@ -44,10 +44,9 @@ function seeInfo(results) {
     //Use the pdf.js library to view vitamin label
     let id = results['id'];
     var url = `https://cors-anywhere.herokuapp.com/https://www.dsld.nlm.nih.gov/dsld/docs/${id}.pdf`;
-    // Loaded via <script> tag, create shortcut to access PDF.js exports.
+
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
-    // The workerSrc property shall be specified.
     pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
     // Asynchronous download of PDF
@@ -98,3 +97,60 @@ $(".add-form").on('submit', (evt) => {
         $("#vit-modal").addClass('hide');
         });
     });
+
+// Form functionality
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    });
+
+$("#run-out-db").attr("value", (new Date().toISOString().substr(0, 10)));
+
+
+// Vit Info //
+
+// Formatting of vit-info body
+$(".externallink").remove();
+
+// Assigning ids to paragraphs
+var id = 1;
+$('p').each(function(){
+    $(this).attr("id", "para" + id);
+    id++;
+});
+
+// Assigning ids to headers
+var id = 1;
+$('h2').each(function(){
+    $(this).attr("id", "header" + id);
+    id++;
+});
+
+// Generating TOC
+var ToC =
+  "<nav role='navigation' class='table-of-contents'>" +
+    "<h2>On this page:</h2>" +
+    "<ul>";
+
+var newLine, head, title, link;
+
+$("article h2").each(function() {
+
+  head = $(this);
+  title = head.text();
+  link = "#" + head.attr("id");
+
+  newLine =
+    "<li>" +
+      "<a href='" + link + "'>" +
+        title +
+      "</a>" +
+    "</li>";
+
+  ToC += newLine;
+});
+
+ToC +=
+   "</ul>" +
+  "</nav>";
+
+$("article").prepend(ToC);

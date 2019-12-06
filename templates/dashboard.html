@@ -8,7 +8,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col"><h1>Welcome back, {{ user.name }}!</h1></div>
+        <div class="col"><h1>Hi, {{ user.name }}!</h1></div>
     </div>
 </div>
 
@@ -34,16 +34,16 @@
 
             {% if log|length > 0 %}
             <div class="container">
-            <div class="row">
-            <div class="col">
-            <div id="streak-sentence"><h4>You're on a <span id="streak-info">{{ user.streak_days }}</span> day streak</h4></div>
+                <div class="row">
+                    <div class="col">
+                        <div id="streak-sentence"><h4>You're on a <span id="streak-info">{{ user.streak_days }}</span> day streak</h4></div>
 
-            <div class="success-chart" style="width:400px">
-            <canvas id="successChart"></canvas>
-            </div> 
+                        <div class="success-chart" style="width:400px">
+                        <canvas id="successChart"></canvas> 
+                    </div> 
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
             <div class="container">
             <div class="row">
@@ -55,14 +55,14 @@
                 <button class="m-1 btn btn-primary btn-sm" type="submit" id="log-btn">See log details</button>
             </form>
             <br>
-            <div id="log-report"></div>
+            <div id="log-report"><h5></h5></div>
             </div>
             </div>
             </div>
 
                 {% endif %}
 
-            <div class="container">
+<div class="container">
     <div class="row justify-content-between">
         <div class="col">
             <h3 class="dash-head">Supplement Spotlight</h3>
@@ -72,7 +72,8 @@
     <div class="row justify-content-between">
         <div id="sugg" class="col">
             <div class="card" style="width: 32rem;">
-             <!--  <img class="card-img-top" src="..." alt="Card image cap"> -->
+                <canvas id="spot-photo"></canvas>
+            <!--   <img class="card-img-top" id="search-image" src="/static/images/bottle.jpg" alt="Card image cap"> -->
               <div class="card-body">
                 <h5 id="spotlight" class="card-title"></h5>
                 <p id="info" class="card-text"></p>
@@ -106,9 +107,36 @@
 <div class="container">
     <div class="row justify-content-between">
         <div class="col-6">
-            <h3 class="dash-head">You have no active supplements in your routine.</h3>
-            <p>Check out the sidebar for some targeted topics that may interest you or
-            <a href=/supplements>start your research.</a></p>
+            <h3 class="dash-head">You have no supplements in your regimen.</h3>
+            <h5>When you're ready, head over to the <a href=/search-page>search</a> page to discover new supplements to add to your routine.</h5>
+            <br>
+        </div>
+    </div>
+    <div class= "row">
+        <div class="col-6">
+            <br>
+            <h5>If you're looking for a place to start, click the button for a general overview on supplements.</h5>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalLong">
+  Dietary Supplements Overview
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{ title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ body | safe }}
+      </div>
+    </div>
+  </div>
+</div>
+            
         </div>
     </div>
 </div>

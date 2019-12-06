@@ -95,10 +95,21 @@ body {
   font-size: 40px;
 }
 
+.card-img-top {
+  position: center;
+  width: 50%;
+  margin-left: 110px;
+}
+
+.home-card {
+  background-color: #320080;
+  color: white;
+}
+
 .ratings{
   display: flex;
   color: lightgray;
-  font-size: 25px !important;
+  font-size: 25px;
 }
 
 input:checked + label {
@@ -127,8 +138,8 @@ i.fas.fa-star:hover {
 
 #cosmas {
   position:absolute;
-  margin-top: 100px;
+  margin-top: 50px;
   margin-left: 925px;
   z-index:1;
-  width:19%;
+  width:25%;
 }

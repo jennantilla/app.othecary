@@ -80,13 +80,22 @@ def show_dashboard(user_id):
     if account_age < 1:
         account_age = 1
 
+    req = requests.get("https://ods.od.nih.gov/api/?resourcename=DietarySupplements&readinglevel=Health%20Professional&outputformat=XML")
+    doc = xmltodict.parse(req.content)
+
+    title = doc['Factsheet']['ShortTitle']
+    body = doc['Factsheet']['Content']
+
+
     return render_template('dashboard.html',
                             user=user,
                             user_age=user_age,
                             history=history,
                             log=log,
                             today=today, 
-                            account_age=account_age)
+                            account_age=account_age,
+                            title=title,
+                            body=body)
 
 
 @app.route('/register')
@@ -198,7 +207,6 @@ def update_ratings():
 @app.route('/supplements')
 def select_supplement():
     """Shows vitamin choices"""
-
     vitamins = ['Biotin', 'Calcium', 'Choline', 'Copper', 'Folate', 'Iodine', 
     'Iron', 'Magnesium', 'Molybdenum', 'MVMS', 'Niacin', 'Omega3FattyAcids',
     'PantothenicAcid', 'Potassium', 'Probiotics', 'Riboflavin', 'Selenium',
@@ -209,8 +217,8 @@ def select_supplement():
                             vitamins=vitamins)
 
 
-@app.route('/lookup/<vitamin>', methods=['POST'])
-def look_up_fact_sheet(vitamin):
+@app.route('/lookup', methods=['POST'])
+def look_up_fact_sheet():
     """Looks up the fact sheet for chosen supplement"""
     vitamin = request.form.get("vitamin")
 
@@ -231,7 +239,22 @@ def look_up_fact_sheet(vitamin):
 def display_search():
     """Display search page"""
 
-    return render_template('search-add.html')
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+
+    user_suggestion_list = ["Iron", "Calcium"]
+
+    if user.diet == "vegetarian":
+        user_suggestion_list.extend(["VitaminB12"])
+    if user.sex == "female":
+        user_suggestion_list.extend(["Folate"])
+    elif user.sex == "male":
+        user_suggestion_list.extend(["Zinc", "Magnesium"])
+
+    personal_suggestions = random.sample(user_suggestion_list, k=3)
+
+    return render_template('search-add.html',
+    personal_suggestions=personal_suggestions)
 
 
 @app.route('/vitamin-search.json', methods=["GET"])

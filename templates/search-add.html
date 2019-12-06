@@ -11,7 +11,7 @@
 <div class="container">
     <div class="row justify-content-between">
         <div class="col">
-            <h4>Browse all supplements or filter by category or brand</h4>
+            <h4>Search all supplements or filter by category or brand</h4>
             <form class="add-form" action="/see-info.json" method="POST">
                     <select class="search-filter" name="selected-item" style="width: 90%"></select>
                     <input type="submit" class="m-1 btn btn-primary btn-sm" id="search-submit" value="Select">
@@ -19,6 +19,36 @@
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col">
+            <h4>Not sure where to begin?</h4>
+            <h5>Based on your user profile, we think you might like:</h5>
+        </div>
+    </div>
+</div>
+<div class="container">
+                <div class="row justify-content-between">
+        {% for vitamin in personal_suggestions %}
+
+            <div class="col">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{ vitamin }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                <p class="card-text">{{ vitamin }} is...</p>
+                <form action="/lookup" method="POST">
+                    <input class="hide" name="vitamin" value={{ vitamin }}>
+                <button type="submit" class="btn btn-primary">Read about {{ vitamin }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+        {% endfor %}
+    </div>    
+</div>
+
 
 <div class="container">
     <div class="row justify-content-between">
@@ -95,15 +125,6 @@
 </div>
 </div>
 </div>
-
-<script> 
-    $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-    });
-
-    $("#run-out-db").attr("value", (new Date().toISOString().substr(0, 10)));
-
-</script>
 
 <script src="/static/js/search-add.js"></script>
 <script src="/static/js/calculator.js"></script>

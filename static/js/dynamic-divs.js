@@ -140,7 +140,7 @@ $.get("/user-vitamin-list.json", (res) => {
         }
     }
 
-    function moveDiv(chart) {
+    function moveDiv() {
         var buttons = document.querySelectorAll('.active-toggle');
         for (var i=0; i<buttons.length; ++i) {
           buttons[i].addEventListener('click', clickFunc);

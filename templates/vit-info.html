@@ -3,9 +3,9 @@
 {% block title %}{{ vitamin }}{% endblock %}
 
 {% block content %}
-<div class="alert alert-warning" role="alert" id="flash">
+<!-- <div class="alert alert-warning" role="alert" id="flash">
     <h4>Information is power! Understand {{ title }}'s purpose and potential side effects before adding to your nutrition plan.</h4>
-</div>
+</div> -->
 
 <div class="container">
     <h1>{{ title }}</h1>
@@ -17,49 +17,6 @@
     </article>
 </div>
 
-
-<script>
-// Formatting of body
-$(".externallink").remove();
-
-// Assigning ids to headers
-var id = 1;
-$('h2').each(function(){
-    $(this).attr("id", "header" + id);
-    id++;
-});
-
-
-// Generating TOC
-var ToC =
-  "<nav role='navigation' class='table-of-contents'>" +
-    "<h2>On this page:</h2>" +
-    "<ul>";
-
-var newLine, head, title, link;
-
-$("article h2").each(function() {
-
-  head = $(this);
-  title = head.text();
-  link = "#" + head.attr("id");
-
-  newLine =
-    "<li>" +
-      "<a href='" + link + "'>" +
-        title +
-      "</a>" +
-    "</li>";
-
-  ToC += newLine;
-});
-
-ToC +=
-   "</ul>" +
-  "</nav>";
-
-$("article").prepend(ToC);
-
-</script>
+<script src="/static/js/search-add.js"></script>
 
 {% endblock %}
