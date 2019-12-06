@@ -87,19 +87,20 @@ $.get("/user-vitamin-list.json", (res) => {
 
         function createRadio(num, rating, parentId) {
             var radio = document.createElement("INPUT");
-            radio.type = "radio";
-            radio.className = "hide"
+            radio.type = "checkbox";
+            radio.className = "hide";
             radio.id = parentId + "-star-" + num;
             radio.name = "rating";
+            
             radio.value = num;
 
             if (radio.value <= rating) {
                 radio.checked = "checked";
             };
+
             ratingForm.appendChild(radio);
 
             var newLabel = document.createElement("Label");
-            // newLabel.className = "active"
             newLabel.innerHTML = "<i class='fas fa-star'></i>";
             ratingForm.appendChild(newLabel);
             newLabel.setAttribute("for", radio.id);

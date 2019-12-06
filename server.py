@@ -191,14 +191,18 @@ def show_log_info():
 def update_ratings():
     """Updates a rating for a supplement in the db"""
 
-    rating = request.form.get("rating")
-    label_id = request.form.get("id")
+    rating = request.form.getlist("rating")
+    print("\n\n\n\n\n\n\n\n", rating)
 
+    final_rating = max(rating)
+    final_rating = int(final_rating)
+
+    label_id = request.form.get("id")
     user_id = session.get("user_id")
 
     user_record = User_Vitamin.query.filter_by(user_id=user_id, label_id=label_id).first()
 
-    user_record.user_rating = rating
+    user_record.user_rating = final_rating
     db.session.commit()
 
     return redirect(f'/dashboard/{user_id}')
