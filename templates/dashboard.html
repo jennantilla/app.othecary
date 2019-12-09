@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="container" id="low-alert"></div>
+<div id="low-alert"></div>
 
 <div class="container">
     <div class="row">
@@ -52,15 +52,32 @@
             <h3 class="dash-head">{{ user.name }}'s Logs</h3>
             <form id="log-form" action="/see-log.json" method="POST">
                 <div id="user-log"><select id="log-search" name="log-results[]" style="width:100%" multiple="multiple"></select></div>
-                <button class="m-1 btn btn-primary btn-sm" type="submit" id="log-btn">See log details</button>
+                <button class="m-1 btn btn-primary btn-sm" type="submit" id="log-btn" data-toggle="modal" data-target="#exampleModalCenter">See log details</button>
             </form>
-            <br>
-            <div id="log-report"><h5></h5></div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{ user.name }}'s Logs</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="log-report"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
             </div>
             </div>
             </div>
 
-            {% endif %}
+{% endif %}
 
 <div class="container">
     <div class="row justify-content-between">
@@ -72,12 +89,12 @@
     <div class="row justify-content-between">
         <div id="sugg" class="col">
             <div class="card" style="width: 32rem;">
-                <canvas id="spot-photo"></canvas>
-            <!--   <img class="card-img-top" id="search-image" src="/static/images/bottle.jpg" alt="Card image cap"> -->
+                <div id="loading"></div>
+                <canvas id="spot-photo" style="width:100%"></canvas>
               <div class="card-body">
                 <h5 id="spotlight" class="card-title"></h5>
                 <p id="info" class="card-text"></p>
-                <form action="/add-routine" method="POST">
+                <form action="/add-routine" method="POST" id="add-spotlight">
                     <input class="spot-id hide" name="target-vit">
                     <input type="date" class="spot-run hide" name="run-out">
                     <button type="submit" class="btn btn-primary btn-sm">Add to routine</button>
@@ -91,17 +108,15 @@
 </div>
         <div class="col-5"><h3 class="dash-head">Routine for {{ today.strftime("%B %d, %Y") }}</h3>
             <div id="active-section"></div>
-        </div>
 
-<div class="container">
-    <div class="row justify-content-between">
-        <div class="col-5 offset-7">
-            <div id="inactive-section">
+        <div id="inactive-section">
             <button type="button" class="collapsible btn btn-primary btn-lg btn-block">{{ user.name }}'s Inactive Supplements</button>
             <div class="content" id="inactive"></div>
         </div>
     </div>
 </div>      
+</div>
+            
         
 {% else %}
 <div class="container">
@@ -141,7 +156,6 @@
     </div>
 </div>
 {% endif %}
-
   
 <script src="/static/js/dashboard-charts.js"></script>
 <script src="/static/js/dashboard-functionality.js"></script>

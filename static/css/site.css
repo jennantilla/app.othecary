@@ -7,12 +7,6 @@ body {
   z-index: 0;
 }
 
-/*body {
-  background-color: #8EC5FC;
-  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-;
-}*/
-
 #page-content {
   flex: 1 0 auto;
 }
@@ -31,6 +25,17 @@ body {
   background-color: #800080;
   border-color: #800080;
   outline-color: #800080; 
+}
+
+.btn-outline-primary {
+  border-color: #800080;
+  color: #800080;;
+}
+
+.btn-outline-primary:hover {
+  background-color: #800080;
+  color: #ffffff;;
+  border-color: #800080;
 }
 
 .container {
@@ -67,7 +72,7 @@ body {
 }
 
 .collapsible:after {
-  content: "\2304";
+  content: '\2304';
   font-size: 13px;
   color: white;
   float: right;
@@ -75,13 +80,9 @@ body {
 }
 
 .active:after {
-  content: "";
+  content: '';
   color: white;
 }
-
-/*#column {
-  border: 1px solid #c9c9c9;
-}*/
 
 .discontinue-flag {
   background-color: orange;

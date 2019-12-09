@@ -9,14 +9,14 @@ $(document).ready(function() {
                 return {'search_terms': params.term}   
             }
         },
-        placeholder: "Filter your logs by date"
+        placeholder: "Filter your logs by keyword"
         });
 });
 
 // Select2 Results
 function seeInfo(results) {
     for (item in results) {
-        var logDiv = document.createElement("p");
+        let logDiv = document.createElement("p");
         logDiv.id = results[item]["log_id"];
         logDiv.innerHTML = results[item]["notes"];
         document.getElementById("log-report").appendChild(logDiv);

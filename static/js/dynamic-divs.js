@@ -1,7 +1,7 @@
 $.get("/user-vitamin-list.json", (res) => {
     function createVitamins() {
     for (item in res) {
-        var suppDiv = document.createElement("DIV");
+        let suppDiv = document.createElement("DIV");
         suppDiv.id = res[item]["id"];
         suppDiv.className = "routine-items";
 
@@ -10,7 +10,8 @@ $.get("/user-vitamin-list.json", (res) => {
         }
         else {
             document.getElementById("inactive").appendChild(suppDiv);
-            createDiscontinue("Discontinued on: " + res[item]["discontinue_date"].slice(0,16), suppDiv.id);
+            createDiscontinue("Discontinued on: " + 
+                res[item]["discontinue_date"].slice(0,16), suppDiv.id);
         };
 
         createHeader(res[item]["name"], suppDiv.id);
@@ -23,35 +24,35 @@ $.get("/user-vitamin-list.json", (res) => {
     };
 
     function createHeader(key, parentId) {
-        var h1 = document.createElement("H5");
+        let h1 = document.createElement("H5");
         h1.className = "p-2 supp-head"
-        var name1 = document.createTextNode(key);
+        let name1 = document.createTextNode(key);
 
         h1.appendChild(name1);
         document.getElementById(parentId).appendChild(h1);
     };
 
     function createDiscontinue(key, parentId) {
-        var para = document.createElement("P");
+        let para = document.createElement("P");
         para.id = key;
         para.className = "discontinue-flag"
-        var name2 = document.createTextNode(key);
+        let name2 = document.createTextNode(key);
 
         para.appendChild(name2);
         document.getElementById(parentId).appendChild(para);
     };
 
     function createDetails(key, parentId) {
-        var para = document.createElement("P");
+        let para = document.createElement("P");
         para.id = key;
-        var name2 = document.createTextNode(key);
+        let name2 = document.createTextNode(key);
 
         para.appendChild(name2);
         document.getElementById(parentId).appendChild(para);
     };
 
     function createButton(key, parentId) {
-        var deactivateButton = document.createElement("BUTTON");
+        let deactivateButton = document.createElement("BUTTON");
         deactivateButton.type = "image";
         deactivateButton.className = "mb-3 btn btn-primary btn-sm active-toggle"
         deactivateButton.id = "btn-" + key;
@@ -59,79 +60,79 @@ $.get("/user-vitamin-list.json", (res) => {
         deactivateButton.value = key;
 
         if (res[item]["active"] === true) {
-            var buttonLabel = document.createTextNode("Deactivate");
+            let buttonLabel = document.createTextNode("Deactivate");
             deactivateButton.appendChild(buttonLabel);
             document.getElementById(parentId).appendChild(deactivateButton);
         }
         else {
-            var buttonLabel = document.createTextNode("Reactivate");
+            let buttonLabel = document.createTextNode("Reactivate");
             deactivateButton.appendChild(buttonLabel);
             document.getElementById(parentId).appendChild(deactivateButton);
         };
     };
 
         function makeRatingForm(key, rating, parentId) {
-        var ratingForm = document.createElement("FORM");
+        let ratingForm = document.createElement("FORM");
         ratingForm.className = "ratings"
         ratingForm.id = "formRating-" + parentId;
         ratingForm.action = "/user_ratings.json"
         ratingForm.method = "POST"
 
         function createIdInput(parentId) {
-            var labelId = document.createElement("INPUT");
+            let labelId = document.createElement("INPUT");
             labelId.className = "hide";
             labelId.name = "id";
             labelId.value = parentId;
             ratingForm.appendChild(labelId);
         };
 
-        function createRadio(num, rating, parentId) {
-            var radio = document.createElement("INPUT");
-            radio.type = "checkbox";
-            radio.className = "hide";
-            radio.id = parentId + "-star-" + num;
-            radio.name = "rating";
+        function createCheckBox(num, rating, parentId) {
+            let checkBox = document.createElement("INPUT");
+            checkBox.type = "checkbox";
+            checkBox.className = "hide";
+            checkBox.id = parentId + "-star-" + num;
+            checkBox.name = "rating";
             
-            radio.value = num;
+            checkBox.value = num;
 
-            if (radio.value <= rating) {
-                radio.checked = "checked";
+            if (checkBox.value <= rating) {
+                checkBox.checked = "checked";
             };
 
-            ratingForm.appendChild(radio);
+            ratingForm.appendChild(checkBox);
 
-            var newLabel = document.createElement("Label");
+            let newLabel = document.createElement("Label");
             newLabel.innerHTML = "<i class='fas fa-star'></i>";
             ratingForm.appendChild(newLabel);
-            newLabel.setAttribute("for", radio.id);
+            newLabel.setAttribute("for", checkBox.id);
             
         }; 
 
         createIdInput(parentId);
-        createRadio(1, rating, parentId);
-        createRadio(2, rating, parentId);
-        createRadio(3, rating, parentId);
-        createRadio(4, rating, parentId);
-        createRadio(5, rating, parentId);
+        createCheckBox(1, rating, parentId);
+        createCheckBox(2, rating, parentId);
+        createCheckBox(3, rating, parentId);
+        createCheckBox(4, rating, parentId);
+        createCheckBox(5, rating, parentId);
 
-        var submitRating = document.createElement("INPUT");
+        let submitRating = document.createElement("INPUT");
         submitRating.type = "submit";
         submitRating.className = "m-1 btn btn-primary btn-sm";
         submitRating.id = "ratingSubmit"
-        submitRating.value = "Update rating";
+        submitRating.value = "Update";
         ratingForm.appendChild(submitRating)
 
         document.getElementById(parentId).appendChild(ratingForm);
     }
 
     function makeCollapsible() {
-        var collapse = document.getElementsByClassName("collapsible");
-        var i;
+        let collapse = document.getElementsByClassName("collapsible");
+        let i;
 
         for (i = 0; i < collapse.length; i++) {
           collapse[i].addEventListener("click", function() {
             this.classList.toggle("active");
-            var content = this.nextElementSibling;
+            let content = this.nextElementSibling;
             if (content.style.display === "block") {
               content.style.display = "none";
             } else {
@@ -142,8 +143,8 @@ $.get("/user-vitamin-list.json", (res) => {
     }
 
     function moveDiv() {
-        var buttons = document.querySelectorAll('.active-toggle');
-        for (var i=0; i<buttons.length; ++i) {
+        let buttons = document.querySelectorAll('.active-toggle');
+        for (let i=0; i<buttons.length; ++i) {
           buttons[i].addEventListener('click', clickFunc);
         }
 

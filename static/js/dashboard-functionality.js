@@ -1,17 +1,16 @@
-"use strict";
+'use strict';
 // Hide/show streak question depending on whether user has logged that day
 function checkLogged(response) {
     if (response.logged === true) {
-        $("#question").addClass('hide');
+        $('#question').addClass('hide');
     } else {
-        $("#question").removeClass('hide');
+        $('#question').removeClass('hide');
     };
 }
 
-$.get("/check-logged.json", (response) => {
+$.get('/check-logged.json', (response) => {
     checkLogged(response);
 });
-
 
 
 // Checks to see any of user's run-out dates are within a week. If so, alert them
@@ -26,31 +25,30 @@ function checkDate(response) {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         if (diffDays > 0 && diffDays < 5) {
-            let lowAlert = document.createElement("DIV");
-            lowAlert.id = "running-low";
-            lowAlert.className = "alert alert-warning";
-            lowAlert.role = "alert";
+            let lowAlert = document.createElement('DIV');
+            lowAlert.id = `run-low-${response[vitamin]['name']}`;
+            lowAlert.className = 'alert alert-warning';
+            lowAlert.role = 'alert';
             lowAlert.innerHTML = `You are running low on ${response[vitamin]['name']}. Refill soon so you don't break your streak!`;
-            document.getElementById("low-alert").appendChild(lowAlert);
-            setTimeout(function() {
-            $('#low-alert').fadeOut('slow');
-        }, 30000);
+            document.getElementById('low-alert').appendChild(lowAlert);
         };   
-    };  
+    }; 
 } 
 
-$.get("/user-vitamin-list.json", (response) => {
+$.get('/user-vitamin-list.json', (response) => {
     checkDate(response);
 });
 
-
-
 // Retrieves a suggested supplement & photo to spotlight
-$.get("/suggestions.json", (res) => {
-        $("#spotlight").html(res.name);
-        $("#info").html(res.use);
-        $(".spot-id").attr("value", res.id);
-        $(".spot-run").attr("value", (new Date().toISOString().substr(0, 10)));
+$('#loading').html('<i class="fas fa-spinner fa-2"></i>');
+
+$.get('/suggestions.json', (res) => {
+        // const today = new Date(2020, 02, 25);
+
+        $('#spotlight').html(res.name);
+        $('#info').html(res.use);
+        $('.spot-id').attr('value', res.id);
+        $('.spot-run').attr('value', (new Date(2020, 2, 25).toISOString().substr(0, 10)));
 
         let id = res.id;
         var url = `https://cors-anywhere.herokuapp.com/https://www.dsld.nlm.nih.gov/dsld/docs/${id}.pdf`;
@@ -92,14 +90,12 @@ $.get("/suggestions.json", (res) => {
           // PDF loading error
           console.error(reason);
         });
+        $('#loading').empty();
 });
+
 
 // page formatting //
-$(".externallink").remove();
-
-$("#running-low").on("click", () => {
-    $("#running-low").addClass("hide");
-});
+$('.externallink').remove();
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()

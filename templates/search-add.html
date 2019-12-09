@@ -14,39 +14,41 @@
             <h4>Browse all supplements or filter by category or brand</h4>
             <form class="add-form" action="/see-info.json" method="POST">
                     <select class="search-filter" name="selected-item" style="width: 90%"></select>
-                    <input type="submit" class="m-1 btn btn-primary btn-sm" id="search-submit" value="Select">
+                    <button class="m-1 btn btn-primary btn-sm" id="search-submit" type="submit" value="Select" data-toggle="modal" data-target="#exampleModalCenter">See details</button>
             </form>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <div class="row justify-content-between">
-        <div class="col-6">
-            <button type="button" class="btn btn-primary hide" id="vit-modal" data-toggle="modal" data-target=".bd-example-modal-lg">Expand details</button>
-
-            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div id="search-facts">
-                    <div class="p-5 row">
-                        <div class="col">
-                            <h3><div id="prod-name"></div></h3>
-                            <div id="brand-name"></div>
-                            <div id="prod-cont"></div>
-                            <div id="prod-dir"></div>
-                            <div id="prod-serv"></div>
-                            <div id="prod-type"></div>
-                            <div id="supp-form"></div>
-                            <div id="targ-grp"></div>
-                            <div id="test-div"></div>
-                            <br>
-                            <canvas class="hide" id="label-pic" style="width:100%"></canvas>
-                        </div>
-        <div class="col-4">
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 id="popup-title" class="modal-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div id="search-facts">
+            <div class="p-5 row">
+            <div class="col">
+                <h4>Product Details</h4>
+                <div id="brand-name"></div>
+                <div id="prod-cont"></div>
+                <div id="prod-dir"></div>
+                <div id="prod-serv"></div>
+                <div id="prod-type"></div>
+                <div id="supp-form"></div>
+                <div id="targ-grp"></div>
+                <div id="test-div"></div>
+                <br>
+                <canvas class="hide" id="label-pic" style="width:100%"></canvas>
+            </div>
+            <div class="col-4">
             <div id="calculator">
             <h4 class="text-left mt-1">Calculate Refill</h4>
-
                 <form id="calculator-inputs" action="/calculator.json" method="POST">
                     <label class="hide">ID:
                         <input id="label-id" name="label-id" readonly>
@@ -76,20 +78,22 @@
                     </label>
                     <input type="submit" class="mt-3 btn btn-primary btn-sm" id="calc-submit" value="calculate!">
                 </form>
-            
+                </div>
+                
                 <div class="mt-3 text-left hide" id="run-out-dsply"><div class="alert alert-warning" role="alert">You will run out on <span class="text-right" id="run-out-rslt"></span></div></div>
-                <div id="add-routine-btn">
-                    <form class="hide" id="add-form" action="/add-routine" method="POST">
-                        <input class ="hide" id="selected" name="target-vit">
-                        <input class="hide" id="run-out-db" name="run-out">
-                        <button class="mt-3 btn btn-primary" type="submit" value="Add to routine">Add to my routine</button>
-                    </form>
                 </div>
             </div>
+
+        <div class="modal-footer">
+        <div id="add-routine-btn">
+            <form class="hide" id="add-form" action="/add-routine" method="POST">
+                <input class ="hide" id="selected" name="target-vit">
+                <input class="hide" id="run-out-db" name="run-out">
+                <button class="mt-3 btn btn-primary" type="submit" value="Add to routine">Add to my routine</button>
+            </form>
         </div>
-    </div>     
-</div>
-</div>
+        </div>
+    </div>
 </div>
 </div>
 </div>
@@ -100,12 +104,12 @@
     <div class="row justify-content-between">
         <div class="col">
             <h4>Not sure where to begin?</h4>
-            <h5>Based on your user profile, we think you might like:</h5>
+            <h5>Based on your profile, we think you might like:</h5>
         </div>
     </div>
 </div>
 <div class="container">
-                <div class="row justify-content-between">
+        <div class="row justify-content-between">
         {% for vitamin in suggestion %}
 
             <div class="col">

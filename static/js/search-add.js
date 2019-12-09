@@ -15,16 +15,16 @@ $(document).ready(function() {
 
 // Function for AJAX call
 function seeInfo(results) {
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
     if (month < 10) month = "0" + month;
     if (day < 10) day = "0" + day;
-    var today = year + "-" + month + "-" + day;
+    let today = year + "-" + month + "-" + day;
 
-    $("#prod-name").html(results['name']);
+    $("#popup-title").html(results['name']);
     $("#brand-name").html("Brand name: " + results['brand']);
     $("#prod-cont").html("Contents: " + results['contents']);
     $("#prod-dir").html(results['use']);
@@ -90,19 +90,15 @@ $(".add-form").on('submit', (evt) => {
 
     const formValues = $('.search-filter').serialize();
     $.post('/see-info.json', formValues, seeInfo);
-
-    $('#vit-modal').removeClass('hide');
-
-    $( "#vit-modal").click(function() {
-        $("#vit-modal").addClass('hide');
-        });
     });
+
 
 // Form functionality
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
     });
 
+// Creates a default run out date if no value given
 $("#run-out-db").attr("value", (new Date().toISOString().substr(0, 10)));
 
 
@@ -112,19 +108,19 @@ $("#run-out-db").attr("value", (new Date().toISOString().substr(0, 10)));
 $(".externallink").remove();
 
 // Assigning ids to headers
-var id = 1;
+let idNum = 1;
 $('h2').each(function(){
-    $(this).attr("id", "header" + id);
-    id++;
+    $(this).attr("id", "header" + idNum);
+    idNum++;
 });
 
 // Generating TOC
-var ToC =
+let ToC =
   "<nav role='navigation' class='table-of-contents'>" +
     "<h2>On this page:</h2>" +
     "<ul>";
 
-var newLine, head, title, link;
+let newLine, head, title, link;
 
 $("article h2").each(function() {
 
