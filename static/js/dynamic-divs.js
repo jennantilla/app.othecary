@@ -157,11 +157,13 @@ $.get("/user-vitamin-list.json", (res) => {
                     $(`#${formValues}`).appendTo('#inactive');
                     let btnId = document.getElementById("btn-" + formValues);
                     btnId.innerText = btnId.textContent = "Reactivate";
+                    $(".discontinue-flag").removeClass('hide')
 
                 } else {
                     $(`#${formValues}`).appendTo('#active-section');
                     let btnId = document.getElementById("btn-" + formValues);
-                    btnId.innerText = btnId.textContent = "Deactivate"
+                    btnId.innerText = btnId.textContent = "Deactivate";
+                    $(".discontinue-flag").addClass('hide')
                 }; 
                 }   
             };

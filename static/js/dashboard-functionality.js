@@ -48,7 +48,7 @@ $.get('/suggestions.json', (res) => {
         $('#spotlight').html(res.name);
         $('#info').html(res.use);
         $('.spot-id').attr('value', res.id);
-        $('.spot-run').attr('value', (new Date(2020, 2, 25).toISOString().substr(0, 10)));
+        $('.spot-run').attr('value', (new Date(2020, 0, 11).toISOString().substr(0, 10)));
 
         let id = res.id;
         var url = `https://cors-anywhere.herokuapp.com/https://www.dsld.nlm.nih.gov/dsld/docs/${id}.pdf`;

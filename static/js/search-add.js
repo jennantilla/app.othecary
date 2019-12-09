@@ -99,7 +99,7 @@ $(function () {
     });
 
 // Creates a default run out date if no value given
-$("#run-out-db").attr("value", (new Date().toISOString().substr(0, 10)));
+$("#run-out-db").attr("value", (new Date(2020, 0, 11).toISOString().substr(0, 10)));
 
 
 // Vit Info //
