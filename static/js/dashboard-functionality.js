@@ -1,16 +1,16 @@
 'use strict';
 // Hide/show streak question depending on whether user has logged that day
-function checkLogged(response) {
-    if (response.logged === true) {
-        $('#question').addClass('hide');
-    } else {
-        $('#question').removeClass('hide');
-    };
-}
+// function checkLogged(response) {
+//     if (response.logged === true) {
+//         $('#question').addClass('hide');
+//     } else {
+//         $('#question').removeClass('hide');
+//     };
+// }
 
-$.get('/check-logged.json', (response) => {
-    checkLogged(response);
-});
+// $.get('/check-logged.json', (response) => {
+//     checkLogged(response);
+// });
 
 
 // Checks to see any of user's run-out dates are within a week. If so, alert them
@@ -92,7 +92,6 @@ $.get('/suggestions.json', (res) => {
         });
         $('#loading').empty();
 });
-
 
 // page formatting //
 $('.externallink').remove();

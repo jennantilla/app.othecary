@@ -18,7 +18,7 @@
     <div class="row justify-content-between">
         <div class="col-6">
             <div id="question">
-                <form class="form-inline" id="performance" action="/update-streak" method='POST'>
+                <form class="form-inline" id="performance" action="/update-streak.json" method='POST'>
                         <h3>Did you take your supplements today?</h3>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input hide" type="radio" id="yes" name="streak" value="yes" required>
@@ -79,7 +79,7 @@
 
 {% endif %}
 
-<div class="container">
+<div class="container" id="supp-spotlight">
     <div class="row justify-content-between">
         <div class="col">
             <h3 class="dash-head">Supplement Spotlight</h3>
@@ -94,7 +94,7 @@
               <div class="card-body">
                 <h5 id="spotlight" class="card-title"></h5>
                 <p id="info" class="card-text"></p>
-                <form action="/add-routine" method="POST" id="add-spotlight">
+                <form action="/add-routine.json" method="POST" id="add-spotlight">
                     <input class="spot-id hide" name="target-vit">
                     <input type="date" class="spot-run hide" name="run-out">
                     <button type="submit" class="btn btn-primary btn-sm">Add to routine</button>
@@ -156,6 +156,27 @@
     </div>
 </div>
 {% endif %}
+
+<script type="text/javascript">
+"use strict";
+
+
+
+//Updates streak stats
+function replaceStreak(results) {
+    $("#streak-info").html(results['streak_days']);
+    $("#streak-info").animate({zoom: '100%'});
+    $("#question").addClass('hide');
+}
+
+$("#performance").on('submit', (evt) => {
+    evt.preventDefault();
+
+    const formValues = $('#performance').serialize();
+    $.post('/update-streak.json', formValues, replaceStreak); 
+    });
+
+</script>
   
 <script src="/static/js/dashboard-charts.js"></script>
 <script src="/static/js/dashboard-functionality.js"></script>

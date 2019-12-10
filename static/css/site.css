@@ -88,12 +88,12 @@ body {
   background-color: orange;
 }
 
-#dash-head {
-  background-color: lightgray;
+.badge-secondary {
+  background-color: orange;
 }
 
-#streak-info {
-  font-size: 40px;
+#dash-head {
+  background-color: lightgray;
 }
 
 .card-img-top {
@@ -118,7 +118,7 @@ input:checked + label {
 }
 
 input:checked + label:hover {
-  color: lightgray;
+  color: orange;
 }
 
 input[type=number] {

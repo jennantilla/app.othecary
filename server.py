@@ -124,7 +124,7 @@ def show_dashboard(user_id):
                             body=body)
 
 
-@app.route("/update-streak", methods=["POST"])
+@app.route("/update-streak.json", methods=["POST"])
 def update_streak():
     """Updates success days"""
     user_id = session.get("user_id")
@@ -147,7 +147,7 @@ def update_streak():
     db.session.add(entry)
     db.session.commit()
 
-    return redirect(f"/dashboard/{user_id}")
+    return jsonify({"streak_days" : user.streak_days})
 
 
 @app.route("/user_log.json", methods=["GET"])
@@ -371,6 +371,38 @@ def add_routine():
     flash(f"{new.vitamin.product_name} was added to your routine!")
 
     return redirect(f"/dashboard/{user_id}")
+
+
+@app.route("/add-routine.json", methods=["POST"])
+def add_routine_from_dash():
+    """Adds a chosen vitamin to the user's routine"""
+
+    label_id = request.form.get("target-vit")
+    run_out_date = request.form.get("run-out")
+    user_id = session.get("user_id")
+
+    # prevent duplicates:
+    routine = User_Vitamin.query.filter_by(user_id=user_id).all()
+    ids_for_user = []
+
+    for row in routine:
+        ids_for_user.append(row.label_id)
+
+    if label_id not in ids_for_user:
+
+        new = (User_Vitamin(label_id=label_id, user_id=user_id, active=True, 
+                                                run_out_date=run_out_date))
+        db.session.add(new)
+        db.session.commit()
+
+    new_supplement_info = {}
+    new_supplement_info['id'] = new.vitamin.label_id
+    new_supplement_info['name'] = new.vitamin.product_name
+    new_supplement_info['start'] = new.start_date
+    new_supplement_info['run_out'] = new.run_out_date
+    new_supplement_info['use'] = new.vitamin.use
+
+    return jsonify(new_supplement_info)
 
 
 @app.route("/remove-routine.json", methods=["POST"])
