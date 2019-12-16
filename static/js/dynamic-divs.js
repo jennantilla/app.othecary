@@ -24,7 +24,7 @@ $.get("/user-vitamin-list.json", (res) => {
     };
 
     function createHeader(key, parentId) {
-        let h1 = document.createElement("H5");
+        let h1 = document.createElement("H6");
         h1.className = "p-2 supp-head"
         let name1 = document.createTextNode(key);
 
@@ -117,8 +117,7 @@ $.get("/user-vitamin-list.json", (res) => {
 
         let submitRating = document.createElement("INPUT");
         submitRating.type = "submit";
-        submitRating.className = "m-1 btn btn-primary btn-sm";
-        submitRating.id = "ratingSubmit"
+        submitRating.className = "ml-1 btn btn-primary btn-sm";
         submitRating.value = "Update";
         ratingForm.appendChild(submitRating)
 
@@ -173,58 +172,3 @@ $.get("/user-vitamin-list.json", (res) => {
     makeCollapsible();
     moveDiv();
     });
-
-
-function addToActives(response) {
-    let newDiv = document.createElement("DIV");
-        newDiv.id = response['id'];
-        newDiv.className = "routine-items";
-        document.getElementById("active-section").prepend(newDiv);
-
-    let newH = document.createElement("H5");
-        newH.className = "p-2 supp-head";
-        newH.id = "newHead"
-        let newName = document.createTextNode(response['name'] + " ");
-        newH.appendChild(newName);
-        let newBadge = document.createElement("SPAN");
-        newBadge.className = "badge badge-secondary";
-        newH.appendChild(newBadge)
-        newBadge.innerHTML = "NEW";
-        document.getElementById(response['id']).appendChild(newH);
-
-    let newPara = document.createElement("P");
-        newPara.id = response['id'];
-        let newName2 = document.createTextNode(response['use']);
-        newPara.appendChild(newName2);
-        document.getElementById(response['id']).appendChild(newPara);
-
-    let newPara2 = document.createElement("P");
-        newPara2.id = response['id'];
-        let newName3 = document.createTextNode("Start date: " + response['start'].slice(0,16));
-
-        newPara2.appendChild(newName3);
-        document.getElementById(response['id']).appendChild(newPara2);
-
-    let newPara3 = document.createElement("P");
-        newPara3.id = response['id'];
-        let newName4 = document.createTextNode("You will run out on: " + response['run_out'].slice(0,16));
-
-        newPara3.appendChild(newName4);
-        document.getElementById(response['id']).appendChild(newPara3);
-
-    let addAlert = document.createElement('DIV');
-            addAlert.className = 'alert alert-warning';
-            addAlert.role = 'alert';
-            addAlert.innerHTML = `${response['name']} was added to your routine!`;
-            document.getElementById('low-alert').appendChild(addAlert);
-    };
-
-
-$("#add-spotlight").on("click", (evt) =>{
-    evt.preventDefault(); 
-    const formValues = $('#add-spotlight').serialize();
-    
-    $.post('/add-routine.json', formValues, addToActives);
-    $('#supp-spotlight').addClass('hide');
-
-})

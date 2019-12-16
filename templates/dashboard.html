@@ -8,7 +8,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col"><h1>Hi, {{ user.name }}!</h1></div>
+        <div class="col"><h2>Hi, {{ user.name }}!</h2></div>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
         <div class="col-6">
             <div id="question">
                 <form class="form-inline" id="performance" action="/update-streak.json" method='POST'>
-                        <h3>Did you take your supplements today?</h3>
+                        <4>Did you take your supplements today?</h4>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input hide" type="radio" id="yes" name="streak" value="yes" required>
                             <label for="yes" alt="no"><i class="far fa-check-circle fa-2x"></i></label>
@@ -49,7 +49,7 @@
             <div class="row">
             <div class="col">
 
-            <h3 class="dash-head">{{ user.name }}'s Logs</h3>
+            <h4 class="dash-head">{{ user.name }}'s Logs</h4>
             <form id="log-form" action="/see-log.json" method="POST">
                 <div id="user-log"><select id="log-search" name="log-results[]" style="width:100%" multiple="multiple"></select></div>
                 <button class="m-1 btn btn-primary btn-sm" type="submit" id="log-btn" data-toggle="modal" data-target="#exampleModalCenter">See log details</button>
@@ -82,7 +82,7 @@
 <div class="container" id="supp-spotlight">
     <div class="row justify-content-between">
         <div class="col">
-            <h3 class="dash-head">Supplement Spotlight</h3>
+            <h4 class="dash-head">Supplement Spotlight</h4>
             <h6>As a {{ user_age }} year old {{ user.sex }} {{ user.diet }}, you may be interested in the following supplement:</h6>
         </div>
     </div>
@@ -106,7 +106,7 @@
     </div>
 </div>
 </div>
-        <div class="col-5"><h3 class="dash-head">Routine for {{ today.strftime("%B %d, %Y") }}</h3>
+        <div class="col-5"><h4 class="dash-head">Routine for {{ today.strftime("%B %d, %Y") }}</h4>
             <div id="active-section"></div>
 
         <div id="inactive-section">
@@ -122,7 +122,7 @@
 <div class="container">
     <div class="row justify-content-between">
         <div class="col-6">
-            <h3 class="dash-head">You have no supplements in your regimen.</h3>
+            <h4 class="dash-head">You have no supplements in your regimen.</h4>
             <h5>When you're ready, head over to the <a href=/search-page>search</a> page to discover new supplements to add to your routine.</h5>
             <br>
         </div>
@@ -160,12 +160,10 @@
 <script type="text/javascript">
 "use strict";
 
-
-
 //Updates streak stats
 function replaceStreak(results) {
     $("#streak-info").html(results['streak_days']);
-    $("#streak-info").animate({zoom: '100%'});
+    $("#streak-info").animate({zoom: '300%'});
     $("#question").addClass('hide');
 }
 

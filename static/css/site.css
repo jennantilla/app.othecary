@@ -1,5 +1,3 @@
-/* Sticky Footer Classes */
-
 html,
 body {
   height: 100%;
@@ -96,6 +94,10 @@ body {
   background-color: lightgray;
 }
 
+#streak-info {
+  font-size: 30px;
+}
+
 .card-img-top {
   position: center;
   width: 50%;
@@ -118,7 +120,7 @@ input:checked + label {
 }
 
 input:checked + label:hover {
-  color: orange;
+  color: lightgray;
 }
 
 input[type=number] {
@@ -137,10 +139,6 @@ i.fas.fa-star:hover {
   color: orange;
 }
 
-#cosmas {
-  position:absolute;
-  margin-top: 50px;
-  margin-left: 925px;
-  z-index:1;
-  width:25%;
+.jumbotron {
+  background-color: white;
 }
