@@ -41,16 +41,10 @@ Create database
 $ psql supplements
 ```
 
-Run model.py interactively
+Read dumped SQL file into database
 
 ```
-$ python3 -i model.py
-```
-
-Create the database
-
-```
-$ db.create_all()
+$ psql supplements < supplements.sql
 ```
 
 Use the program by running server.py and navingating to localhost port on your browsser
