@@ -4,9 +4,9 @@ Full-stack web app that allows a user to research dietary supplements and create
 
 ## Tech Stack
 
-Back-end: Python, Flask, PostgreSQL, SQLAlchemy
-Front-end: Javascript, jQuery, AJAX, Bootstrap
-Data/APIs: National Institutes of Health
+Back-end: Python, Flask, PostgreSQL, SQLAlchemy   
+Front-end: Javascript, jQuery, AJAX, Bootstrap   
+Data/APIs: National Institutes of Health   
 
 ## Getting Started
 
@@ -15,15 +15,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+A step by step series of examples that tell you how to get the development environment running
 
-Create a virtual environment in same directory
+Create a virtual env in same directory
 
 ```
 $ virtualenv env
 ```
 
-Activate virtual environment
+Activate virtual env
 
 ```
 $ source env/bin/activate
@@ -47,7 +47,7 @@ Read dumped SQL file into database
 $ psql supplements < supplements.sql
 ```
 
-Use the program by running server.py and navingating to localhost port on your browsser
+Use the program by running server.py and navingating to localhost port on your browser
 
 ```
 $ python3 server.py
