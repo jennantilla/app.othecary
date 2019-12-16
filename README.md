@@ -8,6 +8,16 @@ Back-end: Python, Flask, PostgreSQL, SQLAlchemy
 Front-end: Javascript, jQuery, AJAX, Bootstrap   
 Data/APIs: National Institutes of Health   
 
+## Features
+Interactive search page that filters based on product name, type, brand name, dosage size
+![ScreenShot](https://raw.github.com/jennantilla/app.othecary/master/static/images/search.png)
+
+Supplement info modal with supplement details and run-out calculator
+![ScreenShot](https://raw.github.com/jennantilla/app.othecary/master/static/images/info.png)
+
+User dashboard with regimen, streak counter, log lookup, and suggested supplements
+![ScreenShot](https://raw.github.com/jennantilla/app.othecary/master/static/images/dashboard.png)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine.
