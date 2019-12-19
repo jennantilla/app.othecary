@@ -41,7 +41,7 @@ class User_Log(db.Model):
     __tablename__ = "user_log"
 
     log_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), index=True)
     entry_date = db.Column(db.DateTime, default=datetime.now)
     take_vitamin = db.Column(db.Boolean)
     user_notes = db.Column(db.String(500)) 
@@ -53,8 +53,8 @@ class User_Vitamin(db.Model):
     __tablename__ = "user_vitamins"
    
     uv_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    label_id = db.Column(db.String(75), db.ForeignKey('vitamins.label_id'), index=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
+    label_id = db.Column(db.String(75), db.ForeignKey("vitamins.label_id"), index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), index=True)
     start_date = db.Column(db.DateTime, default=datetime.now)
     discontinue_date = db.Column(db.DateTime)
     active = db.Column(db.Boolean)
@@ -96,9 +96,9 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///supplements'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///supplements"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SQLALCHEMY_ECHO"] = True
     db.app = app
     db.init_app(app)
 

@@ -396,11 +396,11 @@ def add_routine_from_dash():
         db.session.commit()
 
     new_supplement_info = {}
-    new_supplement_info['id'] = new.vitamin.label_id
-    new_supplement_info['name'] = new.vitamin.product_name
-    new_supplement_info['start'] = new.start_date
-    new_supplement_info['run_out'] = new.run_out_date
-    new_supplement_info['use'] = new.vitamin.use
+    new_supplement_info["id"] = new.vitamin.label_id
+    new_supplement_info["name"] = new.vitamin.product_name
+    new_supplement_info["start"] = new.start_date
+    new_supplement_info["run_out"] = new.run_out_date
+    new_supplement_info["use"] = new.vitamin.use
 
     return jsonify(new_supplement_info)
 

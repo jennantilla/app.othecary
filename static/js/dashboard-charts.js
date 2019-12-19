@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 Chart.pluginService.register({
   beforeDraw: function(chart) {
     var width = chart.chart.width,
@@ -13,10 +13,10 @@ Chart.pluginService.register({
       var fontSize = ((height - chart.chartArea.top) / 100).toFixed(2);
 
       ctx.restore();
-      ctx.font = fontSize + "em sans-serif";
-      ctx.textBaseline = "middle"
+      ctx.font = fontSize + 'em sans-serif';
+      ctx.textBaseline = 'middle'
 
-      var text = percent + "% success",
+      var text = percent + '% success',
           textX = Math.round((width - ctx.measureText(text).width) / 2),
           textY = (height + chart.chartArea.top) / 2;
 
@@ -28,11 +28,11 @@ Chart.pluginService.register({
 });
 
 
-let ctx_dial = $("#successChart").get(0).getContext("2d");
+let ctx_dial = $('#successChart').get(0).getContext('2d');
 
-$.get("/success.json", function (data) {
+$.get('/success.json', function (data) {
     let mySuccessChart = new Chart(ctx_dial, {
-                                        type: "doughnut",
+                                        type: 'doughnut',
                                         data: data,
                                         options: {
                                             cutoutPercentage:85,

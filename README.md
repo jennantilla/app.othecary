@@ -65,7 +65,7 @@ $ python3 server.py
 
 ## V2 Plans
 
-Testing
+Testing   
 Improved Suggestion Engine
 
 ## V3 Plans

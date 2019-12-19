@@ -31,9 +31,6 @@ def load_labels():
                         tracking_history=row[12])
 
             db.session.add(vitamin)
-            # row_num += 1  
-            # print(row_num, row) use for testing?
-
     db.session.commit()
 
 
@@ -59,12 +56,12 @@ def update_labels_directions():
     
     for product in label_14:
         vit_id = product.label_id
-        r = requests.get('http://dsld.nlm.nih.gov/dsld/api/label/' + vit_id)
+        r = requests.get("http://dsld.nlm.nih.gov/dsld/api/label/" + vit_id)
         vitamin = r.json()
 
         try:
 
-            directions = vitamin['Suggested_Use']
+            directions = vitamin["Suggested_Use"]
 
         except KeyError:
             print(vitamin)

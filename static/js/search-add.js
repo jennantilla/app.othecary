@@ -9,7 +9,7 @@ $(document).ready(function() {
                 return {'search_terms': params.term}   
             }
         },
-        placeholder: "ex: calcium"
+        placeholder: 'ex: calcium'
         });
 });
 
@@ -20,26 +20,26 @@ function seeInfo(results) {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
 
-    if (month < 10) month = "0" + month;
-    if (day < 10) day = "0" + day;
-    let today = year + "-" + month + "-" + day;
+    if (month < 10) month = '0' + month;
+    if (day < 10) day = '0' + day;
+    let today = year + '-' + month + '-' + day;
 
-    $("#popup-title").html(results['name']);
-    $("#brand-name").html("Brand name: " + results['brand']);
-    $("#prod-cont").html("Contents: " + results['contents']);
-    $("#prod-dir").html(results['use']);
-    $("#prod-serv").html("Serving size: " + results['serving']);
-    $("#prod-type").html("Product type: " + results['product_type']);
-    $("#supp-form").html("Supplement form: " + results['supplement_form']);
-    $("#targ-grp").html("Target group: " + results['group']);
-    $("#label-pic").removeClass('hide');
-    $("#add-form").removeClass('hide');
-    $("#calculator").removeClass('hide');
-    $("#selected").val(results['id']);
-    $("#label-id").val(results['id']);
-    $("#supp-name").val(results['name']);
-    $("#supp-content").val(results['contents']);
-    $("#start").val(today);
+    $('#popup-title').html(results['name']);
+    $('#brand-name').html('Brand name: ' + results['brand']);
+    $('#prod-cont').html('Contents: ' + results['contents']);
+    $('#prod-dir').html(results['use']);
+    $('#prod-serv').html('Serving size: ' + results['serving']);
+    $('#prod-type').html('Product type: ' + results['product_type']);
+    $('#supp-form').html('Supplement form: ' + results['supplement_form']);
+    $('#targ-grp').html('Target group: ' + results['group']);
+    $('#label-pic').removeClass('hide');
+    $('#add-form').removeClass('hide');
+    $('#calculator').removeClass('hide');
+    $('#selected').val(results['id']);
+    $('#label-id').val(results['id']);
+    $('#supp-name').val(results['name']);
+    $('#supp-content').val(results['contents']);
+    $('#start').val(today);
 
     //Use the pdf.js library to view vitamin label
     let id = results['id'];
@@ -85,7 +85,7 @@ function seeInfo(results) {
   }
 
 // Event listener
-$(".add-form").on('submit', (evt) => {
+$('.add-form').on('submit', (evt) => {
     evt.preventDefault();
 
     const formValues = $('.search-filter').serialize();
@@ -99,18 +99,18 @@ $(function () {
     });
 
 // Creates a default run out date if no value given
-$("#run-out-db").attr("value", (new Date(2020, 0, 11).toISOString().substr(0, 10)));
+$('#run-out-db').attr('value', (new Date(2020, 0, 11).toISOString().substr(0, 10)));
 
 
 // Vit Info //
 
 // Formatting of vit-info body
-$(".externallink").remove();
+$('.externallink').remove();
 
 // Assigning ids to headers
 let idNum = 1;
 $('h2').each(function(){
-    $(this).attr("id", "header" + idNum);
+    $(this).attr('id', 'header' + idNum);
     idNum++;
 });
 
@@ -122,11 +122,11 @@ let ToC =
 
 let newLine, head, title, link;
 
-$("article h2").each(function() {
+$('article h2').each(function() {
 
   head = $(this);
   title = head.text();
-  link = "#" + head.attr("id");
+  link = '#' + head.attr('id');
 
   newLine =
     "<li>" +
@@ -139,7 +139,7 @@ $("article h2").each(function() {
 });
 
 ToC +=
-   "</ul>" +
-  "</nav>";
+   '</ul>' +
+  '</nav>';
 
-$("article").prepend(ToC);
+$('article').prepend(ToC);
